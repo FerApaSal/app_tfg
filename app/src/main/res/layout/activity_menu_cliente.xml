@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/beige"
+    android:padding="24dp">
+
+    <!-- Imagen de perfil (botón a perfil) -->
+    <ImageView
+        android:id="@+id/ivPerfilUsuario"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="Foto de perfil"
+        android:background="@drawable/circle_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="end|top"/>
+
+    <!-- Texto de bienvenida -->
+    <TextView
+        android:id="@+id/tvBienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/apercu_bold"
+        android:text="¡Hola, Usuario!"
+        android:textColor="@color/rosaRoto"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivPerfilUsuario"
+        tools:ignore="HardcodedText,TextContrastCheck" />
+
+    <!-- Contenedor vertical de botones -->
+    <LinearLayout
+        android:id="@+id/layoutBotones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tvBienvenida"
+        app:layout_constraintBottom_toTopOf="@id/tvVersion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp">
+
+        <!-- Botón: Mis citas -->
+        <Button
+            android:id="@+id/btnMisCitas"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold"
+            android:text="Mis citas"
+            android:textColor="@color/blanco"
+            tools:ignore="HardcodedText,TextContrastCheck,VisualLintButtonSize" />
+
+        <!-- Botón: Solicitar cita -->
+        <Button
+            android:id="@+id/btnSolicitarCita"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold"
+            android:text="Solicitar cita"
+            android:textColor="@color/blanco"
+            tools:ignore="HardcodedText,VisualLintButtonSize,TextContrastCheck" />
+
+        <!-- Botón: Contacta conmigo -->
+        <Button
+            android:id="@+id/btnContacto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold"
+            android:text="Contacta conmigo"
+            android:textColor="@color/blanco"
+            tools:ignore="HardcodedText,TextContrastCheck,VisualLintButtonSize" />
+
+        <!-- Botón: Servicios para novias -->
+        <Button
+            android:id="@+id/btnServicioNovias"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold"
+            android:text="Servicios para novias"
+            android:textColor="@color/blanco"
+            tools:ignore="HardcodedText,VisualLintButtonSize,TextContrastCheck" />
+
+        <!-- Botón: Cerrar sesión -->
+        <Button
+            android:id="@+id/btnCerrarSesion"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:fontFamily="@font/apercu_bold"
+            android:text="Cerrar sesión"
+            android:textColor="@color/blanco"
+            tools:ignore="HardcodedText,VisualLintButtonSize,TextContrastCheck" />
+    </LinearLayout>
+
+    <!-- Texto de versión -->
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/apercu_italic"
+        android:text="Versión: 1.0"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText,TextContrastCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

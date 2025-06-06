@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/beige"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Icono de perfil (esquina superior derecha) -->
+        <ImageView
+                android:id="@+id/ivPerfilAdmin"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="Foto de perfil"
+                android:background="@drawable/circle_background"
+                android:layout_gravity="end|top" />
+
+        <!-- Saludo -->
+        <TextView
+            android:id="@+id/tvBienvenida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¡Hola, Admin!"
+            android:textColor="@color/rosaRoto"
+            android:textSize="24sp"
+            android:fontFamily="@font/apercu_bold"
+            android:layout_marginBottom="70dp"
+            tools:ignore="HardcodedText" />
+
+        <!-- Botones -->
+        <Button
+            android:id="@+id/btnGestionCitas"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Gestión de citas"
+            android:backgroundTint="@color/rosaRoto"
+            android:textColor="@color/blanco"
+            android:fontFamily="@font/apercu_bold"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnGestionUsuarios"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Gestión de clientes"
+            android:backgroundTint="@color/rosaRoto"
+            android:textColor="@color/blanco"
+            android:fontFamily="@font/apercu_bold"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnGestionMateriales"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Gestión de materiales"
+            android:backgroundTint="@color/rosaRoto"
+            android:textColor="@color/blanco"
+            android:fontFamily="@font/apercu_bold"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnGestionTareas"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="ToDoList"
+            android:backgroundTint="@color/rosaRoto"
+            android:textColor="@color/blanco"
+            android:fontFamily="@font/apercu_bold"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnSeccionNovias"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Sección para novias"
+            android:backgroundTint="@color/rosaRoto"
+            android:textColor="@color/blanco"
+            android:fontFamily="@font/apercu_bold"
+            android:layout_marginBottom="50dp" />
+
+        <Button
+            android:id="@+id/btnCerrarSesion"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="85dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:fontFamily="@font/apercu_bold"
+            android:text="Cerrar sesión"
+            android:textColor="@color/blanco"
+            tools:ignore="HardcodedText" />
+
+        <!-- Versión -->
+        <TextView
+            android:id="@+id/tvVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Versión: 1.0"
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_gravity="center_horizontal"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+</ScrollView>

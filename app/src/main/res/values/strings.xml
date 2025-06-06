@@ -1,0 +1,11 @@
+<resources>
+    <string name="politica_privacidad_texto">
+    <![CDATA[
+    Esta aplicación gestiona datos personales con el único fin de facilitar la reserva de citas.
+    No se comparten datos con terceros y se cumplen los principios de confidencialidad.
+    Puedes ejercer tus derechos de acceso, rectificación o supresión a través del contacto proporcionado.
+    ]]>
+</string>
+
+
+</resources>
