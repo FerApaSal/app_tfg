@@ -12,7 +12,7 @@ import java.util.*
  *
  * @param context Contexto de la aplicación.
  */
-class UserService(context: Context) {
+class UsuarioService(context: Context) {
 
     private val dbHelper = UserDatabaseHelper(context)
 
@@ -27,7 +27,7 @@ class UserService(context: Context) {
      * @param rol Rol del usuario ("CLIENTE" o "ADMIN").
      * @return true si se registró correctamente, false si ya existe o hay error.
      */
-    fun registerUser(
+    fun registroUsuario(
         nombre: String,
         apellidos: String,
         telefono: String,
@@ -86,16 +86,29 @@ class UserService(context: Context) {
     }
 
     /**
+     * Obtiene un usuario por su correo electrónico.
+     *
+     * @param email Correo electrónico del usuario.
+     * @return Usuario si existe, null si no.
+     */
+
+    fun obtenerPorCorreo(correo: String): Usuario? {
+        val usuarios = obtenerTodos()
+        return usuarios.find { it.email.equals(correo, ignoreCase = true) }
+    }
+
+
+    /**
      * Elimina un usuario por ID.
      */
-    fun deleteUserById(id: String): Boolean {
+    fun elminarPorId(id: String): Boolean {
         return dbHelper.deleteById(id)
     }
 
     /**
      * Obtiene todos los usuarios registrados.
      */
-    fun getAllUsers(): List<Usuario> {
+    fun obtenerTodos(): List<Usuario> {
         return dbHelper.getAll()
     }
 }

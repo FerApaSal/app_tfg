@@ -1,6 +1,5 @@
 package com.example.tfg_app_makeup.auth
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +7,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
-import com.example.tfg_app_makeup.controllers.UserController
+import com.example.tfg_app_makeup.controllers.UsuarioController
 import com.example.tfg_app_makeup.helpers.ImageHelper
 import com.example.tfg_app_makeup.helpers.PermissionHelper
 import java.io.File
@@ -31,7 +30,7 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var etConfirmarPassword: EditText
     private lateinit var cbAceptarCondiciones: CheckBox
 
-    private lateinit var userController: UserController
+    private lateinit var usuarioController: UsuarioController
     private var rutaImagenLocal: String? = null
 
     companion object {
@@ -43,7 +42,7 @@ class RegistroActivity : AppCompatActivity() {
         setContentView(R.layout.activity_registro)
 
         try {
-            userController = UserController(this)
+            usuarioController = UsuarioController(this)
             initViews()
             setupListeners()
         } catch (e: Exception) {
@@ -95,7 +94,7 @@ class RegistroActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                val exito = userController.registrarUsuario(
+                val exito = usuarioController.registrarUsuario(
                     nombre,
                     apellidos,
                     telefono,

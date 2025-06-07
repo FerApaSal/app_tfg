@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/beige"
+    android:padding="24dp">
+
+    <!-- Botón de cerrar en esquina superior derecha -->
+    <ImageButton
+        android:id="@+id/btnCerrarDialogo"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Cerrar"
+        android:src="@drawable/ic_close"
+        app:tint="@color/rosaRoto"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <!-- Contenedor lineal principal -->
+    <LinearLayout
+        android:id="@+id/layoutDialogoContenido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnCerrarDialogo"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvDialogTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recuperar contraseña"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
+
+        <!-- Correo -->
+        <EditText
+            android:id="@+id/etEmailDialogo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Introduce tu correo"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@color/rosaRoto"
+            android:textCursorDrawable="@drawable/cursor_negro"
+            android:fontFamily="@font/apercu_regular"
+            android:layout_marginBottom="12dp"
+            tools:ignore="HardcodedText" />
+
+        <!-- Confirmación -->
+        <EditText
+            android:id="@+id/etEmailConfirmacion"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Confirma tu correo"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@color/rosaRoto"
+            android:textCursorDrawable="@drawable/cursor_negro"
+            android:fontFamily="@font/apercu_regular"
+            android:layout_marginBottom="20dp"
+            tools:ignore="HardcodedText" />
+
+        <!-- Botón enviar -->
+        <Button
+            android:id="@+id/btnEnviarRecuperacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enviar"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            android:backgroundTint="@color/rosaRoto"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/apercu_bold"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+</RelativeLayout>

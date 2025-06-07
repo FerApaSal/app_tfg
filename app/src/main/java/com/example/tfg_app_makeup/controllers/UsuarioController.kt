@@ -2,13 +2,13 @@ package com.example.tfg_app_makeup.controllers
 
 import android.content.Context
 import android.util.Log
-import com.example.tfg_app_makeup.helpers.UserHelper
+import com.example.tfg_app_makeup.helpers.UsuarioHelper
 import com.example.tfg_app_makeup.model.Usuario
-import com.example.tfg_app_makeup.services.UserService
+import com.example.tfg_app_makeup.services.UsuarioService
 
-class UserController(context: Context) {
+class UsuarioController(context: Context) {
 
-    private val userService = UserService(context)
+    private val usuarioService = UsuarioService(context)
 
     /**
      * Registra un nuevo usuario con los datos proporcionados.
@@ -31,17 +31,17 @@ class UserController(context: Context) {
         imagenUrl: String?
     ): Boolean {
         return try {
-            if (!UserHelper.camposRegistroValidos(nombre, apellidos, telefono, email, password)) {
+            if (!UsuarioHelper.camposRegistroValidos(nombre, apellidos, telefono, email, password)) {
                 Log.d("UserController", "Registro fallido: campos vacíos.")
                 return false
             }
 
-            if (!UserHelper.telefonoValido(telefono) || !UserHelper.emailValido(email)) {
+            if (!UsuarioHelper.telefonoValido(telefono) || !UsuarioHelper.emailValido(email)) {
                 Log.d("UserController", "Registro fallido: formato inválido.")
                 return false
             }
 
-            userService.registerUser(nombre, apellidos, telefono, email, password, rol, imagenUrl)
+            usuarioService.registroUsuario(nombre, apellidos, telefono, email, password, rol, imagenUrl)
         } catch (e: Exception) {
             Log.e("UserController", "Error en registro: ${e.message}", e)
             false
@@ -58,17 +58,22 @@ class UserController(context: Context) {
 
     fun login(email: String, password: String): Usuario? {
         return try {
-            if (!UserHelper.camposLoginValidos(email, password)) {
+            if (!UsuarioHelper.camposLoginValidos(email, password)) {
                 Log.d("UserController", "Login fallido: campos vacíos.")
                 return null
             }
 
-            userService.login(email, password)
+            usuarioService.login(email, password)
         } catch (e: Exception) {
             Log.e("UserController", "Error en login: ${e.message}")
             null
         }
     }
+
+    fun obtenerPorCorreo(correo: String): Usuario? {
+        return usuarioService.obtenerPorCorreo(correo)
+    }
+
 
     /**
      * Obtiene la lista de todos los usuarios registrados.
@@ -76,9 +81,9 @@ class UserController(context: Context) {
      * @return Lista de usuarios o una lista vacía si ocurre un error.
      */
 
-    fun obtenerUsuarios(): List<Usuario> {
+    fun obtenerTodos(): List<Usuario> {
         return try {
-            userService.getAllUsers()
+            usuarioService.obtenerTodos()
         } catch (e: Exception) {
             Log.e("UserController", "Error al obtener usuarios: ${e.message}")
             emptyList()
@@ -92,9 +97,9 @@ class UserController(context: Context) {
      * @return true si la eliminación fue exitosa, false en caso contrario.
      */
 
-    fun eliminarUsuario(id: String): Boolean {
+    fun eliminarPorId(id: String): Boolean {
         return try {
-            userService.deleteUserById(id)
+            usuarioService.elminarPorId(id)
         } catch (e: Exception) {
             Log.e("UserController", "Error al eliminar usuario: ${e.message}")
             false

@@ -29,10 +29,17 @@
             </intent-filter>
         </activity>
 
+        <!-- Auth -->
         <activity android:name=".auth.LoginActivity"/>
         <activity android:name=".auth.RegistroActivity"/>
 
+        <!-- Common -->
+        <activity android:name=".view.common.PoliticaPrivacidadActivity"/>
+
+        <!-- Admin -->
         <activity android:name=".view.admin.MenuAdminActivity"/>
+
+        <!-- Client -->
         <activity android:name=".view.client.MenuClienteActivity"/>
     </application>
 
