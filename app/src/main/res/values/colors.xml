@@ -8,10 +8,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    !-- Colores del cliente -->
+    !-- Colores de la aplicacion -->
     <color name="beige">#F5F5DC</color>
     <color name="rosaRoto">#E8C6C6</color>
     <color name="blanco">#FFFFFF</color>
+
+    !-- Colores para el estado de la cita -->
+    <color name="colorPendiente">#FFBDBDBD</color>
+    <color name="colorConfirmada">#FF4CAF50</color>
+    <color name="colorCancelada">#FFF44336</color>
+    <color name="colorDefault">#FF9E9E9E</color>
 
     !-- Colores para el servicio -->
     <color name="rosaNovia">#F8BBD0</color>

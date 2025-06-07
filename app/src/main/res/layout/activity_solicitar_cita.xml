@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutSolicitud"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beige"
+    android:padding="24dp"
+    tools:context=".view.client.SolicitarCitaActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Botón de volver -->
+        <ImageButton
+            android:id="@+id/btnVolverSolicitar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Volver"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/rosaRoto"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvTituloSolicitud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Solicitar cita"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp" />
+
+        <!-- Tipo de servicio -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tipo de servicio"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/apercu_regular"
+            android:layout_marginTop="24dp" />
+
+        <Spinner
+            android:id="@+id/spinnerTipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
+
+        <!-- Fecha -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/apercu_regular"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/etFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/rosaRoto"
+            android:focusable="false"
+            android:fontFamily="@font/apercu_regular"
+            android:hint="Selecciona una fecha"
+            android:inputType="none"
+            android:minHeight="48dp"
+            android:textColor="@color/black" />
+
+        <!-- Hora -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hora"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/apercu_regular"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/etHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/rosaRoto"
+            android:focusable="false"
+            android:fontFamily="@font/apercu_regular"
+            android:hint="Selecciona una hora"
+            android:inputType="none"
+            android:minHeight="48dp"
+            android:textColor="@color/black" />
+
+        <!-- Dirección -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dirección"
+            android:textSize="20sp"
+
+            android:textColor="@color/black"
+            android:fontFamily="@font/apercu_regular"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/etDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/rosaRoto"
+            android:fontFamily="@font/apercu_regular"
+            android:hint="Introduce la dirección del servicio"
+            android:minHeight="48dp"
+            android:textColor="@color/black" />
+
+        <!-- Checkbox de condiciones -->
+        <CheckBox
+            android:id="@+id/cbAceptarCondiciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Acepto que la fecha y hora pueden ser modificadas por la maquilladora"
+            android:textColor="@color/black"
+            android:fontFamily="@font/apercu_regular"
+            android:layout_marginTop="16dp" />
+
+        <!-- Botón de solicitar -->
+        <Button
+            android:id="@+id/btnSolicitar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enviar solicitud"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold"
+            android:layout_marginTop="24dp"
+            android:enabled="false" />
+
+        <!-- Texto de versión -->
+        <TextView
+            android:id="@+id/tvVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Versión: 1.0"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            android:fontFamily="@font/apercu_regular"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp" />
+    </LinearLayout>
+</ScrollView>

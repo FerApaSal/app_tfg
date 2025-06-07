@@ -41,6 +41,8 @@
 
         <!-- Client -->
         <activity android:name=".view.client.MenuClienteActivity"/>
+        <activity android:name=".view.client.MisCitasActivity"/>
+        <activity android:name=".view.client.SolicitarCitaActivity"/>
     </application>
 
 </manifest>

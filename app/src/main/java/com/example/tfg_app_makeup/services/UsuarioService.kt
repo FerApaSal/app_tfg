@@ -2,113 +2,101 @@ package com.example.tfg_app_makeup.services
 
 import android.content.Context
 import android.util.Log
-import com.example.tfg_app_makeup.helpers.UserDatabaseHelper
+import com.example.tfg_app_makeup.db.AppDatabase
 import com.example.tfg_app_makeup.model.Usuario
-import com.example.tfg_app_makeup.utils.EncryptUtil
-import java.util.*
 
-/**
- * Servicio para gestionar operaciones relacionadas con usuarios.
- *
- * @param context Contexto de la aplicación.
- */
-class UsuarioService(context: Context) {
+class UsuarioService(private val context: Context) {
 
-    private val dbHelper = UserDatabaseHelper(context)
-
-    /**
-     * Registra un nuevo usuario tras comprobar que no exista.
-     *
-     * @param nombre Nombre.
-     * @param apellidos Apellidos.
-     * @param telefono Teléfono.
-     * @param email Correo electrónico.
-     * @param password Contraseña en texto plano.
-     * @param rol Rol del usuario ("CLIENTE" o "ADMIN").
-     * @return true si se registró correctamente, false si ya existe o hay error.
-     */
-    fun registroUsuario(
-        nombre: String,
-        apellidos: String,
-        telefono: String,
-        email: String,
-        password: String,
-        rol: String,
-        imagenUrl: String?
-    ): Boolean {
+    fun obtenerTodos(): List<Usuario> {
+        val db = AppDatabase(context).readableDatabase
+        val lista = mutableListOf<Usuario>()
         try {
-            if (dbHelper.getByEmail(email) != null) {
-                Log.d("UserService", "El usuario con email $email ya existe.")
-                return false
+            val cursor = db.query("usuarios", null, null, null, null, null, null)
+            while (cursor.moveToNext()) {
+                lista.add(Usuario.fromCursor(cursor))
             }
-
-            val newUser = Usuario(
-                id = UUID.randomUUID().toString(),
-                nombre = nombre,
-                apellidos = apellidos,
-                telefono = telefono,
-                email = email,
-                password = EncryptUtil.encrypt(password),
-                rol = rol,
-                imagenUrl = imagenUrl
-            )
-
-            return dbHelper.insert(newUser)
+            cursor.close()
         } catch (e: Exception) {
-            Log.e("UserService", "Error al registrar usuario: ${e.message}", e)
-            return false
+            Log.e("UsuarioService", "Error al obtener usuarios: ${e.message}")
+        } finally {
+            db.close()
         }
+        return lista
     }
 
-    /**
-     * Intenta iniciar sesión con las credenciales dadas.
-     *
-     * @param email Correo electrónico.
-     * @param password Contraseña en texto plano.
-     * @return Usuario si las credenciales son válidas, null si fallan.
-     */
-    fun login(email: String, password: String): Usuario? {
-        return try {
-            val user = dbHelper.getByEmail(email)
-            val encryptedInput = EncryptUtil.encrypt(password)
-
-            if (user != null && user.password == encryptedInput) {
-                Log.d("UserService", "Inicio de sesión correcto para $email.")
-                user
-            } else {
-                Log.d("UserService", "Credenciales incorrectas para $email.")
-                null
+    fun obtenerPorId(id: String): Usuario? {
+        val db = AppDatabase(context).readableDatabase
+        var usuario: Usuario? = null
+        try {
+            val cursor = db.query("usuarios", null, "id = ?", arrayOf(id), null, null, null)
+            if (cursor.moveToFirst()) {
+                usuario = Usuario.fromCursor(cursor)
             }
+            cursor.close()
         } catch (e: Exception) {
-            Log.e("UserService", "Error durante login: ${e.message}")
-            null
+            Log.e("UsuarioService", "Error al buscar usuario por ID: ${e.message}")
+        } finally {
+            db.close()
         }
+        return usuario
     }
-
-    /**
-     * Obtiene un usuario por su correo electrónico.
-     *
-     * @param email Correo electrónico del usuario.
-     * @return Usuario si existe, null si no.
-     */
 
     fun obtenerPorCorreo(correo: String): Usuario? {
-        val usuarios = obtenerTodos()
-        return usuarios.find { it.email.equals(correo, ignoreCase = true) }
+        val db = AppDatabase(context).readableDatabase
+        var usuario: Usuario? = null
+        try {
+            val cursor = db.query("usuarios", null, "correo = ?", arrayOf(correo), null, null, null)
+            if (cursor.moveToFirst()) {
+                usuario = Usuario.fromCursor(cursor)
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            Log.e("UsuarioService", "Error al buscar usuario por correo: ${e.message}")
+        } finally {
+            db.close()
+        }
+        return usuario
     }
 
-
-    /**
-     * Elimina un usuario por ID.
-     */
-    fun elminarPorId(id: String): Boolean {
-        return dbHelper.deleteById(id)
+    fun insertar(usuario: Usuario): Boolean {
+        val db = AppDatabase(context).writableDatabase
+        return try {
+            val result = db.insert("usuarios", null, usuario.toContentValues())
+            Log.d("UsuarioService", "Usuario insertado: ${usuario.id}")
+            result != -1L
+        } catch (e: Exception) {
+            Log.e("UsuarioService", "Error al insertar usuario: ${e.message}")
+            false
+        } finally {
+            db.close()
+        }
     }
 
-    /**
-     * Obtiene todos los usuarios registrados.
-     */
-    fun obtenerTodos(): List<Usuario> {
-        return dbHelper.getAll()
+    fun actualizar(usuario: Usuario): Boolean {
+        val db = AppDatabase(context).writableDatabase
+        return try {
+            val filas = db.update("usuarios", usuario.toContentValues(), "id = ?", arrayOf(usuario.id))
+            Log.d("UsuarioService", "Usuario actualizado: ${usuario.id}")
+            filas > 0
+        } catch (e: Exception) {
+            Log.e("UsuarioService", "Error al actualizar usuario: ${e.message}")
+            false
+        } finally {
+            db.close()
+        }
+    }
+
+    fun eliminarPorId(id: String): Boolean {
+        val db = AppDatabase(context).writableDatabase
+        return try {
+            val filas = db.delete("usuarios", "id = ?", arrayOf(id))
+            Log.d("UsuarioService", "Usuario eliminado: $id")
+            filas > 0
+        } catch (e: Exception) {
+            Log.e("UsuarioService", "Error al eliminar usuario: ${e.message}")
+            false
+        } finally {
+            db.close()
+        }
     }
 }

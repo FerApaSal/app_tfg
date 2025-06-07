@@ -1,5 +1,6 @@
 package com.example.tfg_app_makeup.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.controllers.UsuarioController
 import com.example.tfg_app_makeup.helpers.UsuarioHelper
+import com.example.tfg_app_makeup.utils.EncryptUtil
 import com.example.tfg_app_makeup.utils.Session
 import com.example.tfg_app_makeup.view.admin.MenuAdminActivity
 import com.example.tfg_app_makeup.view.client.MenuClienteActivity
@@ -59,12 +61,14 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.setOnClickListener {
             try {
                 val email = etEmail.text.toString().trim()
-                val password = etPassword.text.toString().trim()
+                val passwordPlano = etPassword.text.toString().trim()
+                val passwordCifrada = EncryptUtil.encrypt(passwordPlano)
 
-                val usuario = usuarioController.login(email, password)
+                val usuario = usuarioController.login(email, passwordCifrada)
                 if (usuario != null) {
-                    Session.usuarioActual = usuario
-                    Log.d("LoginActivity", "Usuario logueado correctamente: ${usuario.email}")
+                    Session.iniciarSesion(this, usuario) // Guarda usuario e ID
+
+                    Log.d("LoginActivity", "Usuario logueado correctamente: ${usuario.correo}")
 
                     when (usuario.rol.uppercase()) {
                         "ADMIN" -> startActivity(Intent(this, MenuAdminActivity::class.java))
@@ -144,15 +148,13 @@ class LoginActivity : AppCompatActivity() {
             val correo = etCorreo.text.toString().trim()
             val confirmacion = etConfirmacion.text.toString().trim()
 
-            val correosValidos = UsuarioHelper.correosValidos(correo, confirmacion)
-            val usuarioExiste = UsuarioHelper.existeUsuarioPorCorreo(correo, usuarioController)
-
-            UsuarioHelper.mostrarResultadoRecuperacion(
-                contexto = this,
-                correosValidos = correosValidos,
-                existeUsuario = usuarioExiste,
-                dialogo = alertDialog
-            )
+            if (!UsuarioHelper.confirmarCorreo(this, correo, confirmacion)) {
+                return@setOnClickListener
+            }
+            // Aquí se llamaría al servicio de recuperación de contraseña
+            // Por simplicidad, solo mostramos un mensaje de éxito
+            Toast.makeText(this, "Solicitud de recuperación enviada a $correo", Toast.LENGTH_LONG).show()
+            alertDialog.dismiss()
         }
 
         alertDialog.show()

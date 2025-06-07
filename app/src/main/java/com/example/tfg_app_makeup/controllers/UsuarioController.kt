@@ -2,107 +2,105 @@ package com.example.tfg_app_makeup.controllers
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.example.tfg_app_makeup.helpers.UsuarioHelper
 import com.example.tfg_app_makeup.model.Usuario
 import com.example.tfg_app_makeup.services.UsuarioService
 
-class UsuarioController(context: Context) {
+class UsuarioController(private val context: Context) {
 
-    private val usuarioService = UsuarioService(context)
+    private val service = UsuarioService(context)
 
-    /**
-     * Registra un nuevo usuario con los datos proporcionados.
-     *
-     * @param nombre Nombre del usuario.
-     * @param apellidos Apellidos del usuario.
-     * @param telefono Número de teléfono del usuario.
-     * @param email Correo electrónico del usuario.
-     * @param password Contraseña del usuario.
-     * @param rol Rol del usuario (por ejemplo, "cliente", "administrador").
-     * @return true si el registro fue exitoso, false en caso contrario.
-     */
-    fun registrarUsuario(
-        nombre: String,
-        apellidos: String,
-        telefono: String,
-        email: String,
-        password: String,
-        rol: String,
-        imagenUrl: String?
-    ): Boolean {
-        return try {
-            if (!UsuarioHelper.camposRegistroValidos(nombre, apellidos, telefono, email, password)) {
-                Log.d("UserController", "Registro fallido: campos vacíos.")
-                return false
-            }
+    fun obtenerTodos(): List<Usuario> {
+        return service.obtenerTodos()
+    }
 
-            if (!UsuarioHelper.telefonoValido(telefono) || !UsuarioHelper.emailValido(email)) {
-                Log.d("UserController", "Registro fallido: formato inválido.")
-                return false
-            }
+    fun obtenerPorId(id: String): Usuario? {
+        return service.obtenerPorId(id)
+    }
 
-            usuarioService.registroUsuario(nombre, apellidos, telefono, email, password, rol, imagenUrl)
-        } catch (e: Exception) {
-            Log.e("UserController", "Error en registro: ${e.message}", e)
+    fun obtenerPorCorreo(correo: String): Usuario? {
+        return service.obtenerPorCorreo(correo)
+    }
+
+    fun insertar(usuario: Usuario): Boolean {
+        return if (UsuarioHelper.validar(usuario)) {
+            val result = service.insertar(usuario)
+            Log.d("UsuarioController", "Insert resultado: $result")
+            result
+        } else {
+            Log.w("UsuarioController", "Usuario no válido, inserción cancelada.")
             false
         }
     }
 
-    /**
-     * Inicia sesión con las credenciales proporcionadas.
-     *
-     * @param email Correo electrónico del usuario.
-     * @param password Contraseña del usuario.
-     * @return Usuario si el login fue exitoso, null en caso contrario.
-     */
 
-    fun login(email: String, password: String): Usuario? {
-        return try {
-            if (!UsuarioHelper.camposLoginValidos(email, password)) {
-                Log.d("UserController", "Login fallido: campos vacíos.")
-                return null
-            }
+    fun actualizar(usuario: Usuario): Boolean {
+        return if (UsuarioHelper.validar(usuario)) {
+            val result = service.actualizar(usuario)
+            Log.d("UsuarioController", "Update resultado: $result")
+            result
+        } else {
+            Log.w("UsuarioController", "Usuario no válido, actualización cancelada.")
+            false
+        }
+    }
 
-            usuarioService.login(email, password)
-        } catch (e: Exception) {
-            Log.e("UserController", "Error en login: ${e.message}")
+
+    fun eliminarPorId(id: String): Boolean {
+        val result = service.eliminarPorId(id)
+        Log.d("UsuarioController", "Delete resultado: $result")
+        return result
+    }
+
+    fun login(correo: String, password: String): Usuario? {
+        val usuario = service.obtenerPorCorreo(correo)
+
+        return if (correo.isBlank() || password.isBlank()) {
+            Log.w("UsuarioController", "Correo o contraseña vacíos.")
+            Toast.makeText(context, "Correo y contraseña no pueden estar vacíos.", Toast.LENGTH_SHORT).show()
+            null
+        } else if (usuario != null && usuario.clave == password) {
+            Log.d("UsuarioController", "Login exitoso para: $correo")
+            usuario
+        } else {
+            Log.w("UsuarioController", "Login fallido para: $correo")
+            Toast.makeText(context, "Credenciales incorrectas.", Toast.LENGTH_SHORT).show()
             null
         }
     }
 
-    fun obtenerPorCorreo(correo: String): Usuario? {
-        return usuarioService.obtenerPorCorreo(correo)
-    }
+    fun crearUsuario(
+        nombre: String,
+        apellido: String,
+        correo: String,
+        clave: String,
+        rutaImagenLocal: String? = null
+    ): Usuario? {
+        val usuario = Usuario(
+            id = java.util.UUID.randomUUID().toString(),
+            nombre = nombre,
+            apellido = apellido,
+            correo = correo,
+            clave = clave,
+            rol = "CLIENTE",
+            imagenUrl = rutaImagenLocal
+        )
 
-
-    /**
-     * Obtiene la lista de todos los usuarios registrados.
-     *
-     * @return Lista de usuarios o una lista vacía si ocurre un error.
-     */
-
-    fun obtenerTodos(): List<Usuario> {
-        return try {
-            usuarioService.obtenerTodos()
-        } catch (e: Exception) {
-            Log.e("UserController", "Error al obtener usuarios: ${e.message}")
-            emptyList()
+        return if (UsuarioHelper.validar(usuario)) {
+            Log.d("UsuarioController", "Usuario creado: $correo")
+            usuario
+        } else {
+            Log.w("UsuarioController", "Usuario no válido, creación cancelada.")
+            null
         }
     }
 
-    /**
-     * Elimina un usuario por su ID.
-     *
-     * @param id ID del usuario a eliminar.
-     * @return true si la eliminación fue exitosa, false en caso contrario.
-     */
+    fun existeCorreo(correo: String): Boolean {
+        return service.obtenerPorCorreo(correo) != null
+    }
 
-    fun eliminarPorId(id: String): Boolean {
-        return try {
-            usuarioService.elminarPorId(id)
-        } catch (e: Exception) {
-            Log.e("UserController", "Error al eliminar usuario: ${e.message}")
-            false
-        }
+    fun validarCorreo(correo: String): Boolean {
+        return Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$").matches(correo)
     }
 }

@@ -10,6 +10,7 @@ import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.controllers.UsuarioController
 import com.example.tfg_app_makeup.helpers.ImageHelper
 import com.example.tfg_app_makeup.helpers.PermissionHelper
+import com.example.tfg_app_makeup.utils.EncryptUtil
 import java.io.File
 
 /**
@@ -80,43 +81,48 @@ class RegistroActivity : AppCompatActivity() {
                 val nombre = etNombre.text.toString().trim()
                 val apellidos = etApellidos.text.toString().trim()
                 val email = etEmail.text.toString().trim()
-                val password = etPassword.text.toString()
-                val confirmarPassword = etConfirmarPassword.text.toString()
-                val telefono = "000000000" // Placeholder
 
-                if (!cbAceptarCondiciones.isChecked) {
-                    Toast.makeText(this, "Debes aceptar las condiciones", Toast.LENGTH_SHORT).show()
+                val confirmarPassword = etConfirmarPassword.text.toString().trim()
+
+                val passwordPlano = etPassword.text.toString().trim()
+                val passwordCifrada = EncryptUtil.encrypt(passwordPlano)
+
+
+                if (nombre.isEmpty() || apellidos.isEmpty() || email.isEmpty() ||
+                    passwordPlano.isEmpty() || confirmarPassword.isEmpty() || !cbAceptarCondiciones.isChecked
+                ) {
+                    Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
-                if (password != confirmarPassword) {
-                    Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+                if (passwordPlano != confirmarPassword) {
+                    Toast.makeText(this, "Las contraseñas no coinciden.", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
-                val exito = usuarioController.registrarUsuario(
-                    nombre,
-                    apellidos,
-                    telefono,
-                    email,
-                    password,
-                    "CLIENTE",
-                    rutaImagenLocal
+                if (!usuarioController.validarCorreo(email)) {
+                    Toast.makeText(this, "Correo electrónico inválido.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (usuarioController.existeCorreo(email)) {
+                    Toast.makeText(this, "El correo ya está registrado.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val usuario = usuarioController.crearUsuario(
+                    nombre, apellidos, email, passwordCifrada, rutaImagenLocal
                 )
 
-                if (exito) {
+                if (usuario != null && usuarioController.insertar(usuario)) {
                     Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                    Log.d("RegistroActivity", "Usuario registrado con éxito: $email")
                     finish()
                 } else {
-                    Toast.makeText(this, "Error al registrar", Toast.LENGTH_SHORT).show()
-                    Log.d("RegistroActivity", "Fallo al registrar usuario: $email")
+                    Toast.makeText(this, "Error al registrar el usuario", Toast.LENGTH_SHORT).show()
                 }
-
             } catch (e: Exception) {
-                Log.e("RegistroActivity", "Error al registrar usuario: ${e.message}", e)
-                Toast.makeText(this, "Se produjo un error durante el registro", Toast.LENGTH_LONG)
-                    .show()
+                Log.e("RegistroActivity", "Error al registrar: ${e.message}", e)
+                Toast.makeText(this, "Error al registrar el usuario", Toast.LENGTH_LONG).show()
             }
         }
 
