@@ -9,12 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_app_makeup.R
-import com.example.tfg_app_makeup.controllers.CitaController
-import com.example.tfg_app_makeup.utils.Session
 import com.example.tfg_app_makeup.adapter.CitaAdapter
+import com.example.tfg_app_makeup.controllers.CitaController
+import com.example.tfg_app_makeup.model.Cita
+import com.example.tfg_app_makeup.utils.Session
 
 /**
- * Activity que muestra las citas del cliente actual.
+ * Pantalla que muestra las citas asociadas al usuario cliente actualmente en sesión.
  */
 class MisCitasActivity : AppCompatActivity() {
 
@@ -26,10 +27,27 @@ class MisCitasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mis_citas)
 
+        inicializarComponentes()
+        cargarCitas()
+
+        btnVolver.setOnClickListener {
+            finish()
+        }
+    }
+
+    /**
+     * Enlaza los elementos visuales del layout con las variables de clase.
+     */
+    private fun inicializarComponentes() {
         rvCitasCliente = findViewById(R.id.rvCitasCliente)
         tvSinCitas = findViewById(R.id.tvSinCitas)
         btnVolver = findViewById(R.id.btnVolverMisCitas)
+    }
 
+    /**
+     * Carga las citas del usuario logueado y actualiza la interfaz según el resultado.
+     */
+    private fun cargarCitas() {
         val idUsuario = Session.usuarioActual?.id
 
         try {
@@ -37,26 +55,36 @@ class MisCitasActivity : AppCompatActivity() {
                 val citas = CitaController(this).obtenerCitasPorUsuario(idUsuario)
 
                 if (citas.isEmpty()) {
-                    rvCitasCliente.visibility = View.GONE
-                    tvSinCitas.visibility = View.VISIBLE
+                    mostrarMensajeSinCitas()
                 } else {
-                    rvCitasCliente.layoutManager = LinearLayoutManager(this)
-                    rvCitasCliente.adapter = CitaAdapter(citas)
-                    rvCitasCliente.visibility = View.VISIBLE
-                    tvSinCitas.visibility = View.GONE
+                    mostrarListaDeCitas(citas)
                 }
 
                 Log.d("MisCitasActivity", "Citas cargadas: ${citas.size}")
             } else {
                 Log.e("MisCitasActivity", "ID de usuario nulo en sesión")
             }
-
         } catch (e: Exception) {
             Log.e("MisCitasActivity", "Error al cargar las citas", e)
         }
+    }
 
-        btnVolver.setOnClickListener {
-            finish()
-        }
+    /**
+     * Muestra el mensaje de "sin citas" y oculta la lista.
+     */
+    private fun mostrarMensajeSinCitas() {
+        rvCitasCliente.visibility = View.GONE
+        tvSinCitas.visibility = View.VISIBLE
+    }
+
+    /**
+     * Muestra la lista de citas en el RecyclerView.
+     * @param citas lista de objetos Cita a mostrar.
+     */
+    private fun mostrarListaDeCitas(citas: List<Cita>) {
+        rvCitasCliente.layoutManager = LinearLayoutManager(this)
+        rvCitasCliente.adapter = CitaAdapter(citas)
+        rvCitasCliente.visibility = View.VISIBLE
+        tvSinCitas.visibility = View.GONE
     }
 }

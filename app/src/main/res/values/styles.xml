@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    !-- Colores del PickerDialog -->
+    <style name="PickerDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/rosaRoto</item>
+        <item name="colorAccent">@color/rosaRoto</item>
+        <item name="android:background">@color/beige</item>
+    </style>
+</resources>

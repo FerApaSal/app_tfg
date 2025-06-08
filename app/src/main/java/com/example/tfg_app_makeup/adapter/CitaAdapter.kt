@@ -53,12 +53,4 @@ class CitaAdapter(
     }
 
     override fun getItemCount(): Int = citas.size
-
-    /**
-     * Permite actualizar la lista de citas y refrescar la vista.
-     */
-    fun actualizarLista(nuevasCitas: List<Cita>) {
-        this.citas = nuevasCitas
-        notifyDataSetChanged()
-    }
 }

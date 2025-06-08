@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tipo de servicio"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/black"
             android:fontFamily="@font/apercu_regular"
             android:layout_marginTop="24dp" />
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Fecha"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/black"
             android:fontFamily="@font/apercu_regular"
             android:layout_marginTop="16dp" />
@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Hora"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/black"
             android:fontFamily="@font/apercu_regular"
             android:layout_marginTop="16dp" />
@@ -103,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Dirección"
-            android:textSize="20sp"
+            android:textSize="18sp"
 
             android:textColor="@color/black"
             android:fontFamily="@font/apercu_regular"

@@ -1,24 +1,21 @@
 package com.example.tfg_app_makeup.auth
 
-import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tfg_app_makeup.R
-import com.example.tfg_app_makeup.controllers.UsuarioController
 import com.example.tfg_app_makeup.helpers.UsuarioHelper
-import com.example.tfg_app_makeup.utils.EncryptUtil
-import com.example.tfg_app_makeup.utils.Session
-import com.example.tfg_app_makeup.view.admin.MenuAdminActivity
-import com.example.tfg_app_makeup.view.client.MenuClienteActivity
 import com.example.tfg_app_makeup.view.common.PoliticaPrivacidadActivity
+import java.io.IOException
 
 /**
- * Pantalla de inicio de sesión.
- * Utiliza controlador de usuario para validar credenciales.
+ * Pantalla de inicio de sesión de la aplicación.
+ * Permite ingresar las credenciales para iniciar sesión y navegar
+ * según el rol del usuario.
  */
 class LoginActivity : AppCompatActivity() {
 
@@ -30,23 +27,29 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnRecuperarClave: Button
     private lateinit var tvPoliticaPrivacidad: TextView
 
-    private lateinit var usuarioController: UsuarioController
     private var passwordVisible = false
 
+    /**
+     * Método principal del ciclo de vida.
+     * Inicializa vistas, listeners y carga imagen del logo desde assets.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         try {
-            usuarioController = UsuarioController(this)
             initViews()
             setupListeners()
+            cargarLogoDesdeAssets()
         } catch (e: Exception) {
             Log.e("LoginActivity", "Error en onCreate: ${e.message}", e)
             Toast.makeText(this, "Error al iniciar la aplicación", Toast.LENGTH_LONG).show()
         }
     }
 
+    /**
+     * Inicializa las vistas de la interfaz.
+     */
     private fun initViews() {
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
@@ -57,78 +60,51 @@ class LoginActivity : AppCompatActivity() {
         tvPoliticaPrivacidad = findViewById(R.id.tvPoliticaPrivacidad)
     }
 
+    /**
+     * Configura los listeners para cada botón de la pantalla.
+     */
     private fun setupListeners() {
         btnLogin.setOnClickListener {
-            try {
-                val email = etEmail.text.toString().trim()
-                val passwordPlano = etPassword.text.toString().trim()
-                val passwordCifrada = EncryptUtil.encrypt(passwordPlano)
-
-                val usuario = usuarioController.login(email, passwordCifrada)
-                if (usuario != null) {
-                    Session.iniciarSesion(this, usuario) // Guarda usuario e ID
-
-                    Log.d("LoginActivity", "Usuario logueado correctamente: ${usuario.correo}")
-
-                    when (usuario.rol.uppercase()) {
-                        "ADMIN" -> startActivity(Intent(this, MenuAdminActivity::class.java))
-                        "CLIENTE" -> startActivity(Intent(this, MenuClienteActivity::class.java))
-                        else -> {
-                            Log.e("LoginActivity", "Rol desconocido: ${usuario.rol}")
-                            Toast.makeText(this, "Rol no reconocido", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    finish()
-                } else {
-                    Log.d("LoginActivity", "Login fallido: credenciales incorrectas")
-                    Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: Exception) {
-                Log.e("LoginActivity", "Error durante login: ${e.message}", e)
-                Toast.makeText(this, "Error al intentar iniciar sesión", Toast.LENGTH_LONG).show()
+            val email = etEmail.text.toString().trim()
+            val passwordPlano = etPassword.text.toString().trim()
+            UsuarioHelper.realizarLogin(this, email, passwordPlano)?.let {
+                finish()
             }
         }
 
         btnTogglePassword.setOnClickListener {
-            try {
-                passwordVisible = !passwordVisible
-                etPassword.inputType = if (passwordVisible)
-                    android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                else
-                    android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
-
-                etPassword.setSelection(etPassword.text.length)
-            } catch (e: Exception) {
-                Log.e("LoginActivity", "Error al cambiar visibilidad de contraseña: ${e.message}", e)
-            }
+            passwordVisible = UsuarioHelper.alternarVisibilidad(etPassword, passwordVisible)
         }
 
         btnRegistrarse.setOnClickListener {
-            try {
-                startActivity(Intent(this, RegistroActivity::class.java))
-            } catch (e: Exception) {
-                Log.e("LoginActivity", "Error al abrir registro: ${e.message}", e)
-            }
+            startActivity(Intent(this, RegistroActivity::class.java))
         }
 
         btnRecuperarClave.setOnClickListener {
-            try {
-                mostrarDialogoRecuperacion()
-            } catch (e: Exception) {
-                Log.e("LoginActivity", "Error al mostrar diálogo de recuperación: ${e.message}", e)
-                Toast.makeText(this, "Error al intentar recuperar la contraseña", Toast.LENGTH_LONG)
-                    .show()
-            }
+            mostrarDialogoRecuperacion()
         }
 
         tvPoliticaPrivacidad.setOnClickListener {
-            val intent = Intent(this, PoliticaPrivacidadActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, PoliticaPrivacidadActivity::class.java))
         }
-
     }
 
+    /**
+     * Carga la imagen del logo desde la carpeta `assets`.
+     */
+    private fun cargarLogoDesdeAssets() {
+        try {
+            val inputStream = assets.open("logo.png")
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            findViewById<ImageView>(R.id.ivLogo).setImageBitmap(bitmap)
+        } catch (e: IOException) {
+            Log.e("LoginActivity", "Error al cargar imagen desde assets: ${e.message}", e)
+        }
+    }
+
+    /**
+     * Muestra un diálogo personalizado para recuperación de clave.
+     */
     private fun mostrarDialogoRecuperacion() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_recuperar_clave, null)
         val alertDialog = AlertDialog.Builder(this).create()
@@ -140,21 +116,16 @@ class LoginActivity : AppCompatActivity() {
         val etConfirmacion = dialogView.findViewById<EditText>(R.id.etEmailConfirmacion)
         val btnEnviar = dialogView.findViewById<Button>(R.id.btnEnviarRecuperacion)
 
-        btnCerrar.setOnClickListener {
-            alertDialog.dismiss()
-        }
+        btnCerrar.setOnClickListener { alertDialog.dismiss() }
 
         btnEnviar.setOnClickListener {
             val correo = etCorreo.text.toString().trim()
             val confirmacion = etConfirmacion.text.toString().trim()
 
-            if (!UsuarioHelper.confirmarCorreo(this, correo, confirmacion)) {
-                return@setOnClickListener
+            if (UsuarioHelper.confirmarCorreo(this, correo, confirmacion)) {
+                Toast.makeText(this, "Solicitud de recuperación enviada a $correo", Toast.LENGTH_LONG).show()
+                alertDialog.dismiss()
             }
-            // Aquí se llamaría al servicio de recuperación de contraseña
-            // Por simplicidad, solo mostramos un mensaje de éxito
-            Toast.makeText(this, "Solicitud de recuperación enviada a $correo", Toast.LENGTH_LONG).show()
-            alertDialog.dismiss()
         }
 
         alertDialog.show()

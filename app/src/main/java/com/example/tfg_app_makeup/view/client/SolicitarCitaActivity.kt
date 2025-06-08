@@ -1,5 +1,3 @@
-@file:Suppress("MissingInflatedId")
-
 package com.example.tfg_app_makeup.view.client
 
 import android.annotation.SuppressLint
@@ -9,17 +7,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.controllers.CitaController
-import com.example.tfg_app_makeup.helpers.CitaHelper
+import com.example.tfg_app_makeup.helpers.UsuarioHelper
 import com.example.tfg_app_makeup.services.UsuarioService
 import com.example.tfg_app_makeup.utils.Session
 import java.util.*
 
 /**
- * Actividad para que el cliente solicite una nueva cita.
+ * Pantalla para que el usuario cliente solicite una nueva cita.
+ * Incluye selección de tipo de servicio, fecha, hora y dirección.
  */
 class SolicitarCitaActivity : AppCompatActivity() {
 
@@ -28,7 +28,6 @@ class SolicitarCitaActivity : AppCompatActivity() {
     private lateinit var etHora: EditText
     private lateinit var etDireccion: EditText
     private lateinit var cbAceptarCondiciones: CheckBox
-
     private lateinit var btnSolicitar: Button
     private lateinit var btnVolver: ImageButton
 
@@ -40,25 +39,44 @@ class SolicitarCitaActivity : AppCompatActivity() {
         setContentView(R.layout.activity_solicitar_cita)
 
         Session.restaurarSesion(this, UsuarioService(this))
-        Log.d("SolicitarCita", "Usuario actual tras restaurar: ${Session.usuarioActual?.correo}")
 
         try {
             citaController = CitaController(this)
 
-            // Comprobar si el usuario está autenticado
             if (Session.usuarioActual == null) {
                 Toast.makeText(this, "Debes iniciar sesión para solicitar una cita", Toast.LENGTH_SHORT).show()
-                finish() // Cerrar actividad si no hay usuario autenticado
+                finish()
                 return
             }
         } catch (e: Exception) {
-            Log.e("SolicitarCitaActivity", "Error al inicializar la actividad: ${e.message}", e)
-            Toast.makeText(this, "Error al cargar la pantalla de solicitud de cita", Toast.LENGTH_LONG).show()
-            finish() // Cerrar actividad en caso de error
+            Log.e("SolicitarCitaActivity", "Error al inicializar: ${e.message}", e)
+            Toast.makeText(this, "Error al cargar la pantalla de solicitud", Toast.LENGTH_LONG).show()
+            finish()
             return
         }
 
-        // Referencias
+        inicializarComponentes()
+        configurarSelectorTipoServicio()
+        configurarPickerFecha()
+        configurarPickerHora()
+
+        cbAceptarCondiciones.setOnCheckedChangeListener { _, isChecked ->
+            btnSolicitar.isEnabled = isChecked
+        }
+
+        btnSolicitar.setOnClickListener {
+            procesarSolicitudCita()
+        }
+
+        btnVolver.setOnClickListener {
+            finish()
+        }
+    }
+
+    /**
+     * Enlaza elementos visuales con las variables de clase.
+     */
+    private fun inicializarComponentes() {
         spinnerTipo = findViewById(R.id.spinnerTipo)
         etFecha = findViewById(R.id.etFecha)
         etHora = findViewById(R.id.etHora)
@@ -66,15 +84,24 @@ class SolicitarCitaActivity : AppCompatActivity() {
         cbAceptarCondiciones = findViewById(R.id.cbAceptarCondiciones)
         btnSolicitar = findViewById(R.id.btnSolicitar)
         btnVolver = findViewById(R.id.btnVolverSolicitar)
+    }
 
-        // Adaptar spinner
+    /**
+     * Configura las opciones disponibles en el selector de tipo de servicio.
+     */
+    private fun configurarSelectorTipoServicio() {
         val tipos = arrayOf("Novia", "Madrina", "Invitada", "Madre Novio/a", "Comunión", "Bautizo")
         spinnerTipo.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, tipos)
+    }
 
-        // Fecha
+    /**
+     * Abre un selector de fecha con formato dd/MM/yyyy.
+     */
+    private fun configurarPickerFecha() {
         etFecha.setOnClickListener {
             val calendario = Calendar.getInstance()
-            val datePicker = DatePickerDialog(this,
+            val datePicker = DatePickerDialog(
+                ContextThemeWrapper(this, R.style.PickerDialogTheme),
                 { _, year, month, day ->
                     val fechaFormateada = String.format("%02d/%02d/%04d", day, month + 1, year)
                     etFecha.setText(fechaFormateada)
@@ -83,13 +110,19 @@ class SolicitarCitaActivity : AppCompatActivity() {
                 calendario.get(Calendar.MONTH),
                 calendario.get(Calendar.DAY_OF_MONTH)
             )
+            datePicker.datePicker.minDate = System.currentTimeMillis()
             datePicker.show()
         }
+    }
 
-        // Hora
+    /**
+     * Abre un selector de hora en formato 24h.
+     */
+    private fun configurarPickerHora() {
         etHora.setOnClickListener {
             val calendario = Calendar.getInstance()
-            val timePicker = TimePickerDialog(this,
+            val timePicker = TimePickerDialog(
+                ContextThemeWrapper(this, R.style.PickerDialogTheme),
                 { _, hour, minute ->
                     val horaFormateada = String.format("%02d:%02d", hour, minute)
                     etHora.setText(horaFormateada)
@@ -100,49 +133,37 @@ class SolicitarCitaActivity : AppCompatActivity() {
             )
             timePicker.show()
         }
+    }
 
-        // Activar botón solo si se aceptan condiciones
-        cbAceptarCondiciones.setOnCheckedChangeListener { _, isChecked ->
-            btnSolicitar.isEnabled = isChecked
+    /**
+     * Valida los campos y crea una nueva cita en base a los datos del formulario.
+     */
+    private fun procesarSolicitudCita() {
+        val tipo = spinnerTipo.selectedItem.toString()
+        val fecha = etFecha.text.toString()
+        val hora = etHora.text.toString()
+        val direccion = etDireccion.text.toString()
+
+        if (UsuarioHelper.hayCamposVacios(tipo, fecha, hora, direccion)) {
+            Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        btnSolicitar.setOnClickListener {
-            val tipo = spinnerTipo.selectedItem.toString()
-            val fecha = etFecha.text.toString()
-            val hora = etHora.text.toString()
-            val direccion = etDireccion.text.toString()
-
-            // Validar campos
-            if (tipo.isEmpty() || fecha.isEmpty() || hora.isEmpty() || direccion.isEmpty()) {
-                Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val usuario = Session.usuarioActual
-            if (usuario == null || usuario.id.isBlank()) {
-                Toast.makeText(this, "Sesión expirada o inválida", Toast.LENGTH_SHORT).show()
-                Log.w("SolicitarCita", "ID de usuario no disponible al crear cita")
-                return@setOnClickListener
-            }
-
-            val cita = citaController.crearCita(tipo, fecha, hora, direccion, usuario.id)
-
-            if (cita != null) {
-                citaController.insertar(cita)
-
-                Toast.makeText(this, "Cita solicitada correctamente", Toast.LENGTH_SHORT).show()
-                Handler(Looper.getMainLooper()).postDelayed({
-                    finish()
-                }, 1000)
-
-            } else {
-                Toast.makeText(this, "Error al crear la cita", Toast.LENGTH_SHORT).show()
-            }
+        val usuario = Session.usuarioActual
+        if (usuario == null || usuario.id.isBlank()) {
+            Toast.makeText(this, "Sesión expirada o inválida", Toast.LENGTH_SHORT).show()
+            Log.w("SolicitarCita", "ID de usuario no disponible al crear cita")
+            return
         }
 
-        // Botón volver
-        btnVolver.setOnClickListener {
-            finish()
+        val cita = citaController.crearCita(tipo, fecha, hora, direccion, usuario.id)
+
+        if (cita != null) {
+            citaController.insertar(cita)
+            Toast.makeText(this, "Cita solicitada correctamente", Toast.LENGTH_SHORT).show()
+            Handler(Looper.getMainLooper()).postDelayed({ finish() }, 1000)
+        } else {
+            Toast.makeText(this, "Error al crear la cita", Toast.LENGTH_SHORT).show()
         }
     }
 }

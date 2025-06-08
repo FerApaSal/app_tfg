@@ -9,11 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.controllers.UsuarioController
+import com.example.tfg_app_makeup.helpers.UsuarioHelper
 import com.example.tfg_app_makeup.model.Usuario
 import com.example.tfg_app_makeup.utils.EncryptUtil
 import com.example.tfg_app_makeup.utils.Session
 import java.io.File
 
+/**
+ * Pantalla de edición de perfil, disponible para clientes y administradora.
+ * Permite modificar nombre, apellidos, contraseña e imagen de perfil.
+ */
 class PerfilActivity : AppCompatActivity() {
 
     private lateinit var ivFotoPerfil: ImageView
@@ -31,6 +36,9 @@ class PerfilActivity : AppCompatActivity() {
     private var usuario: Usuario? = null
     private var rutaImagenSeleccionada: String? = null
 
+    private var passwordVisible = false
+    private var confirmPasswordVisible = false
+
     private val REQUEST_CODE_PICK_IMAGE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,12 +54,15 @@ class PerfilActivity : AppCompatActivity() {
             return
         }
 
-        initViews()
+        inicializarComponentes()
         cargarDatosUsuario()
-        setupListeners()
+        configurarListeners()
     }
 
-    private fun initViews() {
+    /**
+     * Enlaza los elementos del layout con las variables de clase.
+     */
+    private fun inicializarComponentes() {
         ivFotoPerfil = findViewById(R.id.ivFotoPerfil)
         etNombre = findViewById(R.id.etNombrePerfil)
         etApellido = findViewById(R.id.etApellidosPerfil)
@@ -64,6 +75,9 @@ class PerfilActivity : AppCompatActivity() {
         btnSubirFoto = findViewById(R.id.btnSubirFoto)
     }
 
+    /**
+     * Carga los datos del usuario actual en la vista.
+     */
     private fun cargarDatosUsuario() {
         usuario?.let {
             etNombre.setText(it.nombre)
@@ -83,7 +97,10 @@ class PerfilActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupListeners() {
+    /**
+     * Configura los listeners para los botones de la interfaz.
+     */
+    private fun configurarListeners() {
         btnSubirFoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
@@ -91,76 +108,16 @@ class PerfilActivity : AppCompatActivity() {
         }
 
         btnGuardar.setOnClickListener {
-            val nuevoNombre = etNombre.text.toString().trim()
-            val nuevoApellido = etApellido.text.toString().trim()
-            val nuevaClavePlano = etClavePerfil.text.toString().trim()
-            val confirmarClavePlano = etConfirmarClavePerfil.text.toString().trim()
-
-            if (nuevoNombre.isEmpty() || nuevoApellido.isEmpty()) {
-                Toast.makeText(this, "Los campos no pueden estar vacíos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            usuario?.let { u ->
-                u.nombre = nuevoNombre
-                u.apellido = nuevoApellido
-
-                if (!rutaImagenSeleccionada.isNullOrBlank()) {
-                    u.imagenUrl = rutaImagenSeleccionada
-                }
-
-                if (nuevaClavePlano.isNotEmpty() || confirmarClavePlano.isNotEmpty()) {
-                    if (nuevaClavePlano != confirmarClavePlano) {
-                        Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
-                        return@setOnClickListener
-                    }
-
-                    if (nuevaClavePlano.length < 6) {
-                        Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
-                        return@setOnClickListener
-                    }
-
-                    u.clave = EncryptUtil.encrypt(nuevaClavePlano)
-                }
-
-                if (usuarioController.actualizar(u)) {
-                    Toast.makeText(this, "Perfil actualizado", Toast.LENGTH_SHORT).show()
-                    Session.usuarioActual = u
-                } else {
-                    Toast.makeText(this, "No se pudo actualizar", Toast.LENGTH_SHORT).show()
-                }
-            }
+            guardarCambiosPerfil()
         }
 
-        var passwordVisible = false
-        var confirmPasswordVisible = false
-
         btnTogglePassword.setOnClickListener {
-            try {
-                passwordVisible = !passwordVisible
-                etClavePerfil.inputType = if (passwordVisible)
-                    android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                else
-                    android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
-
-                etClavePerfil.setSelection(etClavePerfil.text.length)
-            } catch (e: Exception) {
-                Log.e("PerfilActivity", "Error al cambiar visibilidad de contraseña", e)
-            }
+            passwordVisible = UsuarioHelper.alternarVisibilidad(etClavePerfil, passwordVisible)
         }
 
         btnToggleConfirmPassword.setOnClickListener {
-            try {
-                confirmPasswordVisible = !confirmPasswordVisible
-                etConfirmarClavePerfil.inputType = if (confirmPasswordVisible)
-                    android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                else
-                    android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
-
-                etConfirmarClavePerfil.setSelection(etConfirmarClavePerfil.text.length)
-            } catch (e: Exception) {
-                Log.e("PerfilActivity", "Error al cambiar visibilidad de confirmación", e)
-            }
+            confirmPasswordVisible =
+                UsuarioHelper.alternarVisibilidad(etConfirmarClavePerfil, confirmPasswordVisible)
         }
 
         btnAtras.setOnClickListener {
@@ -168,25 +125,105 @@ class PerfilActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Procesa y guarda los cambios realizados en el perfil del usuario.
+     */
+    private fun guardarCambiosPerfil() {
+        val nuevoNombre = etNombre.text.toString().trim()
+        val nuevoApellido = etApellido.text.toString().trim()
+        val nuevaClavePlano = etClavePerfil.text.toString().trim()
+        val confirmarClavePlano = etConfirmarClavePerfil.text.toString().trim()
+
+        if (UsuarioHelper.hayCamposVacios(nuevoNombre, nuevoApellido)) {
+            Toast.makeText(this, "Los campos no pueden estar vacíos", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        usuario?.let { u ->
+            u.nombre = nuevoNombre
+            u.apellido = nuevoApellido
+
+            if (!rutaImagenSeleccionada.isNullOrBlank()) {
+                u.imagenUrl = rutaImagenSeleccionada
+            }
+
+            if (nuevaClavePlano.isNotEmpty() || confirmarClavePlano.isNotEmpty()) {
+                if (nuevaClavePlano != confirmarClavePlano) {
+                    Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
+                if (nuevaClavePlano.length < 6) {
+                    Toast.makeText(
+                        this,
+                        "La contraseña debe tener al menos 6 caracteres",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return
+                }
+
+                u.clave = EncryptUtil.encrypt(nuevaClavePlano)
+            }
+
+            if (usuarioController.actualizar(u)) {
+                Toast.makeText(this, "Perfil actualizado", Toast.LENGTH_SHORT).show()
+                Session.usuarioActual = u
+            } else {
+                Toast.makeText(this, "No se pudo actualizar", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /**
+     * Maneja el resultado de la selección de imagen desde la galería.
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK && data?.data != null) {
             val uri = data.data
             try {
+                // Eliminar imágenes antiguas del perfil
+                filesDir.listFiles()?.forEach { file ->
+                    if (file.name.startsWith("perfil_")) file.delete()
+                }
+
                 val inputStream = contentResolver.openInputStream(uri!!)
-                val file = File(filesDir, "perfil.jpg")
+
+                // Detectar extensión real
+                val extension = contentResolver.getType(uri)?.let {
+                    when {
+                        it.contains("png") -> ".png"
+                        it.contains("jpeg") || it.contains("jpg") -> ".jpg"
+                        else -> ".img"
+                    }
+                } ?: ".img"
+
+                // Nombre único con timestamp
+                val timestamp = System.currentTimeMillis()
+                val file = File(filesDir, "perfil_$timestamp$extension")
+
+                // Guardar imagen
                 file.outputStream().use { output ->
                     inputStream?.copyTo(output)
                 }
+
+                // Actualizar sesión y variable local
                 rutaImagenSeleccionada = file.absolutePath
+                Session.usuarioActual?.imagenUrl = rutaImagenSeleccionada
+
+                // Cargar imagen en pantalla
                 Glide.with(this)
                     .load(file)
                     .placeholder(R.drawable.ic_user_placeholder)
+                    .error(R.drawable.ic_user_placeholder)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
                     .circleCrop()
                     .into(ivFotoPerfil)
 
                 Toast.makeText(this, "Imagen actualizada", Toast.LENGTH_SHORT).show()
+
             } catch (e: Exception) {
                 Log.e("PerfilActivity", "Error al guardar imagen", e)
                 Toast.makeText(this, "Error al guardar imagen", Toast.LENGTH_SHORT).show()
