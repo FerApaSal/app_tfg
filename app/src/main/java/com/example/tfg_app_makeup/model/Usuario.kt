@@ -7,6 +7,7 @@ data class Usuario(
     val id: String,
     var nombre: String,
     var apellido: String,
+    var telefono: String,
     var correo: String,
     var clave: String,
     var rol: String,
@@ -17,6 +18,7 @@ data class Usuario(
             put("id", id)
             put("nombre", nombre)
             put("apellido", apellido)
+            put("telefono", telefono)
             put("correo", correo)
             put("clave", clave)
             put("rol", rol)
@@ -30,6 +32,7 @@ data class Usuario(
                 id = cursor.getString(cursor.getColumnIndexOrThrow("id")),
                 nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
                 apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido")),
+                telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
                 correo = cursor.getString(cursor.getColumnIndexOrThrow("correo")),
                 clave = cursor.getString(cursor.getColumnIndexOrThrow("clave")),
                 rol = cursor.getString(cursor.getColumnIndexOrThrow("rol")),

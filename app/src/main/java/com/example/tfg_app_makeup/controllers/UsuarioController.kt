@@ -3,6 +3,7 @@ package com.example.tfg_app_makeup.controllers
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.example.tfg_app_makeup.db.AppDatabase
 import com.example.tfg_app_makeup.helpers.UsuarioHelper
 import com.example.tfg_app_makeup.model.Usuario
 import com.example.tfg_app_makeup.services.UsuarioService
@@ -10,18 +11,7 @@ import com.example.tfg_app_makeup.services.UsuarioService
 class UsuarioController(private val context: Context) {
 
     private val service = UsuarioService(context)
-
-    fun obtenerTodos(): List<Usuario> {
-        return service.obtenerTodos()
-    }
-
-    fun obtenerPorId(id: String): Usuario? {
-        return service.obtenerPorId(id)
-    }
-
-    fun obtenerPorCorreo(correo: String): Usuario? {
-        return service.obtenerPorCorreo(correo)
-    }
+    private val dbHelper = AppDatabase(context)
 
     fun insertar(usuario: Usuario): Boolean {
         return if (UsuarioHelper.validar(usuario)) {
@@ -70,37 +60,26 @@ class UsuarioController(private val context: Context) {
         }
     }
 
-    fun crearUsuario(
-        nombre: String,
-        apellido: String,
-        correo: String,
-        clave: String,
-        rutaImagenLocal: String? = null
-    ): Usuario? {
-        val usuario = Usuario(
-            id = java.util.UUID.randomUUID().toString(),
-            nombre = nombre,
-            apellido = apellido,
-            correo = correo,
-            clave = clave,
-            rol = "CLIENTE",
-            imagenUrl = rutaImagenLocal
-        )
-
-        return if (UsuarioHelper.validar(usuario)) {
-            Log.d("UsuarioController", "Usuario creado: $correo")
-            usuario
-        } else {
-            Log.w("UsuarioController", "Usuario no válido, creación cancelada.")
-            null
-        }
-    }
-
     fun existeCorreo(correo: String): Boolean {
         return service.obtenerPorCorreo(correo) != null
     }
 
-    fun validarCorreo(correo: String): Boolean {
-        return Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$").matches(correo)
+    fun obtenerUsuariosPorRol(rolBuscado: String): List<Usuario> {
+        val lista = mutableListOf<Usuario>()
+        val db = dbHelper.readableDatabase
+        val cursor = db.query(
+            "usuarios", null,
+            "rol = ?", arrayOf(rolBuscado),
+            null, null, "nombre ASC"
+        )
+
+        cursor.use {
+            while (it.moveToNext()) {
+                lista.add(Usuario.fromCursor(it))
+            }
+        }
+
+        return lista
     }
+
 }

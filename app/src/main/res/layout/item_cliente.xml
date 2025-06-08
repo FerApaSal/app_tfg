@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    card_view:cardElevation="4dp"
+    card_view:cardCornerRadius="16dp"
+    android:backgroundTint="@color/blanco">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/ivIconoCliente"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_user_placeholder"
+            android:contentDescription="Foto cliente"
+            android:background="@drawable/circle_background"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/tvNombreCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ivIconoCliente"
+            android:layout_marginStart="16dp"
+            android:text="Nombre Apellido"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:fontFamily="@font/apercu_bold" />
+
+        <TextView
+            android:id="@+id/tvCorreoCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNombreCliente"
+            android:layout_toEndOf="@id/ivIconoCliente"
+            android:layout_marginStart="16dp"
+            android:text="correo@ejemplo.com"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp"
+            android:fontFamily="@font/apercu_regular" />
+
+        <TextView
+            android:id="@+id/tvTelefonoCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCorreoCliente"
+            android:layout_toEndOf="@id/ivIconoCliente"
+            android:layout_marginStart="16dp"
+            android:text="000000000"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp"
+            android:fontFamily="@font/apercu_regular" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -141,5 +141,4 @@ object UsuarioHelper {
             Log.d("UsuarioHelper", "Ruta vacía. Placeholder usado.")
         }
     }
-
 }

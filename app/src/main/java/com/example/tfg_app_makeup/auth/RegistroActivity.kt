@@ -110,6 +110,11 @@ class RegistroActivity : AppCompatActivity() {
             return
         }
 
+        if (usuarioController.existeCorreo(correo)) {
+            Toast.makeText(this, "Ya existe un usuario con ese correo", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if (!UsuarioHelper.contraseñasCoinciden(clave, confirmarClave)) {
             Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
             return
@@ -124,6 +129,7 @@ class RegistroActivity : AppCompatActivity() {
             id = UUID.randomUUID().toString(),
             nombre = nombre,
             apellido = apellidos,
+            telefono = "000000000",
             correo = correo,
             clave = EncryptUtil.encrypt(clave),
             imagenUrl = rutaImagenSeleccionada,

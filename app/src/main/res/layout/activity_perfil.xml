@@ -33,7 +33,7 @@
         android:background="@drawable/circle_background"
         android:contentDescription="Foto de perfil" />
 
-    <!-- Botón para subir imagen -->
+    <!-- Botón subir imagen -->
     <Button
         android:id="@+id/btnSubirFoto"
         android:layout_width="wrap_content"
@@ -76,12 +76,28 @@
         android:inputType="textPersonName"
         android:minHeight="48dp" />
 
-    <!-- Campo: Nueva contraseña -->
+    <!-- Teléfono -->
+    <EditText
+        android:id="@+id/etTelefonoPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etApellidosPerfil"
+        android:layout_marginTop="10dp"
+        android:hint="Teléfono"
+        android:fontFamily="@font/apercu_regular"
+        android:textColor="@color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textCursorDrawable="@drawable/cursor_negro"
+        android:inputType="phone"
+        android:minHeight="48dp" />
+
+
+    <!-- Contraseña -->
     <LinearLayout
         android:id="@+id/layoutPasswordPerfil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etApellidosPerfil"
+        android:layout_below="@id/etTelefonoPerfil"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:gravity="center_vertical">
@@ -111,7 +127,7 @@
             tools:ignore="ContentDescription,TouchTargetSizeCheck" />
     </LinearLayout>
 
-    <!-- Campo: Confirmar nueva contraseña -->
+    <!-- Confirmar contraseña -->
     <LinearLayout
         android:id="@+id/layoutConfirmarPasswordPerfil"
         android:layout_width="match_parent"
@@ -159,20 +175,17 @@
         android:text="Guardar cambios" />
 
     <!-- Texto de versión -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/tvVersion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:fontFamily="@font/apercu_italic"
-            android:text="Versión: 1.0"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="12sp"
-            tools:ignore="HardcodedText,TextContrastCheck" />
-    </FrameLayout>
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/apercu_italic"
+        android:text="Versión: 1.0"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
+        android:layout_marginBottom="10dp"
+        tools:ignore="HardcodedText,TextContrastCheck" />
 
 </RelativeLayout>

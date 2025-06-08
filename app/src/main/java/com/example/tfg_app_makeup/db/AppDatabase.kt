@@ -36,6 +36,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 id TEXT PRIMARY KEY,
                 nombre TEXT NOT NULL,
                 apellido TEXT NOT NULL,
+                telefono TEXT NOT NULL,
                 correo TEXT NOT NULL UNIQUE,
                 clave TEXT NOT NULL,
                 rol TEXT NOT NULL,

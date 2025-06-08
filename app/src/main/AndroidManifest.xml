@@ -40,6 +40,9 @@
         <!-- Admin -->
         <activity android:name=".view.admin.MenuAdminActivity"/>
 
+        <activity android:name=".view.admin.ListaClientesActivity"/>
+        <activity android:name=".view.admin.SeccionNoviasActivity"/>
+
         <!-- Client -->
         <activity android:name=".view.client.MenuClienteActivity"/>
         <activity android:name=".view.client.MisCitasActivity"/>

@@ -7,23 +7,6 @@ import com.example.tfg_app_makeup.model.Usuario
 
 class UsuarioService(private val context: Context) {
 
-    fun obtenerTodos(): List<Usuario> {
-        val db = AppDatabase(context).readableDatabase
-        val lista = mutableListOf<Usuario>()
-        try {
-            val cursor = db.query("usuarios", null, null, null, null, null, null)
-            while (cursor.moveToNext()) {
-                lista.add(Usuario.fromCursor(cursor))
-            }
-            cursor.close()
-        } catch (e: Exception) {
-            Log.e("UsuarioService", "Error al obtener usuarios: ${e.message}")
-        } finally {
-            db.close()
-        }
-        return lista
-    }
-
     fun obtenerPorId(id: String): Usuario? {
         val db = AppDatabase(context).readableDatabase
         var usuario: Usuario? = null

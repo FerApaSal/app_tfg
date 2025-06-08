@@ -16,14 +16,15 @@ import com.example.tfg_app_makeup.utils.Session
 import java.io.File
 
 /**
- * Pantalla de edición de perfil, disponible para clientes y administradora.
- * Permite modificar nombre, apellidos, contraseña e imagen de perfil.
+ * Pantalla de edición de perfil, disponible tanto para clientes como para la administradora.
+ * Permite modificar los datos personales esenciales: nombre, apellidos, teléfono, contraseña e imagen de perfil.
  */
 class PerfilActivity : AppCompatActivity() {
 
     private lateinit var ivFotoPerfil: ImageView
     private lateinit var etNombre: EditText
     private lateinit var etApellido: EditText
+    private lateinit var etTelefono: EditText
     private lateinit var etClavePerfil: EditText
     private lateinit var etConfirmarClavePerfil: EditText
     private lateinit var btnTogglePassword: ImageButton
@@ -60,12 +61,13 @@ class PerfilActivity : AppCompatActivity() {
     }
 
     /**
-     * Enlaza los elementos del layout con las variables de clase.
+     * Enlaza los elementos visuales del layout con las variables de clase.
      */
     private fun inicializarComponentes() {
         ivFotoPerfil = findViewById(R.id.ivFotoPerfil)
         etNombre = findViewById(R.id.etNombrePerfil)
         etApellido = findViewById(R.id.etApellidosPerfil)
+        etTelefono = findViewById(R.id.etTelefonoPerfil)
         etClavePerfil = findViewById(R.id.etPasswordPerfil)
         etConfirmarClavePerfil = findViewById(R.id.etConfirmarPasswordPerfil)
         btnTogglePassword = findViewById(R.id.btnTogglePasswordPerfil)
@@ -76,12 +78,13 @@ class PerfilActivity : AppCompatActivity() {
     }
 
     /**
-     * Carga los datos del usuario actual en la vista.
+     * Carga los datos actuales del usuario en los campos de edición.
      */
     private fun cargarDatosUsuario() {
         usuario?.let {
             etNombre.setText(it.nombre)
             etApellido.setText(it.apellido)
+            etTelefono.setText(it.telefono)
 
             if (!it.imagenUrl.isNullOrBlank()) {
                 val archivo = File(it.imagenUrl!!)
@@ -98,7 +101,7 @@ class PerfilActivity : AppCompatActivity() {
     }
 
     /**
-     * Configura los listeners para los botones de la interfaz.
+     * Configura los eventos de botones para subir imagen, mostrar contraseñas y guardar cambios.
      */
     private fun configurarListeners() {
         btnSubirFoto.setOnClickListener {
@@ -126,11 +129,12 @@ class PerfilActivity : AppCompatActivity() {
     }
 
     /**
-     * Procesa y guarda los cambios realizados en el perfil del usuario.
+     * Valida y guarda los cambios realizados en el perfil del usuario, incluyendo imagen y contraseña.
      */
     private fun guardarCambiosPerfil() {
         val nuevoNombre = etNombre.text.toString().trim()
         val nuevoApellido = etApellido.text.toString().trim()
+        val nuevoTelefono = etTelefono.text.toString().trim()
         val nuevaClavePlano = etClavePerfil.text.toString().trim()
         val confirmarClavePlano = etConfirmarClavePerfil.text.toString().trim()
 
@@ -142,6 +146,7 @@ class PerfilActivity : AppCompatActivity() {
         usuario?.let { u ->
             u.nombre = nuevoNombre
             u.apellido = nuevoApellido
+            u.telefono = nuevoTelefono
 
             if (!rutaImagenSeleccionada.isNullOrBlank()) {
                 u.imagenUrl = rutaImagenSeleccionada
@@ -175,7 +180,7 @@ class PerfilActivity : AppCompatActivity() {
     }
 
     /**
-     * Maneja el resultado de la selección de imagen desde la galería.
+     * Maneja el resultado de la selección de imagen desde la galería y guarda localmente la nueva foto.
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -183,14 +188,12 @@ class PerfilActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK && data?.data != null) {
             val uri = data.data
             try {
-                // Eliminar imágenes antiguas del perfil
+                // Eliminar imágenes antiguas
                 filesDir.listFiles()?.forEach { file ->
                     if (file.name.startsWith("perfil_")) file.delete()
                 }
 
                 val inputStream = contentResolver.openInputStream(uri!!)
-
-                // Detectar extensión real
                 val extension = contentResolver.getType(uri)?.let {
                     when {
                         it.contains("png") -> ".png"
@@ -199,20 +202,16 @@ class PerfilActivity : AppCompatActivity() {
                     }
                 } ?: ".img"
 
-                // Nombre único con timestamp
                 val timestamp = System.currentTimeMillis()
                 val file = File(filesDir, "perfil_$timestamp$extension")
 
-                // Guardar imagen
                 file.outputStream().use { output ->
                     inputStream?.copyTo(output)
                 }
 
-                // Actualizar sesión y variable local
                 rutaImagenSeleccionada = file.absolutePath
                 Session.usuarioActual?.imagenUrl = rutaImagenSeleccionada
 
-                // Cargar imagen en pantalla
                 Glide.with(this)
                     .load(file)
                     .placeholder(R.drawable.ic_user_placeholder)

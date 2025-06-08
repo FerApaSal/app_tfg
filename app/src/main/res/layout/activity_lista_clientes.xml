@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutListaClientes"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/beige"
+    tools:context=".view.admin.ListaClientesActivity">
+
+    <!-- Botón de volver -->
+    <ImageButton
+        android:id="@+id/btnVolverListaClientes"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_arrow_back"
+        android:contentDescription="Volver"
+        app:tint="@color/rosaRoto"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <!-- Título de la pantalla -->
+    <TextView
+        android:id="@+id/tvTituloListaClientes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/btnVolverListaClientes"
+        android:layout_alignTop="@id/btnVolverListaClientes"
+        android:layout_marginStart="45dp"
+        android:text="Clientes registrados"
+        android:textColor="@color/rosaRoto"
+        android:textSize="20sp"
+        android:fontFamily="@font/apercu_bold" />
+
+    <!-- Lista de clientes -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListaClientes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnVolverListaClientes"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="12dp"
+        tools:listitem="@layout/item_cliente" />
+
+    <!-- Texto de versión -->
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/apercu_italic"
+        android:text="Versión: 1.0"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
+        android:layout_marginBottom="10dp"
+        tools:ignore="HardcodedText,TextContrastCheck" />
+
+</RelativeLayout>
