@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/tools"
+    android:layout_marginVertical="6dp"
+    android:layout_marginHorizontal="4dp"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="4dp"
+    android:background="@color/blanco"
+    app:ignore="NamespaceTypo">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvTituloTarea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Título de tarea"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            android:fontFamily="@font/apercu_bold" />
+
+        <!-- Prioridad -->
+        <TextView
+            android:id="@+id/tvPrioridad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="Alta"
+            android:textSize="18sp"
+            android:textColor="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold" />
+
+        <!-- Descripción -->
+        <TextView
+            android:id="@+id/tvDescripcionTarea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTituloTarea"
+            android:layout_marginTop="4dp"
+            android:text="Descripción de la tarea"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            android:fontFamily="@font/apercu_regular" />
+
+        <!-- CheckBox -->
+        <CheckBox
+            android:id="@+id/cbCompletada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvDescripcionTarea"
+            android:layout_marginTop="8dp"
+            android:text="Completada"
+            android:fontFamily="@font/apercu_regular"
+            android:textColor="@color/black" />
+
+        <!-- Botón Editar -->
+        <ImageButton
+            android:id="@+id/btnEditarTarea"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_below="@id/cbCompletada"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Editar"
+            android:src="@drawable/ic_edit"
+            app:ignore="TouchTargetSizeCheck"
+            app:tint="@color/rosaRoto" />
+
+        <!-- Botón Eliminar -->
+        <ImageButton
+            android:id="@+id/btnEliminarTarea"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_below="@id/cbCompletada"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="40dp"
+            android:layout_toStartOf="@id/btnEditarTarea"
+            android:background="@android:color/transparent"
+            android:contentDescription="Eliminar"
+            android:src="@drawable/ic_delete"
+            app:ignore="TouchTargetSizeCheck"
+            app:tint="@color/rosaRoto" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

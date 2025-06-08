@@ -7,5 +7,10 @@
     ]]>
 </string>
 
-
+    <string-array name="prioridades_array">
+        <item>BAJA</item>
+        <item>MEDIA</item>
+        <item>ALTA</item>
+        <item>URGENTE</item>
+    </string-array>
 </resources>

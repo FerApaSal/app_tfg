@@ -11,6 +11,8 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         try {
             db.execSQL(CREATE_USUARIOS_TABLE)
             db.execSQL(CREATE_CITAS_TABLE)
+            db.execSQL(CREATE_TAREAS_TABLE)
+
             Log.d("AppDatabase", "Tablas creadas correctamente.")
         } catch (e: Exception) {
             Log.e("AppDatabase", "Error al crear tablas: ${e.message}")
@@ -21,6 +23,8 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         try {
             db.execSQL("DROP TABLE IF EXISTS usuarios")
             db.execSQL("DROP TABLE IF EXISTS citas")
+            db.execSQL("DROP TABLE IF EXISTS tareas")
+
             onCreate(db)
         } catch (e: Exception) {
             Log.e("AppDatabase", "Error al actualizar la base de datos: ${e.message}")
@@ -54,6 +58,16 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 estado TEXT NOT NULL,
                 idUsuario TEXT NOT NULL,
                 FOREIGN KEY(idUsuario) REFERENCES usuarios(id)
+            )
+        """
+
+        private const val CREATE_TAREAS_TABLE = """
+            CREATE TABLE tareas (
+                id TEXT PRIMARY KEY,
+                titulo TEXT NOT NULL,
+                descripcion TEXT NOT NULL,
+                prioridad TEXT NOT NULL,
+                completada INTEGER NOT NULL CHECK (completada IN (0, 1))
             )
         """
     }
