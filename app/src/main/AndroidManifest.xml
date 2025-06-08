@@ -41,10 +41,10 @@
         <activity android:name=".view.admin.MenuAdminActivity"/>
 
         <activity android:name=".view.admin.ListaClientesActivity"/>
-
+        <activity android:name=".view.admin.material.MaterialListActivity"/>
+        <activity android:name=".view.admin.materiales.FormularioMaterialActivity"/>
         <activity android:name=".view.admin.toDoList.ToDoListActivity"/>
         <activity android:name=".view.admin.toDoList.FormularioTareaActivity"/>
-
         <activity android:name=".view.admin.SeccionNoviasActivity"/>
 
         <!-- Client -->

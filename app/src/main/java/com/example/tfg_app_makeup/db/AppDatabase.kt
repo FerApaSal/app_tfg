@@ -12,6 +12,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
             db.execSQL(CREATE_USUARIOS_TABLE)
             db.execSQL(CREATE_CITAS_TABLE)
             db.execSQL(CREATE_TAREAS_TABLE)
+            db.execSQL(CREATE_MATERIALES_TABLE)
 
             Log.d("AppDatabase", "Tablas creadas correctamente.")
         } catch (e: Exception) {
@@ -24,6 +25,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
             db.execSQL("DROP TABLE IF EXISTS usuarios")
             db.execSQL("DROP TABLE IF EXISTS citas")
             db.execSQL("DROP TABLE IF EXISTS tareas")
+            db.execSQL("DROP TABLE IF EXISTS materiales")
 
             onCreate(db)
         } catch (e: Exception) {
@@ -68,6 +70,18 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 descripcion TEXT NOT NULL,
                 prioridad TEXT NOT NULL,
                 completada INTEGER NOT NULL CHECK (completada IN (0, 1))
+            )
+        """
+
+        private const val CREATE_MATERIALES_TABLE = """
+             CREATE TABLE materiales (
+                id TEXT PRIMARY KEY,
+                nombre TEXT NOT NULL,
+                descripcion TEXT NOT NULL,
+                tipo TEXT NOT NULL,
+                cantidad INTEGER NOT NULL,
+                estado TEXT NOT NULL,
+                imagenUrl TEXT
             )
         """
     }

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp"
+    android:layout_marginHorizontal="4dp"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="4dp"
+    android:background="@color/blanco">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Imagen del material -->
+        <ImageView
+            android:id="@+id/ivImagenMaterial"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_user_placeholder"
+            android:contentDescription="Imagen del material"
+            tools:ignore="ContentDescription" />
+
+        <!-- Nombre del material -->
+        <TextView
+            android:id="@+id/tvNombreMaterial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ivImagenMaterial"
+            android:text="Nombre del material"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            android:fontFamily="@font/apercu_bold" />
+
+        <!-- Cantidad -->
+        <TextView
+            android:id="@+id/tvCantidadMaterial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="x5"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/apercu_bold" />
+
+        <!-- Tipo de material -->
+        <TextView
+            android:id="@+id/tvTipoMaterial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ivImagenMaterial"
+            android:layout_below="@id/tvNombreMaterial"
+            android:layout_marginTop="4dp"
+            android:text="Tipo: Brocha"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            android:fontFamily="@font/apercu_regular" />
+
+        <!-- Botón Editar -->
+        <ImageButton
+            android:id="@+id/btnEditarMaterial"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_below="@id/tvTipoMaterial"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="35dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Editar"
+            android:src="@drawable/ic_edit"
+            card_view:tint="@color/rosaRoto"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <!-- Etiqueta para el estado del material -->
+                <TextView
+                    android:id="@+id/tvEstadoMaterial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvTipoMaterial"
+                    android:layout_toEndOf="@id/ivImagenMaterial"
+                    android:layout_marginTop="4dp"
+                    android:text="Estado: Roto"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/apercu_regular" />
+
+        <!-- Botón Eliminar -->
+        <ImageButton
+            android:id="@+id/btnEliminarMaterial"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_below="@id/tvTipoMaterial"
+            android:layout_toStartOf="@id/btnEditarMaterial"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Eliminar"
+            android:src="@drawable/ic_delete"
+            card_view:tint="@color/rosaRoto"
+            tools:ignore="TouchTargetSizeCheck" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
