@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutPerfil"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/beige"
+    tools:context=".view.common.PerfilActivity">
+
+    <!-- Botón de volver -->
+    <ImageButton
+        android:id="@+id/btnVolverPerfil"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Volver"
+        android:src="@drawable/ic_arrow_back"
+        app:tint="@color/rosaRoto"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <!-- Imagen de perfil -->
+    <ImageView
+        android:id="@+id/ivFotoPerfil"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/btnVolverPerfil"
+        android:src="@drawable/ic_user_placeholder"
+        android:scaleType="centerCrop"
+        android:background="@drawable/circle_background"
+        android:contentDescription="Foto de perfil" />
+
+    <!-- Botón para subir imagen -->
+    <Button
+        android:id="@+id/btnSubirFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivFotoPerfil"
+        android:backgroundTint="@color/rosaRoto"
+        android:textColor="@color/blanco"
+        android:fontFamily="@font/apercu_bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Subir imagen" />
+
+    <!-- Nombre -->
+    <EditText
+        android:id="@+id/etNombrePerfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnSubirFoto"
+        android:layout_marginTop="20dp"
+        android:hint="Nombre"
+        android:fontFamily="@font/apercu_regular"
+        android:textColor="@color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textCursorDrawable="@drawable/cursor_negro"
+        android:inputType="textPersonName"
+        android:minHeight="48dp" />
+
+    <!-- Apellidos -->
+    <EditText
+        android:id="@+id/etApellidosPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etNombrePerfil"
+        android:layout_marginTop="10dp"
+        android:hint="Apellidos"
+        android:fontFamily="@font/apercu_regular"
+        android:textColor="@color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textCursorDrawable="@drawable/cursor_negro"
+        android:inputType="textPersonName"
+        android:minHeight="48dp" />
+
+    <!-- Campo: Nueva contraseña -->
+    <LinearLayout
+        android:id="@+id/layoutPasswordPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etApellidosPerfil"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/etPasswordPerfil"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Nueva contraseña"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@color/rosaRoto"
+            android:textCursorDrawable="@drawable/cursor_negro"
+            android:fontFamily="@font/apercu_regular"
+            android:paddingStart="8dp"
+            android:minHeight="48dp" />
+
+        <ImageButton
+            android:id="@+id/btnTogglePasswordPerfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:contentDescription="Mostrar/Ocultar contraseña"
+            android:src="@drawable/ic_visibility"
+            tools:ignore="ContentDescription,TouchTargetSizeCheck" />
+    </LinearLayout>
+
+    <!-- Campo: Confirmar nueva contraseña -->
+    <LinearLayout
+        android:id="@+id/layoutConfirmarPasswordPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutPasswordPerfil"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/etConfirmarPasswordPerfil"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Confirmar contraseña"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@color/rosaRoto"
+            android:textCursorDrawable="@drawable/cursor_negro"
+            android:fontFamily="@font/apercu_regular"
+            android:paddingStart="8dp"
+            android:minHeight="48dp" />
+
+        <ImageButton
+            android:id="@+id/btnToggleConfirmarPasswordPerfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:contentDescription="Mostrar/Ocultar contraseña"
+            android:src="@drawable/ic_visibility"
+            tools:ignore="ContentDescription,TouchTargetSizeCheck" />
+    </LinearLayout>
+
+    <!-- Botón guardar -->
+    <Button
+        android:id="@+id/btnGuardarPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutConfirmarPasswordPerfil"
+        android:backgroundTint="@color/rosaRoto"
+        android:textColor="@color/blanco"
+        android:fontFamily="@font/apercu_bold"
+        android:layout_marginTop="20dp"
+        android:text="Guardar cambios" />
+
+    <!-- Texto de versión -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:fontFamily="@font/apercu_italic"
+            android:text="Versión: 1.0"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            tools:ignore="HardcodedText,TextContrastCheck" />
+    </FrameLayout>
+
+</RelativeLayout>

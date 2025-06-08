@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/beige"
+    android:padding="24dp">
+
+    <ImageButton
+        android:id="@+id/btnCerrarContacto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Cerrar"
+        android:src="@drawable/ic_close"
+        app:tint="@color/rosaRoto"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/tvTituloContacto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Cómo quieres contactarme?"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/rosaRoto"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/btnCerrarContacto"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/btnWhatsapp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contactar por WhatsApp"
+        android:drawableLeft="@drawable/ic_whatsapp"
+        android:drawableTint="@color/blanco"
+        android:drawablePadding="8dp"
+        android:backgroundTint="@color/rosaRoto"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/tvTituloContacto" />
+
+    <Button
+        android:id="@+id/btnInstagram"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ver Instagram"
+        android:drawableLeft="@drawable/ic_instagram"
+        android:drawableTint="@color/blanco"
+        android:drawablePadding="8dp"
+        android:backgroundTint="@color/rosaRoto"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/btnWhatsapp"
+        android:layout_marginTop="16dp" />
+
+</RelativeLayout>

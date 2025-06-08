@@ -35,6 +35,7 @@
 
         <!-- Common -->
         <activity android:name=".view.common.PoliticaPrivacidadActivity"/>
+        <activity android:name=".view.common.PerfilActivity"/>
 
         <!-- Admin -->
         <activity android:name=".view.admin.MenuAdminActivity"/>
@@ -43,6 +44,7 @@
         <activity android:name=".view.client.MenuClienteActivity"/>
         <activity android:name=".view.client.MisCitasActivity"/>
         <activity android:name=".view.client.SolicitarCitaActivity"/>
+        <activity android:name=".view.client.ServiciosNoviaActivity"/>
     </application>
 
 </manifest>

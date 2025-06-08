@@ -17,9 +17,9 @@
             android:id="@+id/ivFotoPerfil"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:src="@drawable/ic_launcher_foreground"
+            android:src="@drawable/ic_user_placeholder"
             android:scaleType="centerCrop"
-            android:background="@drawable/foto_circular_background"
+            android:background="@drawable/circle_background"
             android:contentDescription="Foto de perfil"
             android:layout_marginBottom="1dp" />
 
@@ -32,7 +32,7 @@
             android:backgroundTint="@color/rosaRoto"
             android:textColor="@color/blanco"
             android:paddingHorizontal="24dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"/>
 
         <!-- Nombre -->
         <EditText
@@ -46,8 +46,7 @@
             android:textColorHint="@android:color/darker_gray"
             android:textCursorDrawable="@drawable/cursor_negro"
             android:fontFamily="@font/apercu_regular"
-            android:layout_marginBottom="12dp"
-            tools:ignore="HardcodedText" />
+            android:layout_marginBottom="12dp" />
 
         <!-- Apellidos -->
         <EditText
@@ -61,8 +60,7 @@
             android:textColorHint="@android:color/darker_gray"
             android:textCursorDrawable="@drawable/cursor_negro"
             android:fontFamily="@font/apercu_regular"
-            android:layout_marginBottom="12dp"
-            tools:ignore="HardcodedText" />
+            android:layout_marginBottom="12dp" />
 
         <!-- Correo electrónico -->
         <EditText
@@ -76,38 +74,69 @@
             android:textColorHint="@android:color/darker_gray"
             android:textCursorDrawable="@drawable/cursor_negro"
             android:fontFamily="@font/apercu_regular"
-            android:layout_marginBottom="12dp"
-            tools:ignore="HardcodedText" />
+            android:layout_marginBottom="12dp" />
 
-        <!-- Contraseña -->
-        <EditText
-            android:id="@+id/etPassword"
+        <!-- Contraseña con botón -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Contraseña (*)"
-            android:inputType="textPassword"
-            android:backgroundTint="@color/rosaRoto"
-            android:textColor="@color/black"
-            android:textColorHint="@android:color/darker_gray"
-            android:textCursorDrawable="@drawable/cursor_negro"
-            android:fontFamily="@font/apercu_regular"
+            android:orientation="horizontal"
             android:layout_marginBottom="12dp"
-            tools:ignore="HardcodedText" />
+            android:gravity="center_vertical">
 
-        <!-- Confirmar contraseña -->
-        <EditText
-            android:id="@+id/etConfirmarPassword"
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:hint="Contraseña (*)"
+                android:inputType="textPassword"
+                android:backgroundTint="@color/rosaRoto"
+                android:textColor="@color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textCursorDrawable="@drawable/cursor_negro"
+                android:fontFamily="@font/apercu_regular" />
+
+            <ImageButton
+                android:id="@+id/btnTogglePassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="Mostrar/Ocultar contraseña"
+                android:src="@drawable/ic_visibility"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+        <!-- Confirmar contraseña con botón -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Confirmar contraseña (*)"
-            android:inputType="textPassword"
-            android:backgroundTint="@color/rosaRoto"
-            android:textColor="@color/black"
-            android:textColorHint="@android:color/darker_gray"
-            android:textCursorDrawable="@drawable/cursor_negro"
-            android:fontFamily="@font/apercu_regular"
+            android:orientation="horizontal"
             android:layout_marginBottom="16dp"
-            tools:ignore="HardcodedText" />
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/etConfirmarPassword"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:hint="Confirmar contraseña (*)"
+                android:inputType="textPassword"
+                android:backgroundTint="@color/rosaRoto"
+                android:textColor="@color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textCursorDrawable="@drawable/cursor_negro"
+                android:fontFamily="@font/apercu_regular" />
+
+            <ImageButton
+                android:id="@+id/btnToggleConfirmPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="Mostrar/Ocultar confirmación"
+                android:src="@drawable/ic_visibility"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
 
         <!-- Checkbox de aceptación -->
         <CheckBox
@@ -118,10 +147,9 @@
             android:fontFamily="@font/apercu_regular"
             android:minHeight="48dp"
             android:text="Acepto los términos y condiciones de privacidad"
-            android:textColor="@color/rosaRoto"
-            tools:ignore="HardcodedText" />
+            android:textColor="@color/rosaRoto" />
 
-        <!-- Botones alineados horizontalmente -->
+        <!-- Botones alineados -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,10 +165,8 @@
                 android:text="Registrarme"
                 android:backgroundTint="@color/rosaRoto"
                 android:textColor="@color/blanco"
-                android:textStyle="bold"
                 android:fontFamily="@font/apercu_bold"
-                android:layout_marginEnd="8dp"
-                tools:ignore="HardcodedText" />
+                android:layout_marginEnd="8dp" />
 
             <Button
                 android:id="@+id/btnCancelar"
@@ -150,8 +176,7 @@
                 android:text="Cancelar"
                 android:backgroundTint="@android:color/darker_gray"
                 android:textColor="@color/blanco"
-                android:fontFamily="@font/apercu_regular"
-                tools:ignore="HardcodedText" />
+                android:fontFamily="@font/apercu_regular" />
         </LinearLayout>
 
         <!-- Versión al pie -->
@@ -164,8 +189,7 @@
             android:textSize="12sp"
             android:fontFamily="@font/apercu_regular"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="1dp"
-            tools:ignore="HardcodedText" />
+            android:layout_marginBottom="1dp" />
 
     </LinearLayout>
 </ScrollView>

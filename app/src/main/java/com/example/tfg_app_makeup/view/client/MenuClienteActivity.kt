@@ -1,16 +1,22 @@
 package com.example.tfg_app_makeup.view.client
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
+import com.example.tfg_app_makeup.auth.LoginActivity
 import com.example.tfg_app_makeup.services.UsuarioService
 import com.example.tfg_app_makeup.utils.Session
+import com.example.tfg_app_makeup.view.common.PerfilActivity
 import java.io.File
 
 /**
@@ -24,6 +30,10 @@ class MenuClienteActivity : AppCompatActivity() {
 
     private lateinit var btnMisCitas: Button
     private lateinit var btnSolicitarCita: Button
+    private lateinit var btnContacto: Button
+    private lateinit var btnServiciosNovia: Button
+
+    private lateinit var btnCerrarSesion: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +47,11 @@ class MenuClienteActivity : AppCompatActivity() {
 
             btnMisCitas = findViewById(R.id.btnMisCitas)
             btnSolicitarCita = findViewById(R.id.btnSolicitarCita)
+            btnContacto = findViewById(R.id.btnContacto)
+            btnServiciosNovia = findViewById(R.id.btnServicioNovias)
+
+            btnCerrarSesion = findViewById(R.id.btnCerrarSesion)
+
 
             val usuario = Session.usuarioActual
             if (usuario != null) {
@@ -86,5 +101,89 @@ class MenuClienteActivity : AppCompatActivity() {
                 Log.e("MenuClienteActivity", "Error al pulsar el botón 'Solicitar Cita': ${e.message}", e)
             }
         }
+
+        btnContacto.setOnClickListener {
+            try {
+                mostrarDialogoContacto()
+            } catch (e: Exception) {
+                Log.e("LoginActivity", "Error al mostrar diálogo de contacto: ${e.message}", e)
+                Toast.makeText(this, "Error al mostrar diálogo de contacto", Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+
+        btnServiciosNovia.setOnClickListener {
+            try {
+                val intent = Intent(this, ServiciosNoviaActivity::class.java)
+                startActivity(intent)
+                Log.d("MenuClienteActivity", "Botón 'Servicios novia' pulsado")
+            } catch (e: Exception) {
+                Log.e("MenuClienteActivity", "Error al pulsar el botón 'Servicios novia': ${e.message}", e)
+            }
+        }
+
+        ivPerfilUsuario.setOnClickListener {
+            try {
+                val intent = Intent(this, PerfilActivity::class.java)
+                startActivity(intent)
+                Log.d("MenuClienteActivity", "Acceso al perfil desde imagen de usuario")
+            } catch (e: Exception) {
+                Log.e("MenuClienteActivity", "Error al abrir el perfil: ${e.message}", e)
+                Toast.makeText(this, "No se pudo abrir el perfil", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        btnCerrarSesion.setOnClickListener {
+            try {
+                // Limpiar sesión
+                Session.cerrarSesion(this)
+
+                // Volver al login
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+
+                Log.d("MenuClienteActivity", "Sesión cerrada correctamente")
+                Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Log.e("MenuClienteActivity", "Error al cerrar sesión: ${e.message}", e)
+                Toast.makeText(this, "Error al cerrar sesión", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
+
+    private fun mostrarDialogoContacto() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_contacto, null)
+        val alertDialog = AlertDialog.Builder(this).create()
+        alertDialog.setView(dialogView)
+        alertDialog.setCancelable(false)
+
+        val btnCerrar = dialogView.findViewById<ImageButton>(R.id.btnCerrarContacto)
+        val btnWhatsapp = dialogView.findViewById<Button>(R.id.btnWhatsapp)
+        val btnInstagram = dialogView.findViewById<Button>(R.id.btnInstagram)
+
+        btnCerrar.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        btnWhatsapp.setOnClickListener {
+            val url = "https://wa.me/34608150648"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
+            alertDialog.dismiss()
+        }
+
+        btnInstagram.setOnClickListener {
+            val url = "https://instagram.com/merche_makeup"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
+    }
+
 }
