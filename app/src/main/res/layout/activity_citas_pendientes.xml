@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beige"
+    android:padding="16dp"
+    tools:context=".view.admin.citas.CitasPendientesActivity">
+
+    <!-- Botón volver -->
+    <ImageButton
+        android:id="@+id/btnVolverPendientes"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_arrow_back"
+        android:contentDescription="Volver"
+        app:tint="@color/rosaRoto"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvTituloCitasPendientes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/btnVolverPendientes"
+        android:layout_alignTop="@id/btnVolverPendientes"
+        android:layout_marginStart="60dp"
+        android:text="Citas pendientes"
+        android:textSize="20sp"
+        android:textColor="@color/rosaRoto"
+        android:fontFamily="@font/apercu_bold" />
+
+    <!-- Lista de citas -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCitasPendientes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnVolverPendientes"
+        tools:listitem="@layout/item_cita_pendiente"
+        android:layout_marginTop="16dp"/>
+</RelativeLayout>

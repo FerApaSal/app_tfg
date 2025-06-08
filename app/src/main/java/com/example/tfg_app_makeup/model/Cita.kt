@@ -20,8 +20,11 @@ data class Cita(
     var fecha: String,
     var hora: String,
     var direccion: String,
-    var estado: String = "pendiente",
-    val idUsuario: String
+    var estado: String = "PENDIENTE",
+    val idUsuario: String,
+
+    var nombreClienteManual: String? = null,
+    var telefonoClienteManual: String? = null
 ) {
     fun toContentValues(): ContentValues {
         return ContentValues().apply {
@@ -32,6 +35,9 @@ data class Cita(
             put("direccion", direccion)
             put("estado", estado)
             put("idUsuario", idUsuario)
+
+            put("nombreClienteManual", nombreClienteManual)
+            put("telefonoClienteManual", telefonoClienteManual)
         }
     }
 
@@ -44,7 +50,10 @@ data class Cita(
                 hora = cursor.getString(cursor.getColumnIndexOrThrow("hora")),
                 direccion = cursor.getString(cursor.getColumnIndexOrThrow("direccion")),
                 estado = cursor.getString(cursor.getColumnIndexOrThrow("estado")),
-                idUsuario = cursor.getString(cursor.getColumnIndexOrThrow("idUsuario"))
+                idUsuario = cursor.getString(cursor.getColumnIndexOrThrow("idUsuario")),
+
+                nombreClienteManual = cursor.getString(cursor.getColumnIndexOrThrow("nombreClienteManual")),
+                telefonoClienteManual = cursor.getString(cursor.getColumnIndexOrThrow("telefonoClienteManual")),
             )
         }
     }

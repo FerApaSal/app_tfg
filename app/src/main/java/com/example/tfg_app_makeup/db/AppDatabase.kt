@@ -59,6 +59,8 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 direccion TEXT NOT NULL,
                 estado TEXT NOT NULL,
                 idUsuario TEXT NOT NULL,
+                nombreClienteManual TEXT,
+                telefonoClienteManual TEXT,
                 FOREIGN KEY(idUsuario) REFERENCES usuarios(id)
             )
         """

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp"
+    android:layout_marginHorizontal="4dp"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="4dp"
+    android:background="@color/blanco">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Contenedor de los datos del cliente -->
+        <LinearLayout
+            android:id="@+id/layoutDatos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/layoutBotones"
+            android:layout_marginEnd="75dp">
+
+            <TextView
+                android:id="@+id/tvNombreCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre del cliente"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/apercu_bold" />
+
+            <TextView
+                android:id="@+id/tvNumeroTelefono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Número de teléfono"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:fontFamily="@font/apercu_regular"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tvFechaHora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha - Hora"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:fontFamily="@font/apercu_regular"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tvTipoServicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo de servicio"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:fontFamily="@font/apercu_regular" />
+        </LinearLayout>
+
+        <!-- Contenedor de botones vertical -->
+        <LinearLayout
+            android:id="@+id/layoutBotones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btnAceptarCita"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aceptar"
+                android:backgroundTint="@color/rosaRoto"
+                android:textColor="@color/blanco"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/btnRechazarCita"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rechazar"
+                android:textColor="@color/blanco"
+                android:backgroundTint="@android:color/darker_gray" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

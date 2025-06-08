@@ -39,7 +39,10 @@
 
         <!-- Admin -->
         <activity android:name=".view.admin.MenuAdminActivity"/>
-
+        <activity android:name=".view.admin.citas.CitasAdminActivity"/>
+        <activity android:name=".view.admin.citas.CitasDiaActivity"/>
+        <activity android:name=".view.admin.citas.CitasPendientesActivity"/>
+        <activity android:name=".view.admin.citas.FormularioCitaManualActivity"/>
         <activity android:name=".view.admin.ListaClientesActivity"/>
         <activity android:name=".view.admin.material.MaterialListActivity"/>
         <activity android:name=".view.admin.materiales.FormularioMaterialActivity"/>

@@ -1,12 +1,15 @@
 package com.example.tfg_app_makeup.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.model.Cita
+import java.util.Locale
 
 /**
  * Adapter para mostrar una lista de citas del cliente.
@@ -14,7 +17,7 @@ import com.example.tfg_app_makeup.model.Cita
  * @param citas Lista de citas extendidas con datos del usuario asociados.
  */
 class CitaAdapter(
-    private var citas: List<Cita>
+    private var citas: List<Cita>,
 ) : RecyclerView.Adapter<CitaAdapter.CitaViewHolder>() {
 
     /**

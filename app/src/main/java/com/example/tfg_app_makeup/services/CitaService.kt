@@ -99,4 +99,42 @@ class CitaService(private val context: Context) {
             db.close()
         }
     }
+
+    fun obtenerPorEstado(estado: String): List<Cita> {
+        val citas = mutableListOf<Cita>()
+        val db = AppDatabase(context).readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM citas WHERE estado = ?", arrayOf(estado))
+
+        if (cursor.moveToFirst()) {
+            do {
+                citas.add(Cita.fromCursor(cursor))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        return citas
+    }
+
+
+    /**
+     * Obtiene todas las citas de una fecha específica con un estado determinado.
+     * @param fecha Fecha en formato "dd/MM/yyyy"
+     * @param estado Estado de la cita (por ejemplo: "ACEPTADA")
+     */
+    fun obtenerPorFechaYEstado(fecha: String, estado: String): List<Cita> {
+        val citas = mutableListOf<Cita>()
+        val db = AppDatabase(context).readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT * FROM citas WHERE fecha = ? AND estado = ? ORDER BY hora ASC",
+            arrayOf(fecha, estado)
+        )
+        if (cursor.moveToFirst()) {
+            do {
+                val cita = Cita.fromCursor(cursor)
+                citas.add(cita)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return citas
+    }
 }

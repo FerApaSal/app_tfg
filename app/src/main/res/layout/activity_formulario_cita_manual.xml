@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/beige"
+    tools:context=".view.admin.citas.FormularioCitaManualActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Botón Volver -->
+        <ImageButton
+            android:id="@+id/btnVolverFormularioCitaManual"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:contentDescription="Volver"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/rosaRoto"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nueva cita manual"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold" />
+
+        <!-- Campo: Nombre del cliente -->
+        <EditText
+            android:id="@+id/etNombreCliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/apercu_regular"
+            android:hint="Nombre del cliente"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textCursorDrawable="@drawable/cursor_negro" />
+
+        <!-- Campo: Teléfono -->
+        <EditText
+            android:id="@+id/etTelefonoCliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/apercu_regular"
+            android:hint="Teléfono"
+            android:inputType="phone"
+            android:minHeight="48dp"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textCursorDrawable="@drawable/cursor_negro" />
+
+        <!-- Campo: Dirección -->
+        <EditText
+            android:id="@+id/etDireccionManual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/apercu_regular"
+            android:hint="Dirección"
+            android:inputType="textPostalAddress"
+            android:minHeight="48dp"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textCursorDrawable="@drawable/cursor_negro" />
+
+        <!-- Campo: Fecha -->
+        <EditText
+            android:id="@+id/etFechaManual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/apercu_regular"
+            android:hint="Fecha (dd/mm/aaaa)"
+            android:inputType="none"
+            android:minHeight="48dp"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textCursorDrawable="@drawable/cursor_negro"
+            android:focusable="false"
+            android:clickable="false"/>
+
+        <!-- Campo: Hora -->
+        <EditText
+            android:id="@+id/etHoraManual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/apercu_regular"
+            android:hint="Hora (hh:mm)"
+            android:inputType="none"
+            android:minHeight="48dp"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textCursorDrawable="@drawable/cursor_negro"
+            android:focusable="false"
+            android:clickable="false"/>
+
+        <!-- Selector de tipo de servicio -->
+        <Spinner
+            android:id="@+id/spinnerTipoServicioManual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:minHeight="48dp" />
+
+        <!-- Botón Guardar -->
+        <Button
+            android:id="@+id/btnGuardarCitaManual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:textColor="@color/blanco"
+            android:backgroundTint="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold"
+            android:layout_marginTop="20dp" />
+    </LinearLayout>
+</ScrollView>

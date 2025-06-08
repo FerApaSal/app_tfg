@@ -11,7 +11,7 @@ data class Usuario(
     var correo: String,
     var clave: String,
     var rol: String,
-    var imagenUrl: String? = null
+    var imagenUrl: String? = null,
 ) {
     fun toContentValues(): ContentValues {
         return ContentValues().apply {
@@ -36,8 +36,8 @@ data class Usuario(
                 correo = cursor.getString(cursor.getColumnIndexOrThrow("correo")),
                 clave = cursor.getString(cursor.getColumnIndexOrThrow("clave")),
                 rol = cursor.getString(cursor.getColumnIndexOrThrow("rol")),
-                imagenUrl = cursor.getString(cursor.getColumnIndexOrThrow("imagenUrl"))
-            )
+                imagenUrl = cursor.getString(cursor.getColumnIndexOrThrow("imagenUrl")),
+                )
         }
     }
 }

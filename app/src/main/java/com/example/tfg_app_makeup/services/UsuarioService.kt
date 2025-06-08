@@ -82,4 +82,22 @@ class UsuarioService(private val context: Context) {
             db.close()
         }
     }
+
+    /**
+     * Devuelve todos los usuarios registrados en la base de datos.
+     */
+    fun obtenerTodos(): List<Usuario> {
+        val usuarios = mutableListOf<Usuario>()
+        val db = AppDatabase(context).readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM usuarios", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                usuarios.add(Usuario.fromCursor(cursor))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        return usuarios
+    }
 }

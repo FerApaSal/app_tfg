@@ -10,9 +10,10 @@ class CitaController(context: Context) {
 
     private val service = CitaService(context)
 
-    fun obtenerTodos(): List<Cita> {
-        return service.obtenerTodos()
+    fun obtenerCitasAceptadas(): List<Cita> {
+        return service.obtenerTodos().filter { it.estado.uppercase() == "ACEPTADA" }
     }
+
 
     fun obtenerId(id: String): Cita? {
         return service.obtenerPorId(id)
@@ -74,6 +75,19 @@ class CitaController(context: Context) {
             direccion = direccion,
             idUsuario = idUsuario
         )
+    }
+
+    fun obtenerPorEstado(estado: String): List<Cita> {
+        return service.obtenerPorEstado(estado)
+    }
+
+    /**
+     * Devuelve todas las citas con una fecha y estado concretos.
+     * @param fecha Fecha en formato "dd/MM/yyyy"
+     * @param estado Estado de la cita (por ejemplo: "ACEPTADA")
+     */
+    fun obtenerPorFechaYEstado(fecha: String, estado: String): List<Cita> {
+        return service.obtenerPorFechaYEstado(fecha, estado)
     }
 
 }

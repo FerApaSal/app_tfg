@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.auth.LoginActivity
 import com.example.tfg_app_makeup.utils.Session
+import com.example.tfg_app_makeup.view.admin.citas.CitasAdminActivity
 import com.example.tfg_app_makeup.view.admin.material.MaterialListActivity
 import com.example.tfg_app_makeup.view.admin.toDoList.ToDoListActivity
 import com.example.tfg_app_makeup.view.common.PerfilActivity
@@ -91,9 +92,9 @@ class MenuAdminActivity : AppCompatActivity() {
      */
     private fun configurarListeners() {
 
-        // btnCitas.setOnClickListener {
-        //     startActivity(Intent(this, GestionCitasActivity::class.java))
-        // }
+         btnCitas.setOnClickListener {
+             startActivity(Intent(this, CitasAdminActivity::class.java))
+         }
 
          btnClientes.setOnClickListener {
              startActivity(Intent(this, ListaClientesActivity::class.java))

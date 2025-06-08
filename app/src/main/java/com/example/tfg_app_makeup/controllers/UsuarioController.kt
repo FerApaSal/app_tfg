@@ -82,4 +82,15 @@ class UsuarioController(private val context: Context) {
         return lista
     }
 
+    fun obtenerTodos(): List<Usuario> {
+        return service.obtenerTodos()
+    }
+
+    /**
+     * Devuelve un mapa de usuarios indexados por su ID.
+     */
+    fun obtenerUsuariosMapeados(): Map<String, Usuario> {
+        return service.obtenerTodos().associateBy { it.id }
+    }
+
 }

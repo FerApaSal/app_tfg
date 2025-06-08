@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beige"
+    android:padding="16dp">
+
+    <!-- Botón Menú hamburguesa (puede estar desactivado si no se usa) -->
+    <ImageButton
+        android:id="@+id/btnMenuHamburguesa"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Menú"
+        android:src="@drawable/ic_menu"
+        app:tint="@color/rosaRoto"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <!-- Botón Volver -->
+    <ImageButton
+        android:id="@+id/btnVolverAdminCitas"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Volver"
+        android:src="@drawable/ic_arrow_back"
+        app:tint="@color/rosaRoto"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvTituloAdminCitas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="Citas"
+        android:textSize="20sp"
+        android:textColor="@color/rosaRoto"
+        android:fontFamily="@font/apercu_bold" />
+
+    <!-- Campo fecha -->
+    <EditText
+        android:id="@+id/etFechaBuscarCita"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTituloAdminCitas"
+        android:layout_marginTop="24dp"
+        android:layout_toStartOf="@id/btnBuscarCita"
+        android:textAlignment="center"
+        android:hint="dd/mm/aaaa"
+        android:inputType="date"
+        android:textColor="@color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textCursorDrawable="@drawable/cursor_negro"
+        android:fontFamily="@font/apercu_regular"
+        android:minHeight="48dp" />
+
+    <!-- Botón buscar cita -->
+    <ImageButton
+        android:id="@+id/btnBuscarCita"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignTop="@id/etFechaBuscarCita"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_search"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/rosaRoto"
+        android:contentDescription="Buscar cita"
+        app:tint="@color/blanco" />
+
+    <!-- Calendario -->
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnBuscarCita"
+        android:layout_marginTop="30dp"
+        app:mcv_showOtherDates="all"
+        app:mcv_selectionColor="@color/rosaRoto"
+        android:background="@color/blanco"
+        app:mcv_tileWidth="42dp"
+        app:mcv_tileHeight="42dp"
+        app:mcv_arrowColor="@color/rosaRoto"
+        app:mcv_firstDayOfWeek="monday" />
+
+    <!-- Botón de acceso a citas pendientes -->
+    <LinearLayout
+        android:id="@+id/btnCitasPendientes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calendarView"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@color/rosaRoto"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Citas pendientes"
+            android:textColor="@color/blanco"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:fontFamily="@font/apercu_bold" />
+    </LinearLayout>
+
+
+
+    <!-- FAB: Agregar nueva cita -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabNuevaCita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:contentDescription="Agregar cita"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/rosaRoto"
+        app:tint="@android:color/white" />
+
+    <!-- Texto versión -->
+    <TextView
+        android:id="@+id/tvVersionCitas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:text="Versión: 1.0"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
+        android:fontFamily="@font/apercu_italic" />
+</RelativeLayout>
