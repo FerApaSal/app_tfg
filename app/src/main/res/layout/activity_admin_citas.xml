@@ -7,7 +7,7 @@
     android:background="@color/beige"
     android:padding="16dp">
 
-    <!-- Botón Menú hamburguesa (puede estar desactivado si no se usa) -->
+    <!-- Botón Menú hamburguesa -->
     <ImageButton
         android:id="@+id/btnMenuHamburguesa"
         android:layout_width="40dp"

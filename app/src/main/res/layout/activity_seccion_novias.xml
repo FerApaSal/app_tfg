@@ -6,35 +6,50 @@
     android:background="@color/beige"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:padding="16dp">
 
-    <!-- Cabecera con botón atrás y título -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:padding="8dp">
 
+        <!-- Botón Menú hamburguesa -->
+        <ImageButton
+            android:id="@+id/btnMenuHamburguesa"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="Menú"
+            android:src="@drawable/ic_menu"
+            app:tint="@color/rosaRoto"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvTituloSeccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Sección para novias"
+            android:textSize="20sp"
+            android:textColor="@color/rosaRoto"
+            android:fontFamily="@font/apercu_bold" />
+
+        <!-- Botón de volver -->
         <ImageButton
             android:id="@+id/btnVolverNovias"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:background="@android:color/transparent"
             android:contentDescription="Volver"
             android:src="@drawable/ic_arrow_back"
             app:tint="@color/rosaRoto"
             tools:ignore="TouchTargetSizeCheck" />
-
-        <TextView
-            android:id="@+id/tvTituloSeccion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sección para novias"
-            android:textSize="20sp"
-            android:textColor="@color/rosaRoto"
-            android:fontFamily="@font/apercu_bold"
-            android:layout_marginStart="45dp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <!-- Imagen grande centrada -->
     <ImageView

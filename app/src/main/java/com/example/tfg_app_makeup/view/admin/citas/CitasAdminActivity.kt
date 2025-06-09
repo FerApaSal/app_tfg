@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.controllers.CitaController
 import com.example.tfg_app_makeup.model.Cita
+import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -17,7 +18,7 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CitasAdminActivity : AppCompatActivity() {
+class CitasAdminActivity : BaseDrawerActivity() {
 
     private lateinit var citaController: CitaController
     private lateinit var calendarView: MaterialCalendarView

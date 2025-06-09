@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_inicio" android:title="Menú principal"/>
+    <item android:id="@+id/nav_citas" android:title="Citas" />
+    <item android:id="@+id/nav_clientes" android:title="Clientes" />
+    <item android:id="@+id/nav_materiales" android:title="Materiales" />
+    <item android:id="@+id/nav_tareas" android:title="Tareas" />
+    <item android:id="@+id/nav_servicios_novia" android:title="Servicios para novias" />
+</menu>

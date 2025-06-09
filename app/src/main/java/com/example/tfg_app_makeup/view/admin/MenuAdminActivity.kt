@@ -7,10 +7,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.auth.LoginActivity
+import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.example.tfg_app_makeup.utils.Session
 import com.example.tfg_app_makeup.view.admin.citas.CitasAdminActivity
 import com.example.tfg_app_makeup.view.admin.material.MaterialListActivity
@@ -22,7 +22,7 @@ import com.example.tfg_app_makeup.view.common.PerfilActivity
  * Muestra la imagen y nombre del usuario logueado.
  * Contiene accesos a funcionalidades específicas del perfil.
  */
-class MenuAdminActivity : AppCompatActivity() {
+class MenuAdminActivity : BaseDrawerActivity() {
 
     private lateinit var ivPerfilAdmin: ImageView
     private lateinit var tvBienvenida: TextView
@@ -37,21 +37,28 @@ class MenuAdminActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_menu_admin)
 
-        ivPerfilAdmin = findViewById(R.id.ivPerfilAdmin)
-        tvBienvenida = findViewById(R.id.tvBienvenida)
+        setContentView(R.layout.activity_base_drawer)
 
-        btnCitas = findViewById(R.id.btnGestionCitas)
-        btnClientes = findViewById(R.id.btnGestionUsuarios)
-        btnMateriales = findViewById(R.id.btnGestionMateriales)
-        btnToDoList = findViewById(R.id.btnGestionTareas)
-        btnNovias = findViewById(R.id.btnSeccionNovias)
-        btnCerrarSesion = findViewById(R.id.btnCerrarSesion)
+        // Inflar el layout específico dentro del contenedor
+        val contenido = layoutInflater.inflate(R.layout.activity_menu_admin, findViewById(R.id.contenidoPrincipal))
+
+        // Acceder a los componentes dentro del layout inflado
+        ivPerfilAdmin = contenido.findViewById(R.id.ivPerfilAdmin)
+        tvBienvenida = contenido.findViewById(R.id.tvBienvenida)
+
+        btnCitas = contenido.findViewById(R.id.btnGestionCitas)
+        btnClientes = contenido.findViewById(R.id.btnGestionUsuarios)
+        btnMateriales = contenido.findViewById(R.id.btnGestionMateriales)
+        btnToDoList = contenido.findViewById(R.id.btnGestionTareas)
+        btnNovias = contenido.findViewById(R.id.btnSeccionNovias)
+        btnCerrarSesion = contenido.findViewById(R.id.btnCerrarSesion)
 
         cargarDatosUsuario()
         configurarListeners()
+        configurarMenuHamburguesa()
     }
+
 
     /**
      * Muestra los datos del usuario actual en la interfaz.

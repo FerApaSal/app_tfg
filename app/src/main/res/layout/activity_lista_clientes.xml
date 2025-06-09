@@ -4,7 +4,7 @@
     android:id="@+id/layoutListaClientes"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
+    android:padding="16dp"
     android:background="@color/beige"
     tools:context=".view.admin.ListaClientesActivity">
 
@@ -13,9 +13,24 @@
         android:id="@+id/btnVolverListaClientes"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="4dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_arrow_back"
         android:contentDescription="Volver"
+        android:src="@drawable/ic_arrow_back"
+        app:tint="@color/rosaRoto"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <!-- Botón Menú hamburguesa -->
+    <ImageButton
+        android:id="@+id/btnMenuHamburguesa"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Menú"
+        android:src="@drawable/ic_menu"
         app:tint="@color/rosaRoto"
         tools:ignore="TouchTargetSizeCheck" />
 
@@ -24,9 +39,9 @@
         android:id="@+id/tvTituloListaClientes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/btnVolverListaClientes"
-        android:layout_alignTop="@id/btnVolverListaClientes"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="45dp"
+        android:layout_marginTop="8dp"
         android:text="Clientes registrados"
         android:textColor="@color/rosaRoto"
         android:textSize="20sp"

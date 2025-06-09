@@ -15,13 +15,14 @@ import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.adapter.TareaAdapter
 import com.example.tfg_app_makeup.controllers.TareaController
 import com.example.tfg_app_makeup.model.Tarea
+import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * Pantalla principal de la sección ToDoList.
  * Muestra las tareas con opciones para agregar, editar, eliminar y marcar como completadas.
  */
-class ToDoListActivity : AppCompatActivity() {
+class ToDoListActivity : BaseDrawerActivity() {
 
     private lateinit var rvTareas: RecyclerView
     private lateinit var fabAgregarTarea: FloatingActionButton

@@ -8,13 +8,14 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
+import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import java.io.File
 
 /**
  * Pantalla de administradora para subir una imagen informativa para novias.
  * La imagen seleccionada se guarda en disco local y puede ser visualizada por clientes.
  */
-class SeccionNoviasActivity : AppCompatActivity() {
+class SeccionNoviasActivity : BaseDrawerActivity() {
 
     private lateinit var btnVolver: ImageButton
     private lateinit var btnSubirImagen: Button

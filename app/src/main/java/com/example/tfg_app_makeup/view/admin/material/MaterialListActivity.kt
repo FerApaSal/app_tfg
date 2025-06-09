@@ -7,20 +7,20 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.adapters.MaterialAdapter
 import com.example.tfg_app_makeup.controllers.MaterialController
 import com.example.tfg_app_makeup.model.Material
+import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.example.tfg_app_makeup.view.admin.materiales.FormularioMaterialActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * Muestra la lista de materiales y permite acciones CRUD.
  */
-class MaterialListActivity : AppCompatActivity() {
+class MaterialListActivity : BaseDrawerActivity() {
 
     private lateinit var rvMateriales: RecyclerView
     private lateinit var fabAgregarMaterial: FloatingActionButton

@@ -9,12 +9,13 @@ import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.controllers.UsuarioController
 import com.example.tfg_app_makeup.model.Usuario
 import com.example.tfg_app_makeup.adapter.ListarClientesAdapter
+import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 
 /**
  * Muestra una lista de clientes registrados, visible para la administradora.
  * Los datos mostrados incluyen nombre, apellidos, correo y teléfono.
  */
-class ListaClientesActivity : AppCompatActivity() {
+class ListaClientesActivity : BaseDrawerActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var btnVolver: ImageButton
