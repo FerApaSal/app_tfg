@@ -3,30 +3,25 @@ package com.example.tfg_app_makeup.view.admin
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import com.bumptech.glide.Glide
+import android.widget.*
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.auth.LoginActivity
+import com.example.tfg_app_makeup.helpers.UsuarioHelper
 import com.example.tfg_app_makeup.utils.Session
 import com.example.tfg_app_makeup.view.admin.citas.CitasAdminActivity
-import com.example.tfg_app_makeup.view.admin.material.MaterialListActivity
-import com.example.tfg_app_makeup.view.admin.toDoList.ToDoListActivity
+import com.example.tfg_app_makeup.view.admin.material.ListaMaterialesActivity
+import com.example.tfg_app_makeup.view.admin.toDoList.ListaTareasActivity
 import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.example.tfg_app_makeup.view.common.PerfilActivity
 
 /**
  * Menú principal del perfil administradora (maquilladora).
- * Muestra la imagen y nombre del usuario logueado.
- * Contiene accesos a funcionalidades específicas del perfil.
+ * Muestra los accesos a funcionalidades principales, imagen de perfil y nombre del usuario logueado.
  */
 class MenuAdminActivity : BaseDrawerActivity() {
 
-    private lateinit var ivPerfilAdmin: ImageView
     private lateinit var tvBienvenida: TextView
-
+    private lateinit var ivPerfilAdmin: ImageView
     private lateinit var btnCitas: Button
     private lateinit var btnClientes: Button
     private lateinit var btnMateriales: Button
@@ -36,55 +31,36 @@ class MenuAdminActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Aquí solo inflamos el layout del contenido, no el base (el base ya lo gestiona BaseDrawerActivity)
         setContentView(R.layout.activity_menu_admin)
 
-        ivPerfilAdmin = findViewById(R.id.ivPerfilAdmin)
-        tvBienvenida = findViewById(R.id.tvBienvenida)
+        inicializarComponentes()
+        configurarListeners()
+        configurarMenuHamburguesa()
+        cargarDatosUsuario()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        cargarDatosUsuario()
+    }
+
+    /**
+     * Enlaza variables con los elementos del layout.
+     */
+    private fun inicializarComponentes() {
+        tvBienvenida = findViewById(R.id.tvBienvenida)
+        ivPerfilAdmin = findViewById(R.id.ivPerfilAdmin)
         btnCitas = findViewById(R.id.btnGestionCitas)
         btnClientes = findViewById(R.id.btnGestionUsuarios)
         btnMateriales = findViewById(R.id.btnGestionMateriales)
         btnToDoList = findViewById(R.id.btnGestionTareas)
         btnNovias = findViewById(R.id.btnSeccionNovias)
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion)
-
-        cargarDatosUsuario()
-        configurarListeners()
-        configurarMenuHamburguesa()
     }
 
-    private fun cargarDatosUsuario() {
-        val usuario = Session.usuarioActual
-
-        if (usuario == null) {
-            Log.e("MenuAdminActivity", "No hay usuario activo en sesión.")
-            tvBienvenida.text = "¡Hola!"
-            return
-        }
-
-        tvBienvenida.text = "¡Hola, ${usuario.nombre}!"
-
-        try {
-            if (!usuario.imagenUrl.isNullOrBlank()) {
-                Glide.with(this)
-                    .load(usuario.imagenUrl)
-                    .placeholder(R.drawable.ic_user_placeholder)
-                    .error(R.drawable.ic_user_placeholder)
-                    .circleCrop()
-                    .into(ivPerfilAdmin)
-
-                Log.d("MenuAdminActivity", "Imagen de perfil cargada: ${usuario.imagenUrl}")
-            } else {
-                ivPerfilAdmin.setImageResource(R.drawable.ic_user_placeholder)
-                Log.d("MenuAdminActivity", "Usuario sin imagen. Se usa imagen por defecto.")
-            }
-        } catch (e: Exception) {
-            Log.e("MenuAdminActivity", "Error al cargar imagen de perfil: ${e.message}", e)
-        }
-    }
-
+    /**
+     * Asigna eventos a cada botón de la interfaz.
+     */
     private fun configurarListeners() {
         btnCitas.setOnClickListener {
             startActivity(Intent(this, CitasAdminActivity::class.java))
@@ -95,11 +71,11 @@ class MenuAdminActivity : BaseDrawerActivity() {
         }
 
         btnMateriales.setOnClickListener {
-            startActivity(Intent(this, MaterialListActivity::class.java))
+            startActivity(Intent(this, ListaMaterialesActivity::class.java))
         }
 
         btnToDoList.setOnClickListener {
-            startActivity(Intent(this, ToDoListActivity::class.java))
+            startActivity(Intent(this, ListaTareasActivity::class.java))
         }
 
         btnNovias.setOnClickListener {
@@ -118,5 +94,20 @@ class MenuAdminActivity : BaseDrawerActivity() {
             startActivity(intent)
             Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    /**
+     * Muestra el nombre del usuario y su imagen de perfil (si está disponible).
+     */
+    private fun cargarDatosUsuario() {
+        val usuario = Session.usuarioActual
+
+        tvBienvenida.text = if (usuario != null) {
+            "¡Hola, ${usuario.nombre}!"
+        } else {
+            "¡Hola!"
+        }
+
+        UsuarioHelper.cargarImagenPerfil(this, usuario?.imagenUrl, ivPerfilAdmin)
     }
 }

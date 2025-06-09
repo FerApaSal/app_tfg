@@ -44,5 +44,4 @@ object Session {
             Log.w("Session", "No hay ID guardado en preferencias")
         }
     }
-
 }

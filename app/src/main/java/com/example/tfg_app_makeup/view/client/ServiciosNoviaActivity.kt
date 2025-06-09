@@ -5,7 +5,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tfg_app_makeup.R
-import com.example.tfg_app_makeup.helpers.AssetHelper
+import com.example.tfg_app_makeup.helpers.NoviasHelper
 
 /**
  * Pantalla que muestra la imagen informativa de servicios nupciales.
@@ -40,7 +40,7 @@ class ServiciosNoviaActivity : AppCompatActivity() {
      * Carga la imagen estática de servicios para novias desde la carpeta de assets.
      */
     private fun cargarImagenInformativa() {
-        val drawable = AssetHelper.cargarImagenDesdeAssets(this, "servicios_novia.jpg")
+        val drawable = NoviasHelper.cargarImagenDesdeAssets(this, "servicios_novia.jpg")
         drawable?.let {
             imageView.setImageDrawable(it)
         }

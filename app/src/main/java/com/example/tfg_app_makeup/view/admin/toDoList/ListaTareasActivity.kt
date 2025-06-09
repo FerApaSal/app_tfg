@@ -1,18 +1,17 @@
 package com.example.tfg_app_makeup.view.admin.toDoList
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.adapter.TareaAdapter
 import com.example.tfg_app_makeup.controllers.TareaController
+import com.example.tfg_app_makeup.helpers.TareaHelper
 import com.example.tfg_app_makeup.model.Tarea
 import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -21,7 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  * Pantalla principal de la sección ToDoList.
  * Muestra las tareas con opciones para agregar, editar, eliminar y marcar como completadas.
  */
-class ToDoListActivity : BaseDrawerActivity() {
+class ListaTareasActivity : BaseDrawerActivity() {
 
     private lateinit var rvTareas: RecyclerView
     private lateinit var fabAgregarTarea: FloatingActionButton
@@ -34,15 +33,12 @@ class ToDoListActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Solo inflamos el contenido específico, BaseDrawerActivity se encarga del layout base
         setContentView(R.layout.activity_todolist)
 
         tareaController = TareaController(this)
 
         inicializarComponentes()
         configurarListeners()
-        configurarMenuHamburguesa()
     }
 
     override fun onResume() {
@@ -50,9 +46,6 @@ class ToDoListActivity : BaseDrawerActivity() {
         cargarTareas()
     }
 
-    /**
-     * Enlaza elementos visuales y configura el RecyclerView.
-     */
     private fun inicializarComponentes() {
         rvTareas = findViewById(R.id.rvTareas)
         fabAgregarTarea = findViewById(R.id.fabAgregarTarea)
@@ -62,9 +55,6 @@ class ToDoListActivity : BaseDrawerActivity() {
         rvTareas.layoutManager = LinearLayoutManager(this)
     }
 
-    /**
-     * Asigna listeners para los botones de la vista.
-     */
     private fun configurarListeners() {
         fabAgregarTarea.setOnClickListener {
             val intent = Intent(this, FormularioTareaActivity::class.java)
@@ -76,9 +66,6 @@ class ToDoListActivity : BaseDrawerActivity() {
         }
     }
 
-    /**
-     * Carga las tareas desde la base de datos y refresca el adapter.
-     */
     private fun cargarTareas() {
         try {
             listaTareas = tareaController.obtenerTodas().toMutableList()
@@ -109,22 +96,14 @@ class ToDoListActivity : BaseDrawerActivity() {
         }
     }
 
-    /**
-     * Muestra un diálogo de confirmación antes de eliminar la tarea.
-     */
     private fun mostrarDialogoConfirmacion(tarea: Tarea) {
-        AlertDialog.Builder(this)
-            .setTitle("Eliminar tarea")
-            .setMessage("¿Estás seguro de que deseas eliminar esta tarea?")
-            .setPositiveButton("Sí") { _: DialogInterface, _: Int ->
-                if (tareaController.eliminar(tarea.id)) {
-                    Toast.makeText(this, "Tarea eliminada", Toast.LENGTH_SHORT).show()
-                    cargarTareas()
-                } else {
-                    Toast.makeText(this, "Error al eliminar", Toast.LENGTH_SHORT).show()
-                }
+        TareaHelper.mostrarDialogoEliminar(this) {
+            if (tareaController.eliminar(tarea.id)) {
+                Toast.makeText(this, "Tarea eliminada", Toast.LENGTH_SHORT).show()
+                cargarTareas()
+            } else {
+                Toast.makeText(this, "Error al eliminar", Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("No", null)
-            .show()
+        }
     }
 }

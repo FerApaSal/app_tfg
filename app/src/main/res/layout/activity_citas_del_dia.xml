@@ -27,31 +27,20 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/btnVolverCitasDia"
         android:layout_alignTop="@id/btnVolverCitasDia"
-        android:layout_marginStart="95dp"
+        android:layout_marginStart="55dp"
         android:text="Citas del día"
         android:textSize="20sp"
         android:textColor="@color/rosaRoto"
         android:fontFamily="@font/apercu_bold" />
 
-    <!-- Subtítulo dinámico con la fecha -->
-    <TextView
-        android:id="@+id/tvFechaSeleccionada"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnVolverCitasDia"
-        android:layout_marginTop="6dp"
-        android:text="dd/mm/aaaa"
-        android:textColor="@color/rosaRoto"
-        android:layout_centerHorizontal="true"
-        android:textSize="16sp"
-        android:fontFamily="@font/apercu_bold" />
+
 
     <!-- Lista de citas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCitasDia"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tvFechaSeleccionada"
+        android:layout_below="@id/tvTituloCitasDia"
         android:layout_marginTop="8dp"
         tools:listitem="@layout/item_cita_admin" />
 

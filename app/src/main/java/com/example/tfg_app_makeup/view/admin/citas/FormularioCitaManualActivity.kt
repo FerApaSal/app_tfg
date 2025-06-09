@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.controllers.CitaController
+import com.example.tfg_app_makeup.helpers.CitaHelper
 import com.example.tfg_app_makeup.model.Cita
 import com.example.tfg_app_makeup.utils.Session
 import java.util.*
@@ -38,6 +39,9 @@ class FormularioCitaManualActivity : AppCompatActivity() {
         configurarListeners()
     }
 
+    /**
+     * Enlaza variables con los elementos visuales del layout.
+     */
     private fun inicializarComponentes() {
         etNombreCliente = findViewById(R.id.etNombreCliente)
         etTelefonoCliente = findViewById(R.id.etTelefonoCliente)
@@ -52,6 +56,9 @@ class FormularioCitaManualActivity : AppCompatActivity() {
         spinnerTipo.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, tipos)
     }
 
+    /**
+     * Configura los DatePicker y TimePicker para los campos de fecha y hora.
+     */
     private fun configurarPickers() {
         etFecha.setOnClickListener {
             val calendario = Calendar.getInstance()
@@ -87,6 +94,9 @@ class FormularioCitaManualActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Asigna comportamiento a los botones de guardar y volver.
+     */
     private fun configurarListeners() {
         btnGuardar.setOnClickListener {
             val nombre = etNombreCliente.text.toString().trim()
@@ -96,10 +106,7 @@ class FormularioCitaManualActivity : AppCompatActivity() {
             val hora = etHora.text.toString().trim()
             val tipo = spinnerTipo.selectedItem.toString()
 
-            if (nombre.isEmpty() || telefono.isEmpty() || direccion.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
-                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            if (CitaHelper.hayCamposVacios(this, nombre, telefono, direccion, fecha, hora)) return@setOnClickListener
 
             val idUsuario = Session.usuarioActual?.id
             if (idUsuario.isNullOrBlank()) {

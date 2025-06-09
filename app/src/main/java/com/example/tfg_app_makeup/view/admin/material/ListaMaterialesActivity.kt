@@ -1,6 +1,5 @@
 package com.example.tfg_app_makeup.view.admin.material
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,15 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.adapters.MaterialAdapter
 import com.example.tfg_app_makeup.controllers.MaterialController
+import com.example.tfg_app_makeup.helpers.MaterialHelper
 import com.example.tfg_app_makeup.model.Material
 import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
-import com.example.tfg_app_makeup.view.admin.materiales.FormularioMaterialActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * Muestra la lista de materiales y permite acciones CRUD.
  */
-class MaterialListActivity : BaseDrawerActivity() {
+class ListaMaterialesActivity : BaseDrawerActivity() {
 
     private lateinit var rvMateriales: RecyclerView
     private lateinit var fabAgregarMaterial: FloatingActionButton
@@ -33,9 +32,8 @@ class MaterialListActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Drawer gestionado por BaseDrawerActivity
-        setContentView(R.layout.activity_lista_materiales)
+        setContentView(R.layout.activity_base_drawer)
+        val contenido = layoutInflater.inflate(R.layout.activity_todolist, findViewById(R.id.contenidoPrincipal))
 
         materialController = MaterialController(this)
 
@@ -49,6 +47,9 @@ class MaterialListActivity : BaseDrawerActivity() {
         cargarMateriales()
     }
 
+    /**
+     * Enlaza componentes visuales con variables.
+     */
     private fun inicializarComponentes() {
         rvMateriales = findViewById(R.id.rvMateriales)
         fabAgregarMaterial = findViewById(R.id.fabAgregarMaterial)
@@ -58,6 +59,9 @@ class MaterialListActivity : BaseDrawerActivity() {
         rvMateriales.layoutManager = LinearLayoutManager(this)
     }
 
+    /**
+     * Configura los botones de acción.
+     */
     private fun configurarListeners() {
         fabAgregarMaterial.setOnClickListener {
             val intent = Intent(this, FormularioMaterialActivity::class.java)
@@ -69,6 +73,9 @@ class MaterialListActivity : BaseDrawerActivity() {
         }
     }
 
+    /**
+     * Carga los materiales desde la base de datos.
+     */
     private fun cargarMateriales() {
         try {
             listaMateriales = materialController.obtenerTodos().toMutableList()
@@ -81,7 +88,9 @@ class MaterialListActivity : BaseDrawerActivity() {
                     startActivity(intent)
                 },
                 onEliminar = { material ->
-                    mostrarConfirmacionEliminacion(material)
+                    MaterialHelper.confirmarEliminacion(this, material, materialController) {
+                        cargarMateriales()
+                    }
                 }
             )
             rvMateriales.adapter = materialAdapter
@@ -89,21 +98,5 @@ class MaterialListActivity : BaseDrawerActivity() {
             Log.e("MaterialesActivity", "Error al cargar materiales", e)
             Toast.makeText(this, "Error al cargar materiales", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun mostrarConfirmacionEliminacion(material: Material) {
-        AlertDialog.Builder(this)
-            .setTitle("Eliminar material")
-            .setMessage("¿Estás seguro de que deseas eliminar este material?")
-            .setPositiveButton("Sí") { _, _ ->
-                if (materialController.eliminar(material.id)) {
-                    Toast.makeText(this, "Material eliminado", Toast.LENGTH_SHORT).show()
-                    cargarMateriales()
-                } else {
-                    Toast.makeText(this, "Error al eliminar", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
     }
 }

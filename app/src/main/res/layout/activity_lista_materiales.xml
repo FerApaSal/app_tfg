@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/beige"
     android:padding="16dp"
-    tools:context=".view.admin.material.MaterialListActivity">
+    tools:context=".view.admin.material.ListaMaterialesActivity">
 
     <!-- Botón Menú hamburguesa -->
     <ImageButton

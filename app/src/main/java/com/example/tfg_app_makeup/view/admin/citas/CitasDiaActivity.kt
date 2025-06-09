@@ -4,83 +4,85 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.adapter.CitaAdminAdapter
 import com.example.tfg_app_makeup.controllers.CitaController
 import com.example.tfg_app_makeup.controllers.UsuarioController
+import com.example.tfg_app_makeup.helpers.CitaHelper
 import com.example.tfg_app_makeup.model.Cita
 import com.example.tfg_app_makeup.model.Usuario
+import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 
 /**
- * Muestra las citas aceptadas de un día específico para el perfil de administradora.
+ * Muestra las citas aceptadas para una fecha específica.
+ * Los datos se cargan desde la base local y se ordenan por hora ascendente.
  */
-class CitasDiaActivity : AppCompatActivity() {
+class CitasDiaActivity : BaseDrawerActivity() {
 
     private lateinit var rvCitas: RecyclerView
-    private lateinit var tvFecha: TextView
     private lateinit var btnVolver: ImageButton
+    private lateinit var tvTitulo: TextView
 
     private lateinit var citaController: CitaController
+    private lateinit var usuarioController: UsuarioController
     private lateinit var citaAdapter: CitaAdminAdapter
-    private lateinit var usuariosPorId: Map<String, Usuario>
 
-    private var listaCitas = mutableListOf<Cita>()
+    private var listaCitas: List<Cita> = emptyList()
+    private var mapaUsuarios: Map<String, Usuario> = emptyMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_citas_del_dia)
+        setContentView(R.layout.activity_base_drawer)
 
-        citaController = CitaController(this)
-        usuariosPorId = UsuarioController(this).obtenerUsuariosMapeados()
+        val contenido = layoutInflater.inflate(R.layout.activity_citas_del_dia, findViewById(R.id.contenidoPrincipal))
 
-        inicializarComponentes()
-        configurarListeners()
-        cargarCitasDelDia()
-    }
-
-    private fun inicializarComponentes() {
-        rvCitas = findViewById(R.id.rvCitasDia)
-        tvFecha = findViewById(R.id.tvFechaSeleccionada)
-        btnVolver = findViewById(R.id.btnVolverCitasDia)
+        rvCitas = contenido.findViewById(R.id.rvCitasDia)
+        btnVolver = contenido.findViewById(R.id.btnVolverCitasDia)
+        tvTitulo = contenido.findViewById(R.id.tvTituloCitasDia)
 
         rvCitas.layoutManager = LinearLayoutManager(this)
+
+        citaController = CitaController(this)
+        usuarioController = UsuarioController(this)
+
+        configurarListeners()
+        cargarDatos()
+        configurarMenuHamburguesa()
+    }
+
+    /**
+     * Carga y muestra las citas del día con los datos del cliente asociados.
+     */
+    private fun cargarDatos() {
+        val fechaSeleccionada = intent.getStringExtra("fechaSeleccionada") ?: return
+        tvTitulo.text = "Citas del $fechaSeleccionada"
+
+        // Obtener usuarios CLIENTE mapeados
+        mapaUsuarios = usuarioController.obtenerUsuariosMapeados()
+
+        // Obtener y filtrar citas aceptadas para la fecha seleccionada
+        listaCitas = citaController.obtenerCitasAceptadas().filter { it.fecha == fechaSeleccionada }
+
+        // Ordenar por hora ascendente
+        listaCitas = listaCitas.sortedBy { CitaHelper.convertirHoraAHoraEntera(it.hora) }
+
+        // Registrar posibles inconsistencias
+        for (cita in listaCitas) {
+            if (mapaUsuarios[cita.idUsuario] == null) {
+                Log.w("CitasDiaActivity", "Usuario no encontrado para la cita con ID: ${cita.id}")
+            }
+        }
+
+        // Cargar adaptador
+        citaAdapter = CitaAdminAdapter(listaCitas, mapaUsuarios)
+        rvCitas.adapter = citaAdapter
     }
 
     private fun configurarListeners() {
-        btnVolver.setOnClickListener { finish() }
-    }
-
-    private fun cargarCitasDelDia() {
-        val fecha = intent.getStringExtra("fechaSeleccionada")
-
-        if (fecha.isNullOrBlank()) {
-            Toast.makeText(this, "Fecha no válida", Toast.LENGTH_SHORT).show()
+        btnVolver.setOnClickListener {
             finish()
-            return
-        }
-
-        tvFecha.text = "Citas del $fecha"
-
-        try {
-            listaCitas = citaController
-                .obtenerPorFechaYEstado(fecha, "ACEPTADA")
-                .sortedBy { it.hora }
-                .toMutableList()
-
-            if (listaCitas.isEmpty()) {
-                Toast.makeText(this, "No hay citas aceptadas para esta fecha", Toast.LENGTH_SHORT).show()
-            }
-
-            citaAdapter = CitaAdminAdapter(listaCitas, usuariosPorId)
-            rvCitas.adapter = citaAdapter
-
-        } catch (e: Exception) {
-            Log.e("CitasDiaActivity", "Error al cargar citas", e)
-            Toast.makeText(this, "Error al cargar citas", Toast.LENGTH_SHORT).show()
         }
     }
 }

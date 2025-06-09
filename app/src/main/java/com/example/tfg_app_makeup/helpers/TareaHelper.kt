@@ -1,39 +1,39 @@
 package com.example.tfg_app_makeup.helpers
 
-import android.util.Log
+import android.app.AlertDialog
+import android.content.Context
+import android.widget.Toast
 
 object TareaHelper {
 
     /**
-     * Valida que los campos de la tarea no estén vacíos.
+     * Valida que los campos título, descripción y prioridad no estén vacíos.
      */
-    fun validarCampos(titulo: String, descripcion: String, prioridad: String): Boolean {
-        if (titulo.isBlank()) {
-            Log.w("TareaHelper", "El título está vacío.")
-            return false
-        }
-
-        if (descripcion.isBlank()) {
-            Log.w("TareaHelper", "La descripción está vacía.")
-            return false
-        }
-
-        if (prioridad.isBlank()) {
-            Log.w("TareaHelper", "La prioridad no ha sido seleccionada.")
-            return false
-        }
-
-        return true
+    fun validarCampos(
+        context: Context,
+        titulo: String,
+        descripcion: String,
+        prioridadSeleccionada: String
+    ): Boolean {
+        return if (titulo.isBlank() || descripcion.isBlank() || prioridadSeleccionada == "Selecciona prioridad") {
+            Toast.makeText(context, "Completa todos los campos", Toast.LENGTH_SHORT).show()
+            false
+        } else true
     }
 
-    /**
-     * Convierte un valor booleano a entero (0/1) para almacenamiento en base de datos.
-     */
-    fun booleanAEntero(valor: Boolean): Int = if (valor) 1 else 0
 
     /**
-     * Convierte un valor entero de la base de datos (0/1) a booleano.
+     * Muestra un diálogo de confirmación reutilizable para eliminar una tarea.
      */
-    fun enteroABoolean(valor: Int): Boolean = valor == 1
-
+    fun mostrarDialogoEliminar(
+        context: Context,
+        onConfirmar: () -> Unit
+    ) {
+        AlertDialog.Builder(context)
+            .setTitle("Eliminar tarea")
+            .setMessage("¿Estás seguro de que deseas eliminar esta tarea?")
+            .setPositiveButton("Sí") { _, _ -> onConfirmar() }
+            .setNegativeButton("No", null)
+            .show()
+    }
 }

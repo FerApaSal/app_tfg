@@ -7,8 +7,8 @@ import android.util.Log
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
+import com.example.tfg_app_makeup.helpers.NoviasHelper
 import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
-import java.io.File
 
 /**
  * Pantalla de administradora para subir una imagen informativa para novias.
@@ -21,20 +21,18 @@ class SeccionNoviasActivity : BaseDrawerActivity() {
     private lateinit var ivImagen: ImageView
 
     private val REQUEST_CODE_PICK_IMAGE = 201
-    private val NOMBRE_ARCHIVO_NOVIAS = "novias.jpg"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_base_drawer)
 
-        // Solo inflamos el contenido específico, BaseDrawerActivity ya gestiona el layout base
-        setContentView(R.layout.activity_seccion_novias)
+        val contenido = layoutInflater.inflate(R.layout.activity_seccion_novias, findViewById(R.id.contenidoPrincipal))
 
-        // Acceder a los componentes del layout inflado
-        btnSubirImagen = findViewById(R.id.btnSubirImagenNovias)
-        ivImagen = findViewById(R.id.ivImagenNovias)
-        btnVolver = findViewById(R.id.btnVolverNovias)
+        btnSubirImagen = contenido.findViewById(R.id.btnSubirImagenNovias)
+        btnVolver = contenido.findViewById(R.id.btnVolverNovias)
+        ivImagen = contenido.findViewById(R.id.ivImagenNovias)
 
-        cargarImagenSiExiste()
+        NoviasHelper.cargarImagenInformativa(this, ivImagen)
 
         btnSubirImagen.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -49,40 +47,18 @@ class SeccionNoviasActivity : BaseDrawerActivity() {
         configurarMenuHamburguesa()
     }
 
-    private fun cargarImagenSiExiste() {
-        val archivo = File(filesDir, NOMBRE_ARCHIVO_NOVIAS)
-        if (archivo.exists()) {
-            Glide.with(this)
-                .load(archivo)
-                .placeholder(R.drawable.ic_user_placeholder)
-                .error(R.drawable.ic_user_placeholder)
-                .into(ivImagen)
-        } else {
-            ivImagen.setImageResource(R.drawable.ic_user_placeholder)
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK && data?.data != null) {
-            val uri = data.data
-            try {
-                val inputStream = contentResolver.openInputStream(uri!!)
-                val archivoDestino = File(filesDir, NOMBRE_ARCHIVO_NOVIAS)
-                archivoDestino.outputStream().use { output ->
-                    inputStream?.copyTo(output)
-                }
-
+            val archivoGuardado = NoviasHelper.guardarImagenInformativa(this, data.data!!)
+            if (archivoGuardado != null) {
                 Glide.with(this)
-                    .load(archivoDestino)
+                    .load(archivoGuardado)
                     .placeholder(R.drawable.ic_user_placeholder)
                     .into(ivImagen)
-
                 Toast.makeText(this, "Imagen actualizada correctamente", Toast.LENGTH_SHORT).show()
-
-            } catch (e: Exception) {
-                Log.e("SeccionNoviasActivity", "Error al guardar imagen", e)
+            } else {
                 Toast.makeText(this, "Error al guardar imagen", Toast.LENGTH_SHORT).show()
             }
         }

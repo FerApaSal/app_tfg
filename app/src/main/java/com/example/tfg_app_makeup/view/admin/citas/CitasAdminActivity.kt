@@ -7,16 +7,15 @@ import android.view.View
 import android.widget.*
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.controllers.CitaController
+import com.example.tfg_app_makeup.helpers.CitaHelper
 import com.example.tfg_app_makeup.model.Cita
 import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.DayViewDecorator
-import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
-import com.prolificinteractive.materialcalendarview.spans.DotSpan
-import java.text.SimpleDateFormat
-import java.util.*
 
+/**
+ * Calendario principal del perfil administradora para ver y acceder a citas.
+ * Permite ver días con citas aceptadas y navegar a cada sección relacionada.
+ */
 class CitasAdminActivity : BaseDrawerActivity() {
 
     private lateinit var citaController: CitaController
@@ -28,12 +27,9 @@ class CitasAdminActivity : BaseDrawerActivity() {
     private lateinit var fabNuevaCita: View
 
     private var listaCitas = listOf<Cita>()
-    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Solo inflamos el layout específico, BaseDrawerActivity ya gestiona el layout base
         setContentView(R.layout.activity_admin_citas)
 
         citaController = CitaController(this)
@@ -48,6 +44,9 @@ class CitasAdminActivity : BaseDrawerActivity() {
         cargarCitasAceptadasYDecorar()
     }
 
+    /**
+     * Enlaza variables con los elementos visuales.
+     */
     private fun inicializarComponentes() {
         calendarView = findViewById(R.id.calendarView)
         etFechaBuscar = findViewById(R.id.etFechaBuscarCita)
@@ -57,6 +56,9 @@ class CitasAdminActivity : BaseDrawerActivity() {
         fabNuevaCita = findViewById(R.id.fabNuevaCita)
     }
 
+    /**
+     * Asigna los listeners a los botones y eventos de UI.
+     */
     private fun configurarListeners() {
         calendarView.setOnDateChangedListener { _, date, _ ->
             val fechaSeleccionada = "%02d/%02d/%04d".format(date.day, date.month + 1, date.year)
@@ -67,17 +69,11 @@ class CitasAdminActivity : BaseDrawerActivity() {
 
         btnBuscarCita.setOnClickListener {
             val fechaTexto = etFechaBuscar.text.toString().trim()
-
             if (fechaTexto.isEmpty()) {
                 Toast.makeText(this, "Introduce una fecha válida", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-            val formatoEsperado = Regex("""\d{2}/\d{2}/\d{4}""")
-            if (!formatoEsperado.matches(fechaTexto)) {
-                Toast.makeText(this, "Formato de fecha incorrecto", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            if (!CitaHelper.validarFormatoFecha(this, fechaTexto)) return@setOnClickListener
 
             val intent = Intent(this, CitasDiaActivity::class.java)
             intent.putExtra("fechaSeleccionada", fechaTexto)
@@ -85,8 +81,7 @@ class CitasAdminActivity : BaseDrawerActivity() {
         }
 
         btnCitasPendientes.setOnClickListener {
-            val intent = Intent(this, CitasPendientesActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, CitasPendientesActivity::class.java))
         }
 
         btnVolver.setOnClickListener {
@@ -94,41 +89,17 @@ class CitasAdminActivity : BaseDrawerActivity() {
         }
 
         fabNuevaCita.setOnClickListener {
-            val intent = Intent(this, FormularioCitaManualActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, FormularioCitaManualActivity::class.java))
         }
     }
 
+    /**
+     * Recupera las citas aceptadas y decora el calendario con ellas.
+     */
     private fun cargarCitasAceptadasYDecorar() {
         try {
             listaCitas = citaController.obtenerCitasAceptadas()
-
-            calendarView.removeDecorators()
-            calendarView.invalidateDecorators()
-
-            val diasConCitas = listaCitas.mapNotNull { cita ->
-                try {
-                    val parts = cita.fecha.split("/")
-                    CalendarDay.from(
-                        parts[2].toInt(),
-                        parts[1].toInt() - 1,
-                        parts[0].toInt()
-                    )
-                } catch (e: Exception) {
-                    null
-                }
-            }.toSet()
-
-            calendarView.addDecorator(object : DayViewDecorator {
-                override fun shouldDecorate(day: CalendarDay): Boolean {
-                    return diasConCitas.contains(day)
-                }
-
-                override fun decorate(view: DayViewFacade) {
-                    view.addSpan(DotSpan(8f, getColor(R.color.rosaRoto)))
-                }
-            })
-
+            CitaHelper.decorarFechasConCitas(this, calendarView, listaCitas)
         } catch (e: Exception) {
             Log.e("CitasAdmin", "Error al cargar o decorar calendario", e)
         }

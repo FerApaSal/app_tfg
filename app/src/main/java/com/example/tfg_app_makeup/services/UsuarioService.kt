@@ -5,8 +5,19 @@ import android.util.Log
 import com.example.tfg_app_makeup.db.AppDatabase
 import com.example.tfg_app_makeup.model.Usuario
 
+/**
+ * Servicio para gestionar las operaciones relacionadas con los usuarios en la base de datos.
+ *
+ * @param context Contexto de la aplicación, necesario para inicializar la base de datos.
+ */
 class UsuarioService(private val context: Context) {
 
+    /**
+     * Obtiene un usuario por su ID.
+     *
+     * @param id Identificador único del usuario.
+     * @return Objeto de tipo Usuario si se encuentra, `null` en caso contrario.
+     */
     fun obtenerPorId(id: String): Usuario? {
         val db = AppDatabase(context).readableDatabase
         var usuario: Usuario? = null
@@ -24,6 +35,12 @@ class UsuarioService(private val context: Context) {
         return usuario
     }
 
+    /**
+     * Obtiene un usuario por su correo.
+     *
+     * @param correo Correo del usuario.
+     * @return Objeto de tipo Usuario si se encuentra, `null` en caso contrario.
+     */
     fun obtenerPorCorreo(correo: String): Usuario? {
         val db = AppDatabase(context).readableDatabase
         var usuario: Usuario? = null
@@ -41,6 +58,12 @@ class UsuarioService(private val context: Context) {
         return usuario
     }
 
+    /**
+     * Inserta un nuevo usuario en la base de datos.
+     *
+     * @param usuario Objeto de tipo Usuario que se desea insertar.
+     * @return `true` si el usuario fue insertado correctamente, `false` en caso contrario.
+     */
     fun insertar(usuario: Usuario): Boolean {
         val db = AppDatabase(context).writableDatabase
         return try {
@@ -55,6 +78,12 @@ class UsuarioService(private val context: Context) {
         }
     }
 
+    /**
+     * Actualiza un usuario existente en la base de datos.
+     *
+     * @param usuario Objeto de tipo Usuario que se desea actualizar.
+     * @return `true` si el usuario fue actualizado correctamente, `false` en caso contrario.
+     */
     fun actualizar(usuario: Usuario): Boolean {
         val db = AppDatabase(context).writableDatabase
         return try {
@@ -69,22 +98,10 @@ class UsuarioService(private val context: Context) {
         }
     }
 
-    fun eliminarPorId(id: String): Boolean {
-        val db = AppDatabase(context).writableDatabase
-        return try {
-            val filas = db.delete("usuarios", "id = ?", arrayOf(id))
-            Log.d("UsuarioService", "Usuario eliminado: $id")
-            filas > 0
-        } catch (e: Exception) {
-            Log.e("UsuarioService", "Error al eliminar usuario: ${e.message}")
-            false
-        } finally {
-            db.close()
-        }
-    }
-
     /**
-     * Devuelve todos los usuarios registrados en la base de datos.
+     * Obtiene todos los usuarios registrados en la base de datos.
+     *
+     * @return Lista de objetos de tipo Usuario.
      */
     fun obtenerTodos(): List<Usuario> {
         val usuarios = mutableListOf<Usuario>()

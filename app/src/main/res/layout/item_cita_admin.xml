@@ -43,7 +43,7 @@
             android:layout_below="@id/tvNombreCliente"
             android:layout_marginTop="4dp"
             android:text="Novia"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/black"
             android:textSize="14sp"
             android:fontFamily="@font/apercu_regular" />
 
@@ -55,7 +55,7 @@
             android:layout_below="@id/tvTipoServicio"
             android:layout_marginTop="2dp"
             android:text="Calle Ejemplo 123"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/black"
             android:textSize="13sp"
             android:fontFamily="@font/apercu_regular" />
     </RelativeLayout>

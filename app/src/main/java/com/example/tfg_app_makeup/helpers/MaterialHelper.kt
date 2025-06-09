@@ -3,6 +3,10 @@ package com.example.tfg_app_makeup.helpers
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import com.example.tfg_app_makeup.controllers.MaterialController
+import com.example.tfg_app_makeup.model.Material
 import java.io.File
 
 /**
@@ -61,6 +65,36 @@ object MaterialHelper {
             Log.e("MaterialHelper", "Error al guardar imagen", e)
             null
         }
+    }
+
+    /**
+     * Muestra un diálogo de confirmación para eliminar un material.
+     * Si se confirma, lo elimina y ejecuta el callback de recarga.
+     *
+     * @param context Contexto desde donde se lanza el diálogo.
+     * @param material Material que se desea eliminar.
+     * @param controller Controlador que gestiona la operación.
+     * @param onRecargar Callback que se ejecuta si se elimina correctamente.
+     */
+    fun confirmarEliminacion(
+        context: Context,
+        material: Material,
+        controller: MaterialController,
+        onRecargar: () -> Unit
+    ) {
+        AlertDialog.Builder(context)
+            .setTitle("Eliminar material")
+            .setMessage("¿Estás seguro de que deseas eliminar este material?")
+            .setPositiveButton("Sí") { _, _ ->
+                if (controller.eliminar(material.id)) {
+                    Toast.makeText(context, "Material eliminado", Toast.LENGTH_SHORT).show()
+                    onRecargar()
+                } else {
+                    Toast.makeText(context, "Error al eliminar", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 
 }

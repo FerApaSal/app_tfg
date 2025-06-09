@@ -141,4 +141,13 @@ object UsuarioHelper {
             Log.d("UsuarioHelper", "Ruta vacía. Placeholder usado.")
         }
     }
+
+    /**
+     * Obtiene todos los usuarios con rol CLIENTE desde el controlador.
+     */
+    fun obtenerListaClientes(context: Context): List<Usuario> {
+        val controller = UsuarioController(context)
+        return controller.obtenerUsuariosPorRol("CLIENTE")
+    }
+
 }

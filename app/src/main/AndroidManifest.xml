@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+
     <!-- Para Android 13+ (permiso moderno) -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
@@ -18,7 +20,10 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:label="@string/app_name">
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -44,9 +49,9 @@
         <activity android:name=".view.admin.citas.CitasPendientesActivity"/>
         <activity android:name=".view.admin.citas.FormularioCitaManualActivity"/>
         <activity android:name=".view.admin.ListaClientesActivity"/>
-        <activity android:name=".view.admin.material.MaterialListActivity"/>
-        <activity android:name=".view.admin.materiales.FormularioMaterialActivity"/>
-        <activity android:name=".view.admin.toDoList.ToDoListActivity"/>
+        <activity android:name=".view.admin.material.ListaMaterialesActivity"/>
+        <activity android:name=".view.admin.material.FormularioMaterialActivity"/>
+        <activity android:name=".view.admin.toDoList.ListaTareasActivity"/>
         <activity android:name=".view.admin.toDoList.FormularioTareaActivity"/>
         <activity android:name=".view.admin.SeccionNoviasActivity"/>
 

@@ -1,14 +1,14 @@
-package com.example.tfg_app_makeup.view.admin.materiales
+package com.example.tfg_app_makeup.view.admin.material
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.controllers.MaterialController
+import com.example.tfg_app_makeup.helpers.MaterialHelper
 import com.example.tfg_app_makeup.model.Material
 import java.io.File
 import java.util.*
@@ -111,16 +111,17 @@ class FormularioMaterialActivity : AppCompatActivity() {
             val cantidadTexto = etCantidad.text.toString().trim()
             val estado = spinnerEstado.selectedItem.toString()
 
-            if (nombre.isEmpty() || descripcion.isEmpty() || cantidadTexto.isEmpty()) {
-                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
+            if (MaterialHelper.hayCamposVacios(nombre, cantidadTexto)) {
+                Toast.makeText(this, "Completa los campos obligatorios: Nombre y cantidad", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val cantidad = cantidadTexto.toIntOrNull()
-            if (cantidad == null || cantidad < 0) {
+            if (!MaterialHelper.esCantidadValida(cantidadTexto)) {
                 Toast.makeText(this, "Cantidad inválida", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            val cantidad = cantidadTexto.toInt()
 
             if (materialExistente == null) {
                 val nuevoMaterial = Material(
@@ -155,35 +156,14 @@ class FormularioMaterialActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK && data?.data != null) {
-            val uri = data.data
-            try {
-                val extension = contentResolver.getType(uri!!)?.let {
-                    when {
-                        it.contains("png") -> ".png"
-                        it.contains("jpeg") || it.contains("jpg") -> ".jpg"
-                        else -> ".img"
-                    }
-                } ?: ".img"
-
-                val timestamp = System.currentTimeMillis()
-                val file = File(filesDir, "material_$timestamp$extension")
-                val inputStream = contentResolver.openInputStream(uri)
-
-                file.outputStream().use { output ->
-                    inputStream?.copyTo(output)
-                }
-
-                rutaImagenSeleccionada = file.absolutePath
-
+            rutaImagenSeleccionada = MaterialHelper.guardarImagenDesdeGaleria(this, data.data!!)
+            if (rutaImagenSeleccionada != null) {
                 Glide.with(this)
-                    .load(file)
+                    .load(File(rutaImagenSeleccionada))
                     .placeholder(R.drawable.ic_user_placeholder)
                     .into(ivPreviewMaterial)
-
                 Toast.makeText(this, "Imagen cargada", Toast.LENGTH_SHORT).show()
-
-            } catch (e: Exception) {
-                Log.e("FormularioMaterial", "Error al guardar imagen", e)
+            } else {
                 Toast.makeText(this, "Error al guardar imagen", Toast.LENGTH_SHORT).show()
             }
         }

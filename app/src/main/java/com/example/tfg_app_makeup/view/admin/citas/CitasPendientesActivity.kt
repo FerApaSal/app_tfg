@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,9 +11,13 @@ import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.adapter.CitaPendienteAdapter
 import com.example.tfg_app_makeup.controllers.CitaController
 import com.example.tfg_app_makeup.controllers.UsuarioController
+import com.example.tfg_app_makeup.helpers.CitaHelper
 import com.example.tfg_app_makeup.model.Cita
 import com.example.tfg_app_makeup.model.Usuario
 
+/**
+ * Muestra la lista de citas pendientes y permite aceptarlas o rechazarlas.
+ */
 class CitasPendientesActivity : AppCompatActivity() {
 
     private lateinit var rvCitas: RecyclerView
@@ -39,16 +42,25 @@ class CitasPendientesActivity : AppCompatActivity() {
         cargarCitasPendientes()
     }
 
+    /**
+     * Enlaza variables con elementos del layout.
+     */
     private fun inicializarComponentes() {
         rvCitas = findViewById(R.id.rvCitasPendientes)
         btnVolver = findViewById(R.id.btnVolverPendientes)
         rvCitas.layoutManager = LinearLayoutManager(this)
     }
 
+    /**
+     * Asigna comportamiento al botón de retroceso.
+     */
     private fun configurarListeners() {
         btnVolver.setOnClickListener { finish() }
     }
 
+    /**
+     * Carga las citas con estado PENDIENTE y las muestra en pantalla.
+     */
     private fun cargarCitasPendientes() {
         try {
             listaCitas = citaController.obtenerPorEstado("PENDIENTE").toMutableList()
@@ -67,7 +79,9 @@ class CitasPendientesActivity : AppCompatActivity() {
                     }
                 },
                 onRechazar = { cita ->
-                    mostrarDialogoRechazo(cita)
+                    CitaHelper.confirmarRechazoCita(this, cita, citaController) {
+                        cargarCitasPendientes()
+                    }
                 }
             )
 
@@ -78,22 +92,4 @@ class CitasPendientesActivity : AppCompatActivity() {
             Toast.makeText(this, "Error al cargar citas", Toast.LENGTH_SHORT).show()
         }
     }
-
-    private fun mostrarDialogoRechazo(cita: Cita) {
-        AlertDialog.Builder(this)
-            .setTitle("Rechazar cita")
-            .setMessage("¿Estás segura de que deseas rechazar esta cita?")
-            .setPositiveButton("Sí") { _, _ ->
-                cita.estado = "RECHAZADA"
-                if (citaController.actualizar(cita)) {
-                    Toast.makeText(this, "Cita rechazada", Toast.LENGTH_SHORT).show()
-                    cargarCitasPendientes()
-                } else {
-                    Toast.makeText(this, "Error al rechazar la cita", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
-    }
-
 }

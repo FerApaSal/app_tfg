@@ -1,4 +1,6 @@
 <resources>
+    <string name="app_name">Merche Makeup</string>
+
     <string name="politica_privacidad_texto">
     <![CDATA[
     Esta aplicación gestiona datos personales con el único fin de facilitar la reserva de citas.

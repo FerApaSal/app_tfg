@@ -6,23 +6,31 @@ import com.example.tfg_app_makeup.helpers.CitaHelper
 import com.example.tfg_app_makeup.model.Cita
 import com.example.tfg_app_makeup.services.CitaService
 
+/**
+ * Controlador para gestionar las operaciones relacionadas con las citas.
+ * Se encarga de interactuar con el servicio de citas y realizar validaciones necesarias.
+ *
+ * @param context Contexto de la aplicación, necesario para inicializar el servicio.
+ */
 class CitaController(context: Context) {
 
     private val service = CitaService(context)
 
+    /**
+     * Obtiene todas las citas que tienen el estado "ACEPTADA".
+     *
+     * @return Lista de citas aceptadas.
+     */
     fun obtenerCitasAceptadas(): List<Cita> {
         return service.obtenerTodos().filter { it.estado.uppercase() == "ACEPTADA" }
     }
 
-
-    fun obtenerId(id: String): Cita? {
-        return service.obtenerPorId(id)
-    }
-
-    fun obtenerPorUsuario(idUsuario: String): List<Cita> {
-        return service.obtenerPorUsuario(idUsuario)
-    }
-
+    /**
+     * Inserta una nueva cita en la base de datos si es válida.
+     *
+     * @param cita Objeto de tipo Cita que se desea insertar.
+     * @return `true` si la cita fue insertada correctamente, `false` en caso contrario.
+     */
     fun insertar(cita: Cita): Boolean {
         return if (CitaHelper.validar(cita)) {
             val result = service.insertar(cita)
@@ -34,6 +42,12 @@ class CitaController(context: Context) {
         }
     }
 
+    /**
+     * Actualiza una cita existente en la base de datos si es válida.
+     *
+     * @param cita Objeto de tipo Cita que se desea actualizar.
+     * @return `true` si la cita fue actualizada correctamente, `false` en caso contrario.
+     */
     fun actualizar(cita: Cita): Boolean {
         return if (CitaHelper.validar(cita)) {
             val result = service.actualizar(cita)
@@ -45,12 +59,12 @@ class CitaController(context: Context) {
         }
     }
 
-    fun eliminarPorId(id: String): Boolean {
-        val result = service.eliminarPorId(id)
-        Log.d("CitaController", "Delete resultado: $result")
-        return result
-    }
-
+    /**
+     * Obtiene todas las citas asociadas a un usuario específico.
+     *
+     * @param idUsuario ID del usuario cuyas citas se desean obtener.
+     * @return Lista de citas asociadas al usuario. Si ocurre un error, devuelve una lista vacía.
+     */
     fun obtenerCitasPorUsuario(idUsuario: String): List<Cita> {
         return try {
             service.obtenerPorUsuario(idUsuario)
@@ -60,6 +74,16 @@ class CitaController(context: Context) {
         }
     }
 
+    /**
+     * Crea un objeto de tipo Cita con los datos proporcionados.
+     *
+     * @param tipoServicio Tipo de servicio de la cita.
+     * @param fecha Fecha de la cita en formato "dd/MM/yyyy".
+     * @param hora Hora de la cita.
+     * @param direccion Dirección donde se realizará la cita.
+     * @param idUsuario ID del usuario asociado a la cita.
+     * @return Objeto de tipo Cita con los datos proporcionados.
+     */
     fun crearCita(
         tipoServicio: String,
         fecha: String,
@@ -77,14 +101,22 @@ class CitaController(context: Context) {
         )
     }
 
+    /**
+     * Obtiene todas las citas que tienen un estado específico.
+     *
+     * @param estado Estado de las citas que se desean obtener.
+     * @return Lista de citas con el estado especificado.
+     */
     fun obtenerPorEstado(estado: String): List<Cita> {
         return service.obtenerPorEstado(estado)
     }
 
     /**
      * Devuelve todas las citas con una fecha y estado concretos.
-     * @param fecha Fecha en formato "dd/MM/yyyy"
-     * @param estado Estado de la cita (por ejemplo: "ACEPTADA")
+     *
+     * @param fecha Fecha en formato "dd/MM/yyyy".
+     * @param estado Estado de la cita (por ejemplo: "ACEPTADA").
+     * @return Lista de citas que coinciden con la fecha y el estado proporcionados.
      */
     fun obtenerPorFechaYEstado(fecha: String, estado: String): List<Cita> {
         return service.obtenerPorFechaYEstado(fecha, estado)
