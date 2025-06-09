@@ -33,12 +33,15 @@ class MaterialListActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Drawer gestionado por BaseDrawerActivity
         setContentView(R.layout.activity_lista_materiales)
 
         materialController = MaterialController(this)
 
         inicializarComponentes()
         configurarListeners()
+        configurarMenuHamburguesa()
     }
 
     override fun onResume() {

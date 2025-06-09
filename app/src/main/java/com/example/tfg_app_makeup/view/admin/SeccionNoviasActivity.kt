@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
@@ -26,11 +25,14 @@ class SeccionNoviasActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Solo inflamos el contenido específico, BaseDrawerActivity ya gestiona el layout base
         setContentView(R.layout.activity_seccion_novias)
 
-        btnVolver = findViewById(R.id.btnVolverNovias)
+        // Acceder a los componentes del layout inflado
         btnSubirImagen = findViewById(R.id.btnSubirImagenNovias)
         ivImagen = findViewById(R.id.ivImagenNovias)
+        btnVolver = findViewById(R.id.btnVolverNovias)
 
         cargarImagenSiExiste()
 
@@ -43,11 +45,10 @@ class SeccionNoviasActivity : BaseDrawerActivity() {
         btnVolver.setOnClickListener {
             finish()
         }
+
+        configurarMenuHamburguesa()
     }
 
-    /**
-     * Carga la imagen previamente guardada si existe en almacenamiento local.
-     */
     private fun cargarImagenSiExiste() {
         val archivo = File(filesDir, NOMBRE_ARCHIVO_NOVIAS)
         if (archivo.exists()) {
@@ -61,9 +62,6 @@ class SeccionNoviasActivity : BaseDrawerActivity() {
         }
     }
 
-    /**
-     * Maneja el resultado de selección de imagen desde la galería.
-     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

@@ -10,11 +10,11 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.auth.LoginActivity
-import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.example.tfg_app_makeup.utils.Session
 import com.example.tfg_app_makeup.view.admin.citas.CitasAdminActivity
 import com.example.tfg_app_makeup.view.admin.material.MaterialListActivity
 import com.example.tfg_app_makeup.view.admin.toDoList.ToDoListActivity
+import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.example.tfg_app_makeup.view.common.PerfilActivity
 
 /**
@@ -27,7 +27,6 @@ class MenuAdminActivity : BaseDrawerActivity() {
     private lateinit var ivPerfilAdmin: ImageView
     private lateinit var tvBienvenida: TextView
 
-    // Botones de navegación
     private lateinit var btnCitas: Button
     private lateinit var btnClientes: Button
     private lateinit var btnMateriales: Button
@@ -38,31 +37,24 @@ class MenuAdminActivity : BaseDrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_base_drawer)
+        // Aquí solo inflamos el layout del contenido, no el base (el base ya lo gestiona BaseDrawerActivity)
+        setContentView(R.layout.activity_menu_admin)
 
-        // Inflar el layout específico dentro del contenedor
-        val contenido = layoutInflater.inflate(R.layout.activity_menu_admin, findViewById(R.id.contenidoPrincipal))
+        ivPerfilAdmin = findViewById(R.id.ivPerfilAdmin)
+        tvBienvenida = findViewById(R.id.tvBienvenida)
 
-        // Acceder a los componentes dentro del layout inflado
-        ivPerfilAdmin = contenido.findViewById(R.id.ivPerfilAdmin)
-        tvBienvenida = contenido.findViewById(R.id.tvBienvenida)
-
-        btnCitas = contenido.findViewById(R.id.btnGestionCitas)
-        btnClientes = contenido.findViewById(R.id.btnGestionUsuarios)
-        btnMateriales = contenido.findViewById(R.id.btnGestionMateriales)
-        btnToDoList = contenido.findViewById(R.id.btnGestionTareas)
-        btnNovias = contenido.findViewById(R.id.btnSeccionNovias)
-        btnCerrarSesion = contenido.findViewById(R.id.btnCerrarSesion)
+        btnCitas = findViewById(R.id.btnGestionCitas)
+        btnClientes = findViewById(R.id.btnGestionUsuarios)
+        btnMateriales = findViewById(R.id.btnGestionMateriales)
+        btnToDoList = findViewById(R.id.btnGestionTareas)
+        btnNovias = findViewById(R.id.btnSeccionNovias)
+        btnCerrarSesion = findViewById(R.id.btnCerrarSesion)
 
         cargarDatosUsuario()
         configurarListeners()
         configurarMenuHamburguesa()
     }
 
-
-    /**
-     * Muestra los datos del usuario actual en la interfaz.
-     */
     private fun cargarDatosUsuario() {
         val usuario = Session.usuarioActual
 
@@ -93,38 +85,31 @@ class MenuAdminActivity : BaseDrawerActivity() {
         }
     }
 
-    /**
-     * Configura los listeners para los botones de navegación.
-     * Se activarán progresivamente al completar las pantallas correspondientes.
-     */
     private fun configurarListeners() {
+        btnCitas.setOnClickListener {
+            startActivity(Intent(this, CitasAdminActivity::class.java))
+        }
 
-         btnCitas.setOnClickListener {
-             startActivity(Intent(this, CitasAdminActivity::class.java))
-         }
+        btnClientes.setOnClickListener {
+            startActivity(Intent(this, ListaClientesActivity::class.java))
+        }
 
-         btnClientes.setOnClickListener {
-             startActivity(Intent(this, ListaClientesActivity::class.java))
-         }
+        btnMateriales.setOnClickListener {
+            startActivity(Intent(this, MaterialListActivity::class.java))
+        }
 
-         btnMateriales.setOnClickListener {
-             startActivity(Intent(this, MaterialListActivity::class.java))
-         }
-
-         btnToDoList.setOnClickListener {
-             startActivity(Intent(this, ToDoListActivity::class.java))
-         }
+        btnToDoList.setOnClickListener {
+            startActivity(Intent(this, ToDoListActivity::class.java))
+        }
 
         btnNovias.setOnClickListener {
             startActivity(Intent(this, SeccionNoviasActivity::class.java))
         }
 
         ivPerfilAdmin.setOnClickListener {
-            val intent = Intent(this, PerfilActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, PerfilActivity::class.java))
             Log.d("MenuAdminActivity", "Acceso a perfil desde imagen admin")
         }
-
 
         btnCerrarSesion.setOnClickListener {
             Session.cerrarSesion(this)

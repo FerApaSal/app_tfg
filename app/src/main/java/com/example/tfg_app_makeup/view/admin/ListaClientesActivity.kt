@@ -2,7 +2,6 @@ package com.example.tfg_app_makeup.view.admin
 
 import android.os.Bundle
 import android.widget.ImageButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_app_makeup.R
@@ -24,6 +23,8 @@ class ListaClientesActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // El layout base ya lo maneja BaseDrawerActivity
         setContentView(R.layout.activity_lista_clientes)
 
         recyclerView = findViewById(R.id.rvListaClientes)
@@ -39,5 +40,7 @@ class ListaClientesActivity : BaseDrawerActivity() {
         btnVolver.setOnClickListener {
             finish()
         }
+
+        configurarMenuHamburguesa()
     }
 }

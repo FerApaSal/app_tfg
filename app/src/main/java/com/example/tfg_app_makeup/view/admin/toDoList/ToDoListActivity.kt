@@ -8,7 +8,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_app_makeup.R
@@ -35,12 +34,15 @@ class ToDoListActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Solo inflamos el contenido específico, BaseDrawerActivity se encarga del layout base
         setContentView(R.layout.activity_todolist)
 
         tareaController = TareaController(this)
 
         inicializarComponentes()
         configurarListeners()
+        configurarMenuHamburguesa()
     }
 
     override fun onResume() {

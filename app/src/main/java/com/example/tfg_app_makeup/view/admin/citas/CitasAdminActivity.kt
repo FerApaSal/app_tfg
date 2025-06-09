@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.controllers.CitaController
 import com.example.tfg_app_makeup.model.Cita
@@ -33,11 +32,14 @@ class CitasAdminActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Solo inflamos el layout específico, BaseDrawerActivity ya gestiona el layout base
         setContentView(R.layout.activity_admin_citas)
 
         citaController = CitaController(this)
         inicializarComponentes()
         configurarListeners()
+        configurarMenuHamburguesa()
         cargarCitasAceptadasYDecorar()
     }
 
@@ -56,8 +58,6 @@ class CitasAdminActivity : BaseDrawerActivity() {
     }
 
     private fun configurarListeners() {
-
-        // Al seleccionar una fecha del calendario
         calendarView.setOnDateChangedListener { _, date, _ ->
             val fechaSeleccionada = "%02d/%02d/%04d".format(date.day, date.month + 1, date.year)
             val intent = Intent(this, CitasDiaActivity::class.java)
@@ -65,7 +65,6 @@ class CitasAdminActivity : BaseDrawerActivity() {
             startActivity(intent)
         }
 
-        // Al pulsar el botón de búsqueda por fecha manual
         btnBuscarCita.setOnClickListener {
             val fechaTexto = etFechaBuscar.text.toString().trim()
 
@@ -74,7 +73,6 @@ class CitasAdminActivity : BaseDrawerActivity() {
                 return@setOnClickListener
             }
 
-            // Validación básica de formato
             val formatoEsperado = Regex("""\d{2}/\d{2}/\d{4}""")
             if (!formatoEsperado.matches(fechaTexto)) {
                 Toast.makeText(this, "Formato de fecha incorrecto", Toast.LENGTH_SHORT).show()
@@ -112,9 +110,9 @@ class CitasAdminActivity : BaseDrawerActivity() {
                 try {
                     val parts = cita.fecha.split("/")
                     CalendarDay.from(
-                        parts[2].toInt(),          // Año
-                        parts[1].toInt() - 1,      // Mes (0-based en CalendarDay)
-                        parts[0].toInt()           // Día
+                        parts[2].toInt(),
+                        parts[1].toInt() - 1,
+                        parts[0].toInt()
                     )
                 } catch (e: Exception) {
                     null

@@ -1,9 +1,10 @@
 package com.example.tfg_app_makeup.view.common
 
 import android.content.Intent
-import android.view.View
-import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.view.ViewGroup
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -20,13 +21,14 @@ open class BaseDrawerActivity : AppCompatActivity() {
     private lateinit var navigationView: NavigationView
 
     override fun setContentView(layoutResID: Int) {
-        // Infla la vista con el drawer
+        // Infla la base con el DrawerLayout
         val root = layoutInflater.inflate(R.layout.activity_base_drawer, null)
-        val content = root.findViewById<View>(R.id.contenidoPrincipal) as View
-        layoutInflater.inflate(layoutResID, content as ViewGroup)
+        val contentFrame = root.findViewById<FrameLayout>(R.id.contenidoPrincipal)
+        layoutInflater.inflate(layoutResID, contentFrame, true)
 
         super.setContentView(root)
 
+        // Inicializar Drawer y NavigationView
         drawerLayout = root.findViewById(R.id.drawerLayout)
         navigationView = root.findViewById(R.id.navView)
 
@@ -36,14 +38,25 @@ open class BaseDrawerActivity : AppCompatActivity() {
     private fun configurarDrawer() {
         navigationView.setNavigationItemSelectedListener { item ->
             drawerLayout.closeDrawers()
-            when (item.itemId) {
-                R.id.nav_inicio -> startActivity(Intent(this, MenuAdminActivity::class.java))
-                R.id.nav_citas -> startActivity(Intent(this, CitasAdminActivity::class.java))
-                R.id.nav_clientes -> startActivity(Intent(this, ListaClientesActivity::class.java))
-                R.id.nav_materiales -> startActivity(Intent(this, MaterialListActivity::class.java))
-                R.id.nav_tareas -> startActivity(Intent(this, ToDoListActivity::class.java))
-                R.id.nav_servicios_novia -> startActivity(Intent(this, SeccionNoviasActivity::class.java))
+
+            // Previene abrir la misma actividad
+            val intent = when (item.itemId) {
+                R.id.nav_inicio -> Intent(this, MenuAdminActivity::class.java)
+                R.id.nav_citas -> Intent(this, CitasAdminActivity::class.java)
+                R.id.nav_clientes -> Intent(this, ListaClientesActivity::class.java)
+                R.id.nav_materiales -> Intent(this, MaterialListActivity::class.java)
+                R.id.nav_tareas -> Intent(this, ToDoListActivity::class.java)
+                R.id.nav_servicios_novia -> Intent(this, SeccionNoviasActivity::class.java)
+                else -> null
             }
+
+            intent?.let {
+                // Evita recargar la misma actividad
+                if (this::class.java != it.component?.className?.let { name -> Class.forName(name) }) {
+                    startActivity(it)
+                }
+            }
+
             true
         }
     }
@@ -51,6 +64,14 @@ open class BaseDrawerActivity : AppCompatActivity() {
     fun configurarMenuHamburguesa() {
         findViewById<ImageButton>(R.id.btnMenuHamburguesa)?.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
+        }
+    }
+
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
         }
     }
 }
