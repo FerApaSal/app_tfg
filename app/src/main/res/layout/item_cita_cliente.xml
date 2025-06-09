@@ -23,7 +23,7 @@
             android:text="Tipo de servicio"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/rosaRoto"
+            android:textColor="@color/black"
             android:fontFamily="@font/apercu_bold"
             tools:ignore="HardcodedText" />
 

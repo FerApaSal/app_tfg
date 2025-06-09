@@ -44,6 +44,7 @@
             android:hint="Título de la tarea"
             android:inputType="text"
             android:textColor="@color/black"
+            android:backgroundTint="@color/rosaRoto"
             android:textColorHint="@android:color/darker_gray"
             android:textCursorDrawable="@drawable/cursor_negro"
             android:fontFamily="@font/apercu_regular"
@@ -63,6 +64,7 @@
             android:maxLines="5"
             android:minHeight="48dp"
             android:padding="8dp"
+            android:backgroundTint="@color/rosaRoto"
             android:textColor="@color/black"
             android:textColorHint="@android:color/darker_gray"
             android:textCursorDrawable="@drawable/cursor_negro" />
@@ -73,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:backgroundTint="@color/rosaRoto"
             android:minHeight="48dp" />
 
         <!-- Checkbox: Completada (visible solo en modo edición) -->

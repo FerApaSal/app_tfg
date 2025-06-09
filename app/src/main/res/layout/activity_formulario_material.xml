@@ -75,6 +75,7 @@
             android:hint="Nombre del material"
             android:inputType="text"
             android:textColor="@color/black"
+            android:backgroundTint="@color/rosaRoto"
             android:textColorHint="@android:color/darker_gray"
             android:textCursorDrawable="@drawable/cursor_negro"
             android:fontFamily="@font/apercu_regular"
@@ -86,20 +87,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:backgroundTint="@color/rosaRoto"
+            android:fontFamily="@font/apercu_regular"
             android:hint="Descripción"
             android:inputType="textMultiLine"
-            android:minLines="3"
             android:maxLines="5"
+            android:minHeight="48dp"
             android:textColor="@color/black"
             android:textColorHint="@android:color/darker_gray"
-            android:textCursorDrawable="@drawable/cursor_negro"
-            android:fontFamily="@font/apercu_regular" />
+            android:textCursorDrawable="@drawable/cursor_negro" />
 
         <!-- Selector: Tipo de material -->
         <Spinner
             android:id="@+id/spinnerTipoMaterial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/rosaRoto"
             android:layout_marginTop="10dp"
             android:minHeight="48dp" />
 
@@ -108,6 +111,7 @@
             android:id="@+id/spinnerEstadoMaterial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/rosaRoto"
             android:layout_marginTop="10dp"
             android:minHeight="48dp" />
 
@@ -122,6 +126,7 @@
             android:textColorHint="@android:color/darker_gray"
             android:textCursorDrawable="@drawable/cursor_negro"
             android:fontFamily="@font/apercu_regular"
+            android:backgroundTint="@color/rosaRoto"
             android:layout_marginTop="10dp"
             android:minHeight="48dp" />
 

@@ -57,6 +57,7 @@
         android:fontFamily="@font/apercu_regular"
         android:textColor="@color/black"
         android:textColorHint="@android:color/darker_gray"
+        android:backgroundTint="@color/rosaRoto"
         android:textCursorDrawable="@drawable/cursor_negro"
         android:inputType="textPersonName"
         android:minHeight="48dp" />
@@ -71,6 +72,7 @@
         android:hint="Apellidos"
         android:fontFamily="@font/apercu_regular"
         android:textColor="@color/black"
+        android:backgroundTint="@color/rosaRoto"
         android:textColorHint="@android:color/darker_gray"
         android:textCursorDrawable="@drawable/cursor_negro"
         android:inputType="textPersonName"
@@ -85,6 +87,7 @@
         android:layout_marginTop="10dp"
         android:hint="Teléfono"
         android:fontFamily="@font/apercu_regular"
+        android:backgroundTint="@color/rosaRoto"
         android:textColor="@color/black"
         android:textColorHint="@android:color/darker_gray"
         android:textCursorDrawable="@drawable/cursor_negro"

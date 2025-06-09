@@ -58,6 +58,7 @@
         android:inputType="date"
         android:textColor="@color/black"
         android:textColorHint="@android:color/darker_gray"
+        android:backgroundTint="@color/rosaRoto"
         android:textCursorDrawable="@drawable/cursor_negro"
         android:fontFamily="@font/apercu_regular"
         android:minHeight="48dp" />
