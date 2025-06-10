@@ -13,6 +13,8 @@ import android.database.Cursor
  * @property direccion Dirección del lugar de la cita.
  * @property estado Estado de la cita (pendiente, aceptada, rechazada...).
  * @property idUsuario ID del usuario que solicitó la cita.
+ * @property nombreClienteManual Nombre del cliente ingresado manualmente (opcional).
+ * @property telefonoClienteManual Teléfono del cliente ingresado manualmente (opcional).
  */
 data class Cita(
     val id: String,
@@ -26,6 +28,10 @@ data class Cita(
     var nombreClienteManual: String? = null,
     var telefonoClienteManual: String? = null
 ) {
+    /**
+     * Convierte el objeto `Cita` a un objeto `ContentValues` para operaciones con SQLite.
+     * @return Objeto `ContentValues` con los datos de la cita.
+     */
     fun toContentValues(): ContentValues {
         return ContentValues().apply {
             put("id", id)
@@ -42,6 +48,11 @@ data class Cita(
     }
 
     companion object {
+        /**
+         * Crea un objeto `Cita` a partir de un cursor de SQLite.
+         * @param cursor Cursor que contiene los datos de la cita.
+         * @return Objeto `Cita` con los datos extraídos del cursor.
+         */
         fun fromCursor(cursor: Cursor): Cita {
             return Cita(
                 id = cursor.getString(cursor.getColumnIndexOrThrow("id")),

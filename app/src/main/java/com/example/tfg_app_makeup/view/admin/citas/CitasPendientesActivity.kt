@@ -34,12 +34,13 @@ class CitasPendientesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_citas_pendientes)
 
+        // Inicializa los controladores para manejar citas y usuarios
         citaController = CitaController(this)
         usuarioController = UsuarioController(this)
 
-        inicializarComponentes()
-        configurarListeners()
-        cargarCitasPendientes()
+        inicializarComponentes() // Enlaza los elementos del layout
+        configurarListeners() // Configura el comportamiento de los botones
+        cargarCitasPendientes() // Carga y muestra las citas pendientes
     }
 
     /**
@@ -48,14 +49,15 @@ class CitasPendientesActivity : AppCompatActivity() {
     private fun inicializarComponentes() {
         rvCitas = findViewById(R.id.rvCitasPendientes)
         btnVolver = findViewById(R.id.btnVolverPendientes)
-        rvCitas.layoutManager = LinearLayoutManager(this)
+        rvCitas.layoutManager =
+            LinearLayoutManager(this) // Configura el RecyclerView con un layout lineal
     }
 
     /**
      * Asigna comportamiento al botón de retroceso.
      */
     private fun configurarListeners() {
-        btnVolver.setOnClickListener { finish() }
+        btnVolver.setOnClickListener { finish() } // Finaliza la actividad al presionar el botón
     }
 
     /**
@@ -63,31 +65,36 @@ class CitasPendientesActivity : AppCompatActivity() {
      */
     private fun cargarCitasPendientes() {
         try {
+            // Obtiene las citas pendientes y los usuarios asociados
             listaCitas = citaController.obtenerPorEstado("PENDIENTE").toMutableList()
             mapaUsuarios = usuarioController.obtenerTodos().associateBy { it.id }
 
+            // Configura el adaptador del RecyclerView
             citaAdapter = CitaPendienteAdapter(
                 citas = listaCitas,
                 mapaUsuarios = mapaUsuarios,
                 onAceptar = { cita ->
+                    // Cambia el estado de la cita a "ACEPTADA" y actualiza la lista
                     cita.estado = "ACEPTADA"
                     if (citaController.actualizar(cita)) {
                         Toast.makeText(this, "Cita aceptada", Toast.LENGTH_SHORT).show()
-                        cargarCitasPendientes()
+                        cargarCitasPendientes() // Recarga las citas pendientes
                     } else {
                         Toast.makeText(this, "Error al aceptar", Toast.LENGTH_SHORT).show()
                     }
                 },
                 onRechazar = { cita ->
+                    // Confirma el rechazo de la cita y actualiza la lista
                     CitaHelper.confirmarRechazoCita(this, cita, citaController) {
                         cargarCitasPendientes()
                     }
                 }
             )
 
-            rvCitas.adapter = citaAdapter
+            rvCitas.adapter = citaAdapter // Asigna el adaptador al RecyclerView
 
         } catch (e: Exception) {
+            // Maneja errores al cargar las citas
             Log.e("CitasPendientesActivity", "Error al cargar citas", e)
             Toast.makeText(this, "Error al cargar citas", Toast.LENGTH_SHORT).show()
         }

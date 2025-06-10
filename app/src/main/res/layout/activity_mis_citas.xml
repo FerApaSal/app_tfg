@@ -43,7 +43,8 @@
         android:layout_below="@id/tvTituloMisCitas"
         android:layout_marginTop="16dp"
         android:clipToPadding="false"
-        android:paddingBottom="5dp" />
+        android:paddingBottom="5dp"
+        tools:listitem="@layout/item_cita_cliente"/>
 
     <!-- Texto por si no hay citas -->
     <TextView

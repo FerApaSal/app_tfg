@@ -2,7 +2,6 @@ package com.example.tfg_app_makeup.helpers
 
 import android.content.Context
 import android.util.Log
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.tfg_app_makeup.R
@@ -14,10 +13,15 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 
+/**
+ * Helper para gestionar operaciones relacionadas con las citas.
+ */
 object CitaHelper {
 
     /**
      * Valida los campos obligatorios de una cita.
+     * @param cita Objeto de tipo Cita a validar.
+     * @return true si todos los campos son válidos, false en caso contrario.
      */
     fun validar(cita: Cita): Boolean {
         if (cita.tipoServicio.isBlank()) {
@@ -44,8 +48,10 @@ object CitaHelper {
     }
 
     /**
-     * Valida si una fecha escrita en formato dd/MM/yyyy es válida.
-     * Muestra un Toast si no lo es.
+     * Valida si una fecha tiene el formato dd/MM/yyyy.
+     * @param context Contexto para mostrar mensajes.
+     * @param fecha Fecha a validar.
+     * @return true si el formato es válido, false en caso contrario.
      */
     fun validarFormatoFecha(context: Context, fecha: String): Boolean {
         val formatoEsperado = Regex("""\d{2}/\d{2}/\d{4}""")
@@ -57,13 +63,17 @@ object CitaHelper {
 
     /**
      * Decora un calendario con puntos en las fechas con citas aceptadas.
-     * Aplica un DotSpan en color rosaRoto.
+     * @param context Contexto para obtener colores.
+     * @param calendarView Vista del calendario a decorar.
+     * @param citas Lista de citas para decorar las fechas.
      */
     fun decorarFechasConCitas(context: Context, calendarView: MaterialCalendarView, citas: List<Cita>) {
         try {
+            // Eliminar decoraciones previas
             calendarView.removeDecorators()
             calendarView.invalidateDecorators()
 
+            // Convertir fechas de las citas a objetos CalendarDay
             val fechasDecoradas = citas.mapNotNull { cita ->
                 try {
                     val partes = cita.fecha.split("/")
@@ -77,6 +87,7 @@ object CitaHelper {
                 }
             }.toSet()
 
+            // Agregar decorador con puntos en las fechas
             calendarView.addDecorator(object : DayViewDecorator {
                 override fun shouldDecorate(day: CalendarDay): Boolean {
                     return fechasDecoradas.contains(day)
@@ -93,28 +104,11 @@ object CitaHelper {
     }
 
     /**
-     * Valida si la fecha recibida desde un intent es válida.
-     * Si la fecha es nula o está vacía, muestra un Toast y devuelve false.
-     *
-     * @param context Contexto de la actividad que llama.
-     * @param fecha Cadena con la fecha en formato dd/MM/yyyy.
-     * @return true si la fecha es válida, false si es nula o vacía.
-     */
-    fun validarFechaDesdeIntent(context: Context, fecha: String?): Boolean {
-        return if (fecha.isNullOrBlank()) {
-            Toast.makeText(context, "Fecha no válida", Toast.LENGTH_SHORT).show()
-            false
-        } else true
-    }
-
-    /**
      * Muestra un diálogo de confirmación para rechazar una cita.
-     * Si se confirma, actualiza su estado a RECHAZADA y ejecuta el callback.
-     *
-     * @param context Contexto desde donde se lanza el diálogo.
+     * @param context Contexto para mostrar el diálogo.
      * @param cita Objeto Cita a modificar.
      * @param citaController Controlador para actualizar la cita.
-     * @param onRecargar Callback a ejecutar si la operación es exitosa.
+     * @param onRecargar Callback a ejecutar tras rechazar la cita.
      */
     fun confirmarRechazoCita(
         context: Context,
@@ -139,12 +133,10 @@ object CitaHelper {
     }
 
     /**
-     * Valida que todos los campos requeridos del formulario estén completos.
-     * Muestra un Toast si alguno está vacío.
-     *
-     * @param context Contexto donde se mostrará el mensaje.
-     * @param campos Lista variable de cadenas a comprobar.
-     * @return true si alguno está vacío, false si todos tienen contenido.
+     * Verifica si hay campos vacíos en un formulario.
+     * @param context Contexto para mostrar mensajes.
+     * @param campos Lista de campos a validar.
+     * @return true si hay campos vacíos, false en caso contrario.
      */
     fun hayCamposVacios(context: Context, vararg campos: String): Boolean {
         return if (campos.any { it.isBlank() }) {
@@ -153,6 +145,11 @@ object CitaHelper {
         } else false
     }
 
+    /**
+     * Convierte una hora en formato HH:mm a un entero (HHmm).
+     * @param hora Hora en formato HH:mm.
+     * @return Hora como entero o null si ocurre un error.
+     */
     fun convertirHoraAHoraEntera(hora: String): Int? {
         return try {
             val partes = hora.split(":")

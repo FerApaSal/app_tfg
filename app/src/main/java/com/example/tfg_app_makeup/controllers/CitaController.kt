@@ -111,15 +111,4 @@ class CitaController(context: Context) {
         return service.obtenerPorEstado(estado)
     }
 
-    /**
-     * Devuelve todas las citas con una fecha y estado concretos.
-     *
-     * @param fecha Fecha en formato "dd/MM/yyyy".
-     * @param estado Estado de la cita (por ejemplo: "ACEPTADA").
-     * @return Lista de citas que coinciden con la fecha y el estado proporcionados.
-     */
-    fun obtenerPorFechaYEstado(fecha: String, estado: String): List<Cita> {
-        return service.obtenerPorFechaYEstado(fecha, estado)
-    }
-
 }

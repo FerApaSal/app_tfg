@@ -13,6 +13,9 @@ import com.example.tfg_app_makeup.model.Material
 import java.io.File
 import java.util.*
 
+/**
+ * Actividad para gestionar el formulario de creación o edición de materiales.
+ */
 class FormularioMaterialActivity : AppCompatActivity() {
 
     private lateinit var ivPreviewMaterial: ImageView
@@ -35,14 +38,18 @@ class FormularioMaterialActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_material)
 
+        // Inicializa el controlador y verifica si se está editando un material existente
         materialController = MaterialController(this)
         materialExistente = intent.getSerializableExtra("material") as? Material
 
-        inicializarComponentes()
-        configurarFormulario()
-        configurarListeners()
+        inicializarComponentes() // Enlaza los elementos del layout
+        configurarFormulario() // Configura el formulario según el contexto (nuevo o edición)
+        configurarListeners() // Asigna comportamiento a los botones
     }
 
+    /**
+     * Enlaza variables con los elementos visuales del layout.
+     */
     private fun inicializarComponentes() {
         ivPreviewMaterial = findViewById(R.id.ivPreviewMaterial)
         btnSubirImagen = findViewById(R.id.btnSubirImagenMaterial)
@@ -54,6 +61,7 @@ class FormularioMaterialActivity : AppCompatActivity() {
         btnGuardar = findViewById(R.id.btnGuardarMaterial)
         btnVolver = findViewById(R.id.btnVolverFormularioMaterial)
 
+        // Configura el spinner de tipos de material
         val tipos = arrayOf("Paletas de sombras", "Pestañas postizas", "Esponjas",
             "Brochas", "Borlas", "Bronceador",
             "Colorete", "Iluminador", "Polvos matificantes",
@@ -61,18 +69,22 @@ class FormularioMaterialActivity : AppCompatActivity() {
             "Pegamento de pestaña postiza", "Glitter", "Desmaquillante",
             "Bases de maquillaje", "Correctores", "Máscara de pestaña",
             "Pintalabios", "Eyeliner")
-
         spinnerTipo.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, tipos)
 
+        // Configura el spinner de estados del material
         val estados = arrayOf("Nuevo", "Sucio", "Normal", "Reponer", "Viejo", "Roto", "Caducado")
         spinnerEstado.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, estados)
     }
 
+    /**
+     * Configura el formulario dependiendo de si se está creando o editando un material.
+     */
     private fun configurarFormulario() {
         if (materialExistente != null) {
             title = "Editar material"
             findViewById<TextView>(R.id.tvTituloFormularioMaterial).text = "Editar material"
 
+            // Rellena los campos con los datos del material existente
             etNombre.setText(materialExistente!!.nombre)
             etDescripcion.setText(materialExistente!!.descripcion)
             etCantidad.setText(materialExistente!!.cantidad.toString())
@@ -83,6 +95,7 @@ class FormularioMaterialActivity : AppCompatActivity() {
             val indexEstado = (spinnerEstado.adapter as ArrayAdapter<String>).getPosition(materialExistente!!.estado)
             spinnerEstado.setSelection(indexEstado)
 
+            // Carga la imagen del material si existe
             rutaImagenSeleccionada = materialExistente!!.imagenUrl
             rutaImagenSeleccionada?.let {
                 Glide.with(this)
@@ -95,6 +108,9 @@ class FormularioMaterialActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Asigna comportamiento a los botones de guardar, volver y subir imagen.
+     */
     private fun configurarListeners() {
         btnVolver.setOnClickListener { finish() }
 
@@ -111,6 +127,7 @@ class FormularioMaterialActivity : AppCompatActivity() {
             val cantidadTexto = etCantidad.text.toString().trim()
             val estado = spinnerEstado.selectedItem.toString()
 
+            // Validaciones de campos obligatorios y cantidad
             if (MaterialHelper.hayCamposVacios(nombre, cantidadTexto)) {
                 Toast.makeText(this, "Completa los campos obligatorios: Nombre y cantidad", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -123,6 +140,7 @@ class FormularioMaterialActivity : AppCompatActivity() {
 
             val cantidad = cantidadTexto.toInt()
 
+            // Inserta o actualiza el material según corresponda
             if (materialExistente == null) {
                 val nuevoMaterial = Material(
                     id = UUID.randomUUID().toString(),
@@ -152,6 +170,9 @@ class FormularioMaterialActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Maneja el resultado de la selección de imagen desde la galería.
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

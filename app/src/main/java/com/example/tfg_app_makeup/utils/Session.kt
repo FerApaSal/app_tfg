@@ -12,6 +12,11 @@ object Session {
 
     var usuarioActual: Usuario? = null
 
+    /**
+     * Inicia sesión guardando el usuario actual y almacenando su ID en las preferencias compartidas.
+     * @param context Contexto de la aplicación.
+     * @param usuario Usuario que inicia sesión.
+     */
     fun iniciarSesion(context: Context, usuario: Usuario) {
         usuarioActual = usuario
         val prefs = context.getSharedPreferences("usuario_prefs", Context.MODE_PRIVATE)
@@ -19,7 +24,10 @@ object Session {
         Log.d("Session", "Sesión iniciada para: ${usuario.correo}")
     }
 
-
+    /**
+     * Cierra la sesión eliminando el usuario actual y su ID de las preferencias compartidas.
+     * @param context Contexto de la aplicación.
+     */
     fun cerrarSesion(context: Context) {
         usuarioActual = null
         val prefs = context.getSharedPreferences("sesion", Context.MODE_PRIVATE)
@@ -27,6 +35,11 @@ object Session {
         Log.d("Session", "Sesión cerrada")
     }
 
+    /**
+     * Restaura la sesión del usuario si existe un ID almacenado en las preferencias compartidas.
+     * @param context Contexto de la aplicación.
+     * @param service Servicio para obtener el usuario por su ID.
+     */
     fun restaurarSesion(context: Context, service: UsuarioService) {
         val sharedPreferences = context.getSharedPreferences("usuario_prefs", Context.MODE_PRIVATE)
         val id = sharedPreferences.getString("id", null)

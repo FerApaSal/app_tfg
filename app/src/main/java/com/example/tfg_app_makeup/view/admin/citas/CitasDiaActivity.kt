@@ -36,20 +36,23 @@ class CitasDiaActivity : BaseDrawerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_drawer)
 
+        // Infla el contenido específico de esta actividad dentro del layout base
         val contenido = layoutInflater.inflate(R.layout.activity_citas_del_dia, findViewById(R.id.contenidoPrincipal))
 
+        // Inicializa los componentes de la interfaz gráfica
         rvCitas = contenido.findViewById(R.id.rvCitasDia)
         btnVolver = contenido.findViewById(R.id.btnVolverCitasDia)
         tvTitulo = contenido.findViewById(R.id.tvTituloCitasDia)
 
         rvCitas.layoutManager = LinearLayoutManager(this)
 
+        // Inicializa los controladores
         citaController = CitaController(this)
         usuarioController = UsuarioController(this)
 
         configurarListeners()
-        cargarDatos()
-        configurarMenuHamburguesa()
+        cargarDatos() // Carga y muestra las citas del día
+        configurarMenuHamburguesa() // Configura el menú lateral (heredado de BaseDrawerActivity)
     }
 
     /**
@@ -75,12 +78,13 @@ class CitasDiaActivity : BaseDrawerActivity() {
             }
         }
 
-        // Cargar adaptador
+        // Cargar adaptador con las citas y los usuarios asociados
         citaAdapter = CitaAdminAdapter(listaCitas, mapaUsuarios)
         rvCitas.adapter = citaAdapter
     }
 
     private fun configurarListeners() {
+        // Listener para el botón de volver
         btnVolver.setOnClickListener {
             finish()
         }

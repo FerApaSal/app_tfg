@@ -30,23 +30,24 @@ class CitasAdminActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Usa directamente el layout de contenido (NO inflar el base aquí)
+
         setContentView(R.layout.activity_admin_citas)
 
         citaController = CitaController(this)
 
         inicializarComponentes()
         configurarListeners()
-        configurarMenuHamburguesa()
-        cargarCitasAceptadasYDecorar()
+        configurarMenuHamburguesa() // Configura el menú lateral (heredado de BaseDrawerActivity)
+        cargarCitasAceptadasYDecorar() // Carga las citas aceptadas y marca las fechas en el calendario
     }
 
     override fun onResume() {
         super.onResume()
-        cargarCitasAceptadasYDecorar()
+        cargarCitasAceptadasYDecorar() // Actualiza las citas al reanudar la actividad
     }
 
     private fun inicializarComponentes() {
+        // Inicializa los componentes de la interfaz gráfica
         calendarView = findViewById(R.id.calendarView)
         etFechaBuscar = findViewById(R.id.etFechaBuscarCita)
         btnBuscarCita = findViewById(R.id.btnBuscarCita)
@@ -56,6 +57,7 @@ class CitasAdminActivity : BaseDrawerActivity() {
     }
 
     private fun configurarListeners() {
+        // Listener para seleccionar una fecha en el calendario
         calendarView.setOnDateChangedListener { _, date, _ ->
             val fechaSeleccionada = "%02d/%02d/%04d".format(date.day, date.month + 1, date.year)
             val intent = Intent(this, CitasDiaActivity::class.java)
@@ -63,6 +65,7 @@ class CitasAdminActivity : BaseDrawerActivity() {
             startActivity(intent)
         }
 
+        // Listener para buscar citas por fecha ingresada
         btnBuscarCita.setOnClickListener {
             val fechaTexto = etFechaBuscar.text.toString().trim()
             if (fechaTexto.isEmpty()) {
@@ -76,14 +79,17 @@ class CitasAdminActivity : BaseDrawerActivity() {
             startActivity(intent)
         }
 
+        // Listener para abrir la actividad de citas pendientes
         btnCitasPendientes.setOnClickListener {
             startActivity(Intent(this, CitasPendientesActivity::class.java))
         }
 
+        // Listener para volver a la actividad anterior
         btnVolver.setOnClickListener {
             finish()
         }
 
+        // Listener para abrir el formulario de creación de una nueva cita
         fabNuevaCita.setOnClickListener {
             startActivity(Intent(this, FormularioCitaManualActivity::class.java))
         }
@@ -91,6 +97,7 @@ class CitasAdminActivity : BaseDrawerActivity() {
 
     private fun cargarCitasAceptadasYDecorar() {
         try {
+            // Obtiene las citas aceptadas y decora las fechas correspondientes en el calendario
             listaCitas = citaController.obtenerCitasAceptadas()
             CitaHelper.decorarFechasConCitas(this, calendarView, listaCitas)
         } catch (e: Exception) {

@@ -29,14 +29,20 @@ class FormularioTareaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_tarea)
 
+        // Inicializa el controlador de tareas
         tareaController = TareaController(this)
+
+        // Verifica si se está editando una tarea existente
         tareaExistente = intent.getSerializableExtra("tarea") as? Tarea
 
-        inicializarComponentes()
-        configurarFormulario()
-        configurarListeners()
+        inicializarComponentes() // Enlaza los elementos del layout
+        configurarFormulario() // Configura el formulario según el contexto (nuevo o edición)
+        configurarListeners() // Asigna comportamiento a los botones
     }
 
+    /**
+     * Enlaza variables con los elementos visuales del layout.
+     */
     private fun inicializarComponentes() {
         etTitulo = findViewById(R.id.etTituloTarea)
         etDescripcion = findViewById(R.id.etDescripcionTarea)
@@ -45,15 +51,20 @@ class FormularioTareaActivity : AppCompatActivity() {
         btnGuardar = findViewById(R.id.btnGuardarTarea)
         btnVolver = findViewById(R.id.btnVolverFormulario)
 
+        // Configura el spinner con las prioridades disponibles
         val prioridades = arrayOf("Baja", "Media", "Alta", "Urgente")
         spinnerPrioridad.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, prioridades)
     }
 
+    /**
+     * Configura el formulario dependiendo de si se está creando o editando una tarea.
+     */
     private fun configurarFormulario() {
         if (tareaExistente != null) {
             title = "Editar tarea"
             findViewById<TextView>(R.id.tvTituloFormulario).text = "Editar tarea"
 
+            // Rellena los campos con los datos de la tarea existente
             etTitulo.setText(tareaExistente!!.titulo)
             etDescripcion.setText(tareaExistente!!.descripcion)
             spinnerPrioridad.setSelection(obtenerIndicePrioridad(tareaExistente!!.prioridad))
@@ -65,19 +76,26 @@ class FormularioTareaActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Asigna comportamiento a los botones de guardar y volver.
+     */
     private fun configurarListeners() {
+        // Botón para volver a la actividad anterior
         btnVolver.setOnClickListener {
             finish()
         }
 
+        // Botón para guardar la tarea
         btnGuardar.setOnClickListener {
             val titulo = etTitulo.text.toString().trim()
             val descripcion = etDescripcion.text.toString().trim()
             val prioridad = spinnerPrioridad.selectedItem.toString()
             val completada = cbCompletada.isChecked
 
+            // Valida los campos obligatorios
             if (!TareaHelper.validarCampos(this, titulo, descripcion, prioridad)) return@setOnClickListener
 
+            // Inserta o actualiza la tarea según corresponda
             if (tareaExistente == null) {
                 val nuevaTarea = Tarea(
                     id = UUID.randomUUID().toString(),
@@ -102,6 +120,9 @@ class FormularioTareaActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Devuelve el índice correspondiente a la prioridad seleccionada.
+     */
     private fun obtenerIndicePrioridad(valor: String): Int {
         return when (valor.lowercase()) {
             "baja" -> 0
