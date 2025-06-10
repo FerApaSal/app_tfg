@@ -57,12 +57,12 @@ open class BaseDrawerActivity : AppCompatActivity() {
                 else -> null
             }
 
-            // Solo lanza el intent si no estamos ya en esa actividad
-            intent?.let {
-                val claseActual = this::class.java
-                val claseDestino = it.component?.className?.let { name -> Class.forName(name) }
-                if (claseActual != claseDestino) {
-                    startActivity(it)
+            intent?.let { destinoIntent ->
+                val claseDestino = destinoIntent.component?.className
+                val claseActual = this::class.java.name
+
+                if (claseDestino != null && claseDestino != claseActual) {
+                    startActivity(destinoIntent)
                 }
             }
 

@@ -45,7 +45,7 @@ class CitaAdapter(
         holder.tvEstado.text = cita.estado.uppercase()
 
         // Cambia el color del estado si es necesario
-        // Ejemplo: si el estado es "pendiente", podrías usar un color específico
+        // Ejemplo: si el estado es "pendiente", podrá usar un color específico
 
         when (cita.estado.lowercase()) {
             "pendiente" -> holder.tvEstado.setTextColor(holder.itemView.context.getColor(R.color.colorPendiente))
@@ -54,6 +54,8 @@ class CitaAdapter(
             else -> holder.tvEstado.setTextColor(holder.itemView.context.getColor(R.color.colorDefault))
         }
     }
+
+
 
     override fun getItemCount(): Int = citas.size
 }

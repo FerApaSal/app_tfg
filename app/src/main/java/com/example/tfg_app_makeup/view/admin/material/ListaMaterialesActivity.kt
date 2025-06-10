@@ -17,7 +17,8 @@ import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
- * Muestra la lista de materiales y permite acciones CRUD.
+ * Pantalla de administradora que muestra y gestiona la lista de materiales.
+ * Integra menú lateral (drawer) y acciones CRUD para cada material.
  */
 class ListaMaterialesActivity : BaseDrawerActivity() {
 
@@ -32,8 +33,7 @@ class ListaMaterialesActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base_drawer)
-        val contenido = layoutInflater.inflate(R.layout.activity_todolist, findViewById(R.id.contenidoPrincipal))
+        setContentView(R.layout.activity_lista_materiales)
 
         materialController = MaterialController(this)
 
@@ -47,9 +47,6 @@ class ListaMaterialesActivity : BaseDrawerActivity() {
         cargarMateriales()
     }
 
-    /**
-     * Enlaza componentes visuales con variables.
-     */
     private fun inicializarComponentes() {
         rvMateriales = findViewById(R.id.rvMateriales)
         fabAgregarMaterial = findViewById(R.id.fabAgregarMaterial)
@@ -59,9 +56,6 @@ class ListaMaterialesActivity : BaseDrawerActivity() {
         rvMateriales.layoutManager = LinearLayoutManager(this)
     }
 
-    /**
-     * Configura los botones de acción.
-     */
     private fun configurarListeners() {
         fabAgregarMaterial.setOnClickListener {
             val intent = Intent(this, FormularioMaterialActivity::class.java)
@@ -73,9 +67,6 @@ class ListaMaterialesActivity : BaseDrawerActivity() {
         }
     }
 
-    /**
-     * Carga los materiales desde la base de datos.
-     */
     private fun cargarMateriales() {
         try {
             listaMateriales = materialController.obtenerTodos().toMutableList()

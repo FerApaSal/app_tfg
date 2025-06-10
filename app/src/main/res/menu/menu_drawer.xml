@@ -1,8 +1,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/nav_inicio" android:title="Menú principal"/>
-    <item android:id="@+id/nav_citas" android:title="Citas" />
-    <item android:id="@+id/nav_clientes" android:title="Clientes" />
-    <item android:id="@+id/nav_materiales" android:title="Materiales" />
-    <item android:id="@+id/nav_tareas" android:title="Tareas" />
-    <item android:id="@+id/nav_servicios_novia" android:title="Servicios para novias" />
+
+    <item
+        android:id="@+id/nav_inicio"
+        android:title="Menú principal"
+        android:icon="@android:color/transparent" />
+
+    <item
+        android:id="@+id/nav_citas"
+        android:title="Citas"
+        android:icon="@android:color/transparent" />
+
+    <item
+        android:id="@+id/nav_clientes"
+        android:title="Clientes"
+        android:icon="@android:color/transparent" />
+
+    <item
+        android:id="@+id/nav_materiales"
+        android:title="Materiales"
+        android:icon="@android:color/transparent" />
+
+    <item
+        android:id="@+id/nav_tareas"
+        android:title="ToDoList"
+        android:icon="@android:color/transparent" />
+
+    <item
+        android:id="@+id/nav_servicios_novia"
+        android:title="Servicios para novias"
+        android:icon="@android:color/transparent" />
+
 </menu>

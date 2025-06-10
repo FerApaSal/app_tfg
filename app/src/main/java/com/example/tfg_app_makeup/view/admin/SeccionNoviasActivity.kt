@@ -3,7 +3,6 @@ package com.example.tfg_app_makeup.view.admin
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
@@ -24,27 +23,32 @@ class SeccionNoviasActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base_drawer)
+        setContentView(R.layout.activity_seccion_novias)
 
-        val contenido = layoutInflater.inflate(R.layout.activity_seccion_novias, findViewById(R.id.contenidoPrincipal))
-
-        btnSubirImagen = contenido.findViewById(R.id.btnSubirImagenNovias)
-        btnVolver = contenido.findViewById(R.id.btnVolverNovias)
-        ivImagen = contenido.findViewById(R.id.ivImagenNovias)
+        inicializarComponentes()
+        configurarListeners()
+        configurarMenuHamburguesa()
 
         NoviasHelper.cargarImagenInformativa(this, ivImagen)
+    }
 
+    private fun inicializarComponentes() {
+        btnSubirImagen = findViewById(R.id.btnSubirImagenNovias)
+        btnVolver = findViewById(R.id.btnVolverNovias)
+        ivImagen = findViewById(R.id.ivImagenNovias)
+    }
+
+    private fun configurarListeners() {
         btnSubirImagen.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
+            val intent = Intent(Intent.ACTION_PICK).apply {
+                type = "image/*"
+            }
             startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE)
         }
 
         btnVolver.setOnClickListener {
             finish()
         }
-
-        configurarMenuHamburguesa()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

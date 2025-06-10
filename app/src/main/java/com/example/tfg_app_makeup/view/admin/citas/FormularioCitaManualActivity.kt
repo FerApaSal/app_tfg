@@ -114,6 +114,7 @@ class FormularioCitaManualActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // ✅ Se incluyen campos manuales para nombre y teléfono del cliente externo
             val nuevaCita = Cita(
                 id = UUID.randomUUID().toString(),
                 tipoServicio = tipo,
@@ -121,7 +122,9 @@ class FormularioCitaManualActivity : AppCompatActivity() {
                 hora = hora,
                 direccion = direccion,
                 estado = "ACEPTADA",
-                idUsuario = idUsuario
+                idUsuario = idUsuario,
+                nombreClienteManual = nombre,
+                telefonoClienteManual = telefono
             )
 
             if (citaController.insertar(nuevaCita)) {

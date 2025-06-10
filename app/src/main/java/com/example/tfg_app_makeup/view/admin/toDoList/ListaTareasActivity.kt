@@ -3,9 +3,7 @@ package com.example.tfg_app_makeup.view.admin.toDoList
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_app_makeup.R
@@ -17,8 +15,8 @@ import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
- * Pantalla principal de la sección ToDoList.
- * Muestra las tareas con opciones para agregar, editar, eliminar y marcar como completadas.
+ * Pantalla principal de la sección ToDoList para administradora.
+ * Muestra tareas con opciones para crear, editar, eliminar y marcar como completadas.
  */
 class ListaTareasActivity : BaseDrawerActivity() {
 
@@ -39,6 +37,7 @@ class ListaTareasActivity : BaseDrawerActivity() {
 
         inicializarComponentes()
         configurarListeners()
+        configurarMenuHamburguesa()
     }
 
     override fun onResume() {
@@ -89,7 +88,6 @@ class ListaTareasActivity : BaseDrawerActivity() {
                     }
                 }
             )
-
             rvTareas.adapter = tareaAdapter
         } catch (e: Exception) {
             Log.e("ToDoListActivity", "Error al cargar tareas", e)

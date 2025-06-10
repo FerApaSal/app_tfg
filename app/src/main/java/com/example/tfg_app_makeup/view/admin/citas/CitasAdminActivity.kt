@@ -30,9 +30,11 @@ class CitasAdminActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Usa directamente el layout de contenido (NO inflar el base aquí)
         setContentView(R.layout.activity_admin_citas)
 
         citaController = CitaController(this)
+
         inicializarComponentes()
         configurarListeners()
         configurarMenuHamburguesa()
@@ -44,9 +46,6 @@ class CitasAdminActivity : BaseDrawerActivity() {
         cargarCitasAceptadasYDecorar()
     }
 
-    /**
-     * Enlaza variables con los elementos visuales.
-     */
     private fun inicializarComponentes() {
         calendarView = findViewById(R.id.calendarView)
         etFechaBuscar = findViewById(R.id.etFechaBuscarCita)
@@ -56,9 +55,6 @@ class CitasAdminActivity : BaseDrawerActivity() {
         fabNuevaCita = findViewById(R.id.fabNuevaCita)
     }
 
-    /**
-     * Asigna los listeners a los botones y eventos de UI.
-     */
     private fun configurarListeners() {
         calendarView.setOnDateChangedListener { _, date, _ ->
             val fechaSeleccionada = "%02d/%02d/%04d".format(date.day, date.month + 1, date.year)
@@ -93,9 +89,6 @@ class CitasAdminActivity : BaseDrawerActivity() {
         }
     }
 
-    /**
-     * Recupera las citas aceptadas y decora el calendario con ellas.
-     */
     private fun cargarCitasAceptadasYDecorar() {
         try {
             listaCitas = citaController.obtenerCitasAceptadas()

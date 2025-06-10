@@ -3,7 +3,9 @@ package com.example.tfg_app_makeup.view.admin
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.*
+import com.bumptech.glide.Glide
 import com.example.tfg_app_makeup.R
 import com.example.tfg_app_makeup.auth.LoginActivity
 import com.example.tfg_app_makeup.helpers.UsuarioHelper
@@ -14,10 +16,6 @@ import com.example.tfg_app_makeup.view.admin.toDoList.ListaTareasActivity
 import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 import com.example.tfg_app_makeup.view.common.PerfilActivity
 
-/**
- * Menú principal del perfil administradora (maquilladora).
- * Muestra los accesos a funcionalidades principales, imagen de perfil y nombre del usuario logueado.
- */
 class MenuAdminActivity : BaseDrawerActivity() {
 
     private lateinit var tvBienvenida: TextView
@@ -31,6 +29,8 @@ class MenuAdminActivity : BaseDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // ¡Solo esto! BaseDrawerActivity se encarga del resto
         setContentView(R.layout.activity_menu_admin)
 
         inicializarComponentes()
@@ -44,9 +44,6 @@ class MenuAdminActivity : BaseDrawerActivity() {
         cargarDatosUsuario()
     }
 
-    /**
-     * Enlaza variables con los elementos del layout.
-     */
     private fun inicializarComponentes() {
         tvBienvenida = findViewById(R.id.tvBienvenida)
         ivPerfilAdmin = findViewById(R.id.ivPerfilAdmin)
@@ -58,35 +55,16 @@ class MenuAdminActivity : BaseDrawerActivity() {
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion)
     }
 
-    /**
-     * Asigna eventos a cada botón de la interfaz.
-     */
     private fun configurarListeners() {
-        btnCitas.setOnClickListener {
-            startActivity(Intent(this, CitasAdminActivity::class.java))
-        }
-
-        btnClientes.setOnClickListener {
-            startActivity(Intent(this, ListaClientesActivity::class.java))
-        }
-
-        btnMateriales.setOnClickListener {
-            startActivity(Intent(this, ListaMaterialesActivity::class.java))
-        }
-
-        btnToDoList.setOnClickListener {
-            startActivity(Intent(this, ListaTareasActivity::class.java))
-        }
-
-        btnNovias.setOnClickListener {
-            startActivity(Intent(this, SeccionNoviasActivity::class.java))
-        }
-
+        btnCitas.setOnClickListener { startActivity(Intent(this, CitasAdminActivity::class.java)) }
+        btnClientes.setOnClickListener { startActivity(Intent(this, ListaClientesActivity::class.java)) }
+        btnMateriales.setOnClickListener { startActivity(Intent(this, ListaMaterialesActivity::class.java)) }
+        btnToDoList.setOnClickListener { startActivity(Intent(this, ListaTareasActivity::class.java)) }
+        btnNovias.setOnClickListener { startActivity(Intent(this, SeccionNoviasActivity::class.java)) }
         ivPerfilAdmin.setOnClickListener {
             startActivity(Intent(this, PerfilActivity::class.java))
             Log.d("MenuAdminActivity", "Acceso a perfil desde imagen admin")
         }
-
         btnCerrarSesion.setOnClickListener {
             Session.cerrarSesion(this)
             val intent = Intent(this, LoginActivity::class.java)
@@ -96,18 +74,9 @@ class MenuAdminActivity : BaseDrawerActivity() {
         }
     }
 
-    /**
-     * Muestra el nombre del usuario y su imagen de perfil (si está disponible).
-     */
     private fun cargarDatosUsuario() {
         val usuario = Session.usuarioActual
-
-        tvBienvenida.text = if (usuario != null) {
-            "¡Hola, ${usuario.nombre}!"
-        } else {
-            "¡Hola!"
-        }
-
+        tvBienvenida.text = usuario?.let { "¡Hola, ${it.nombre}!" } ?: "¡Hola!"
         UsuarioHelper.cargarImagenPerfil(this, usuario?.imagenUrl, ivPerfilAdmin)
     }
 }

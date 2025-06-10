@@ -11,8 +11,8 @@ import com.example.tfg_app_makeup.model.Usuario
 import com.example.tfg_app_makeup.view.common.BaseDrawerActivity
 
 /**
- * Muestra una lista de clientes registrados, visible para la administradora.
- * Los datos mostrados incluyen nombre, apellidos, correo y teléfono.
+ * Pantalla que muestra la lista de clientes registrados.
+ * Vista exclusiva para la administradora, con datos básicos de contacto.
  */
 class ListaClientesActivity : BaseDrawerActivity() {
 
@@ -24,19 +24,27 @@ class ListaClientesActivity : BaseDrawerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_clientes)
 
+        inicializarComponentes()
+        configurarListeners()
+        configurarMenuHamburguesa()
+        cargarClientes()
+    }
+
+    private fun inicializarComponentes() {
         recyclerView = findViewById(R.id.rvListaClientes)
         btnVolver = findViewById(R.id.btnVolverListaClientes)
-
-        val clientes: List<Usuario> = UsuarioHelper.obtenerListaClientes(this)
-        adapter = ListarClientesAdapter(clientes)
-
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+    }
 
+    private fun configurarListeners() {
         btnVolver.setOnClickListener {
             finish()
         }
+    }
 
-        configurarMenuHamburguesa()
+    private fun cargarClientes() {
+        val clientes: List<Usuario> = UsuarioHelper.obtenerListaClientes(this)
+        adapter = ListarClientesAdapter(clientes)
+        recyclerView.adapter = adapter
     }
 }
